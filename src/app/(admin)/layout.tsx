@@ -1,5 +1,5 @@
-import Header from "@/components/header";
-import Sidebar from "@/components/sidebar";
+import Header from "@/components/admin/header";
+import Sidebar from "@/components/admin/sidebar";
 import Container from "@/components/ui/container";
 import { AppContextProvider } from "@/context/App";
 

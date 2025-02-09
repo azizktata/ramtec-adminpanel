@@ -5,7 +5,7 @@ import { Briefcase, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { navItems } from "@/constants/navItems";
-import Typography from "../ui/typography";
+import Typography from "../../ui/typography";
 
 export default function SidebarContent() {
   const pathname = usePathname();

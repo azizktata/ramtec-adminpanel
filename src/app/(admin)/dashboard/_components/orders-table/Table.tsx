@@ -4,7 +4,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 import { Order } from "@/types/order";
 import { DataTableProps } from "@/types/data-table";
-import DataTable from "@/components/ui/dataTable";
+import DataTable from "@/components/shared/dataTable";
 
 export default function OrdersTable({
   data,

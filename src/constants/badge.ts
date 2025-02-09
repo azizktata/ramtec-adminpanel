@@ -4,6 +4,7 @@ import { OrderStatus } from "@/types/order";
 // import { StaffStatus } from "@/types/staff";
 
 import { BadgeVariantProps } from "@/components/ui/badge";
+import { ProductStatus } from "@/types/product";
 
 export const OrderBadgeVariants: Record<OrderStatus, BadgeVariantProps> = {
   pending: "warning",
@@ -12,10 +13,10 @@ export const OrderBadgeVariants: Record<OrderStatus, BadgeVariantProps> = {
   cancel: "destructive",
 };
 
-// export const ProductBadgeVariants: Record<ProductStatus, BadgeVariantProps> = {
-//   selling: "success",
-//   "out-of-stock": "destructive",
-// };
+export const ProductBadgeVariants: Record<ProductStatus, BadgeVariantProps> = {
+  selling: "success",
+  "out-of-stock": "destructive",
+};
 
 // export const CouponBadgeVariants: Record<CouponStatus, BadgeVariantProps> = {
 //   active: "success",

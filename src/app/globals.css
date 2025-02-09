@@ -9,6 +9,7 @@ body {
 @layer base {
   :root {
     --radius: 0.5rem;
-    --admin-primary: #16a34a;
+    --admin-primary: #1655a3;
+    --admin-secondary: #277be2;
   }
 }

@@ -9,5 +9,5 @@ export type Order = {
   method: OrderMethod;
   amount: string;
   status: OrderStatus;
-  subRows?: Order[];
+  // subRows?: Order[];
 };

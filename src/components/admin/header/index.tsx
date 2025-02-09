@@ -8,13 +8,13 @@ import Container from "@/components/ui/container";
 // import Profile from "@/containers/header/Profile";
 import useGetMountStatus from "@/hooks/useGetMountStatus";
 import NavMenuToggle from "./NavMenuToggle";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 
 export default function Header() {
   const mounted = useGetMountStatus();
 
   return (
-    <header className="sticky top-0 left-0 w-full bg-popover py-4 shadow-sm z-40">
+    <header className="sticky top-0 left-0 w-full bg-white py-4 shadow-sm z-40">
       <Container>
         <div className="flex justify-between">
           {mounted ? (

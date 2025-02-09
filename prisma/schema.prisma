@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductStatus {
+  SELLING
+  OUT_OF_STOCK
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  DELIVERED
+  CANCEL
+}
+
+enum OrderMethod {
+  CASH
+  CARD
+  CREDIT
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  icon        String
+  description String
+  published   Boolean
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+model Price {
+  id        String  @id @default(uuid())
+  price     Float
+  discount  Float
+  product   Product @relation(fields: [productId], references: [id]) //one-to-one
+  productId String  @unique
+}
+
+model Image {
+  id        String  @id @default(uuid())
+  url       String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  variant   Variant @relation(fields: [variantId], references: [id])
+  variantId String
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  images      Image[]
+  prices      Price?
+  published   Boolean
+  stock       Int
+  sales       Int           @default(0)
+  sku         String        @unique
+  status      ProductStatus
+  category    Category[]
+  slug        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  variants    Variant[]
+  orderItems  OrderItem[]
+}
+
+model Variant {
+  id        String        @id @default(uuid())
+  name      String
+  slug      String        @unique
+  price     Float
+  discount  Float
+  images    Image[]
+  status    ProductStatus
+  stock     Int
+  sku       String        @unique
+  product   Product       @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Order {
+  id           String      @id @default(uuid())
+  invoiceNo    String      @unique
+  orderTime    DateTime    @default(now())
+  customerName String
+  method       OrderMethod
+  amount       Float
+  status       OrderStatus
+  items        OrderItem[]
+  customer     Customer    @relation(fields: [customerId], references: [id])
+  customerId   String
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  address   String?
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

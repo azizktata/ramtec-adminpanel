@@ -21,6 +21,7 @@ export default {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
 			adminPrimary: 'var(--admin-primary)',
+			adminSecondary: 'var(--admin-secondary)',
   		},
 		  spacing: {
 			sidebar: "16.25rem",

@@ -4,8 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
 import { columns, skeletonColumns } from "./Columns";
-import TableSkeleton from "@/components/ui/tableSkeleton";
-import TableError from "@/components/ui/tableError";
+import TableSkeleton from "@/components/shared/tableSkeleton";
+import TableError from "@/components/shared/tableError";
 import { fetchOrders } from "@/data/orders";
 import OrdersTable from "./Table";
 
