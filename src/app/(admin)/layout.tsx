@@ -2,6 +2,7 @@ import Header from "@/components/admin/header";
 import Sidebar from "@/components/admin/sidebar";
 import Container from "@/components/ui/container";
 import { AppContextProvider } from "@/context/App";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 export default async function RootLayout({
   children,
@@ -10,17 +11,19 @@ export default async function RootLayout({
 }) {
   return (
     <AppContextProvider>
-      <div className="flex h-dvh overflow-hidden">
-        <Sidebar />
+      <TooltipProvider>
+        <div className="flex h-dvh overflow-hidden">
+          <Sidebar />
 
-        <div className="w-full relative overflow-y-auto">
-          <Header />
+          <div className="w-full relative overflow-y-auto">
+            <Header />
 
-          <main className="pt-6 pb-8">
-            <Container>{children}</Container>
-          </main>
+            <main className="pt-6 pb-8">
+              <Container>{children}</Container>
+            </main>
+          </div>
         </div>
-      </div>
+      </TooltipProvider>
     </AppContextProvider>
   );
 }
