@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import TanstackQueryProvider from "@/lib/tanstack-query-provider";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable}  antialiased`}>
         <TanstackQueryProvider>{children}</TanstackQueryProvider>
+        <Toaster />
       </body>
     </html>
   );

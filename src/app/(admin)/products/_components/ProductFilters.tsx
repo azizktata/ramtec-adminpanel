@@ -16,21 +16,53 @@ import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 
 import { fetchAllCategories } from "@/data/categories";
+import { Category } from "@prisma/client";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
-export default function ProductFilters() {
-  const {
-    data: categories,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["categories"],
-    queryFn: fetchAllCategories,
-    select: (data) =>
-      data.map((item) => ({
-        name: item.name,
-        slug: item.slug,
-      })),
-  });
+export default function ProductFilters({
+  categories,
+}: {
+  categories: Category[];
+}) {
+  // const {
+  //   data: categories,
+  //   isLoading,
+  //   isError,
+  // } = useQuery({
+  //   queryKey: ["categories"],
+  //   queryFn: fetchAllCategories,
+  //   select: (data) =>
+  //     data.map((item) => ({
+  //       name: item.name,
+  //       slug: item.slug,
+  //     })),
+  // });
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  function handleChange(name: string, value: string) {
+    // if (value !== 0) {
+    router.push(pathname + "?" + createQueryString(name, value));
+    // }
+    // if (value == 0) {
+    //   const params = new URLSearchParams(searchParams.toString());
+    //   params.delete(name);
+    //   router.push(pathname + "?" + params.toString());
+    // }
+  }
+
   return (
     <Card className="mb-5">
       <form className="flex flex-col md:flex-row gap-4 lg:gap-6">
@@ -40,13 +72,16 @@ export default function ProductFilters() {
           className="h-12 md:basis-[30%]"
         />
 
-        <Select>
+        <Select
+          onValueChange={(value) => handleChange("category", value)}
+          name="category"
+        >
           <SelectTrigger className="md:basis-1/5 ">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
 
           <SelectContent>
-            {isLoading ? (
+            {/* {isLoading ? (
               <div className="flex flex-col gap-2 items-center px-2 py-6">
                 <Loader2 className="size-4 animate-spin" />
                 <Typography>Loading...</Typography>
@@ -59,16 +94,21 @@ export default function ProductFilters() {
                 </Typography>
               </div>
             ) : (
-              categories.map((category) => (
-                <SelectItem key={category.slug} value={category.slug}>
-                  {category.name}
-                </SelectItem>
               ))
-            )}
+            )} */}
+
+            {categories.map((category) => (
+              <SelectItem key={category.slug} value={category.name}>
+                {category.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
-        <Select>
+        <Select
+          onValueChange={(value) => handleChange("filter", value)}
+          name="filter"
+        >
           <SelectTrigger className="md:basis-1/5">
             <SelectValue placeholder="Price" />
           </SelectTrigger>
@@ -95,7 +135,12 @@ export default function ProductFilters() {
           <Button size="lg" className="flex-grow">
             Filter
           </Button>
-          <Button size="lg" variant="secondary" className="flex-grow">
+          <Button
+            size="lg"
+            onClick={() => router.refresh()}
+            variant="secondary"
+            className="flex-grow"
+          >
             Reset
           </Button>
         </div>

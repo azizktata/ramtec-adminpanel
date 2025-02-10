@@ -30,7 +30,7 @@ async function main() {
         create: {
           name: "Electronics",
           slug: "electronics",
-          icon: "📱",
+          image: "📱",
           description: "Electronic products",
           published: true,
         },
@@ -41,7 +41,13 @@ async function main() {
           discount: 10.0,
         },
       },
-     
+      images: {
+        create: [
+       
+            {url: "https://via.placeholder.com/150"}
+        
+        ],
+      },
     },
   });
 

@@ -4,14 +4,14 @@ import * as React from "react";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 import DataTable from "@/components/shared/dataTable";
-import { Product } from "@/types/product";
 import { DataTableProps } from "@/types/data-table";
+import { ProductALL } from "@/types/products-IncludeAll";
 
 export default function ProductsTable({
   data,
   columns,
   pagination,
-}: DataTableProps<Product>) {
+}: DataTableProps<ProductALL>) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({

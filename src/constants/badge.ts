@@ -4,7 +4,8 @@ import { OrderStatus } from "@/types/order";
 // import { StaffStatus } from "@/types/staff";
 
 import { BadgeVariantProps } from "@/components/ui/badge";
-import { ProductStatus } from "@/types/product";
+import { ProductStatus } from "@prisma/client";
+// import { ProductStatus } from "@/types/product";
 
 export const OrderBadgeVariants: Record<OrderStatus, BadgeVariantProps> = {
   pending: "warning",
@@ -14,8 +15,8 @@ export const OrderBadgeVariants: Record<OrderStatus, BadgeVariantProps> = {
 };
 
 export const ProductBadgeVariants: Record<ProductStatus, BadgeVariantProps> = {
-  selling: "success",
-  "out-of-stock": "destructive",
+  "SELLING": "success",
+  "OUT_OF_STOCK": "destructive",
 };
 
 // export const CouponBadgeVariants: Record<CouponStatus, BadgeVariantProps> = {

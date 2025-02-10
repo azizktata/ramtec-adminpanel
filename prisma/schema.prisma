@@ -35,8 +35,8 @@ model Category {
   id          String    @id @default(uuid())
   name        String
   slug        String    @unique
-  icon        String
-  description String
+  image       String?
+  description String?
   published   Boolean
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -52,12 +52,13 @@ model Price {
 }
 
 model Image {
-  id        String  @id @default(uuid())
-  url       String
-  product   Product @relation(fields: [productId], references: [id])
+  id  String @id @default(uuid())
+  url String
+
+  product   Product  @relation(fields: [productId], references: [id])
   productId String
-  variant   Variant @relation(fields: [variantId], references: [id])
-  variantId String
+  variant   Variant? @relation(fields: [variantId], references: [id])
+  variantId String?
 }
 
 model Product {

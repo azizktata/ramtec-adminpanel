@@ -40,7 +40,8 @@ import {
 import { formatAmount } from "@/utils/formatAmount";
 
 import { ProductBadgeVariants } from "@/constants/badge";
-import { Product, ProductStatus } from "@/types/product";
+// import { Product, ProductStatus } from "@/types/product";
+import { ProductALL } from "@/types/products-IncludeAll";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
@@ -48,7 +49,7 @@ export interface SkeletonColumn {
 }
 const handleSwitchChange = () => {};
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<ProductALL>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -73,13 +74,15 @@ export const columns: ColumnDef<Product>[] = [
     header: "product name",
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
-        <Image
-          src={row.original.images[0]}
-          alt={row.original.name}
-          width={32}
-          height={32}
-          className="size-8 rounded-full"
-        />
+        {row.original.images.length > 0 && (
+          <Image
+            src={row.original.images[0].url}
+            alt={row.original.name}
+            width={32}
+            height={32}
+            className="size-8 rounded-full"
+          />
+        )}
 
         <Typography className="capitalize block truncate">
           {row.original.name}
@@ -91,22 +94,22 @@ export const columns: ColumnDef<Product>[] = [
     header: "category",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
-        {row.original.categories[0].name}
+        {row.original.category[0].name}
       </Typography>
     ),
   },
   {
     header: "price",
     cell: ({ row }) => {
-      return formatAmount(row.original.prices.price);
+      return formatAmount(row.original.prices!.price);
     },
   },
   {
     header: "sale price",
     cell: ({ row }) => {
-      const { price, discount } = row.original.prices;
+      const { price, discount } = row.original.prices!;
 
-      return formatAmount(price * (1 - discount));
+      return formatAmount((price * (100 - discount)) / 100);
     },
   },
   {
@@ -123,7 +126,7 @@ export const columns: ColumnDef<Product>[] = [
           variant={ProductBadgeVariants[status]}
           className="flex-shrink-0 text-xs"
         >
-          {status === "selling" ? "Selling" : "Out of stock"}
+          {status === "SELLING" ? "Selling" : "Out of stock"}
         </Badge>
       );
     },
