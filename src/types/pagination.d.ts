@@ -5,6 +5,7 @@ interface Pagination {
     last: number;
     next: number | null;
     prev: number | null;
+    
   }
   
   export interface PaginationQueryProps {

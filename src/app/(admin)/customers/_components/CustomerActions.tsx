@@ -1,4 +1,6 @@
-import { Upload, Download, PenSquare, Trash2, Plus } from "lucide-react";
+"use client";
+
+import { Upload, Plus } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -14,8 +16,19 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { addCustomer } from "@/actions/customer";
+import toast from "react-hot-toast";
 
 export default function CustomerActions() {
+  async function handleSubmit(formData: FormData) {
+    const res = await addCustomer(formData);
+    if (res?.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res?.message);
+    }
+  }
+
   return (
     <Card className="mb-5">
       <form className="flex flex-col xl:flex-row xl:justify-between gap-4">
@@ -23,14 +36,14 @@ export default function CustomerActions() {
           <Button variant="outline">
             <Upload className="mr-2 size-4" /> Export
           </Button>
-
+          {/* 
           <Button variant="outline">
             <Download className="mr-2 size-4" /> Import
-          </Button>
+          </Button> */}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button
+          {/* <Button
             variant="secondary"
             size="lg"
             className="sm:flex-grow xl:flex-grow-0"
@@ -44,7 +57,7 @@ export default function CustomerActions() {
             className="sm:flex-grow xl:flex-grow-0"
           >
             <Trash2 className="mr-2 size-4" /> Delete
-          </Button>
+          </Button> */}
 
           {/* 
           <Button
@@ -74,33 +87,37 @@ export default function CustomerActions() {
                   done.
                 </SheetDescription>
               </SheetHeader>
-              <div className="grid gap-4 py-4">
+              <form action={handleSubmit} className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="name" className="text-right">
-                    nom
+                    Name
                   </Label>
-                  <Input
-                    id="name"
-                    value="Pedro Duarte"
-                    className="col-span-3"
-                  />
+                  <Input id="name" name="name" className="col-span-3" />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="username" className="text-right">
+                  <Label htmlFor="email" className="text-right">
                     email
                   </Label>
-                  <Input
-                    id="username"
-                    value="@peduarte"
-                    className="col-span-3"
-                  />
+                  <Input id="email" name="email" className="col-span-3" />
                 </div>
-              </div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button type="submit">Save changes</Button>
-                </SheetClose>
-              </SheetFooter>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="phone" className="text-right">
+                    phone
+                  </Label>
+                  <Input id="phone" name="phone" className="col-span-3" />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="address" className="text-right">
+                    address
+                  </Label>
+                  <Input id="address" name="address" className="col-span-3" />
+                </div>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button type="submit">Save changes</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </form>
             </SheetContent>
           </Sheet>
         </div>

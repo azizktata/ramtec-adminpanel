@@ -11,21 +11,15 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { Category } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function ProductFilters({
-  categories,
-}: {
-  categories: Category[];
-}) {
+export default function OrderFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const filterValue = searchParams.get("filter") || "";
-  const categoryValue = searchParams.get("category") || "";
-  const perPageValue = searchParams.get("perPage") || "3";
+  const perPageValue = searchParams.get("perPage") || "5";
   function handleChange(name: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -44,29 +38,11 @@ export default function ProductFilters({
       <div className="flex flex-col md:items-center md:flex-row gap-4 lg:gap-6">
         <Input
           type="search"
-          placeholder="Search product..."
+          placeholder="Search orders by invoiceNo, customer name, email, amount..."
           className="h-12 md:basis-[30%]"
           name="search"
           onChange={(e) => handleChange("search", e.target.value)}
         />
-
-        <Select
-          onValueChange={(value) => handleChange("category", value)}
-          name="category"
-          value={categoryValue}
-        >
-          <SelectTrigger className="md:basis-1/5 py-5">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-
-          <SelectContent>
-            {categories.map((category) => (
-              <SelectItem key={category.slug} value={category.name}>
-                {category.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
 
         <Select
           onValueChange={(value) => handleChange("filter", value)}
@@ -79,14 +55,16 @@ export default function ProductFilters({
 
           <SelectContent>
             <SelectItem value="none">none</SelectItem>
-            <SelectItem value="low">Low to High</SelectItem>
-            <SelectItem value="high">High to Low</SelectItem>
-            <SelectItem value="published">Published</SelectItem>
-            <SelectItem value="unpublished">Unpublished</SelectItem>
-            <SelectItem value="status-selling">Status - Selling</SelectItem>
-            <SelectItem value="status-out-of-stock">
-              Status - Out of Stock
+
+            <SelectItem value="status-pending">Status - Pending</SelectItem>
+            <SelectItem value="status-processing">
+              Status - Processing
             </SelectItem>
+            <SelectItem value="status-delivered">Status - Delivered</SelectItem>
+            <SelectItem value="status-cancel">Status - Canceled</SelectItem>
+            <SelectItem value="methode-cash">Method - Cash</SelectItem>
+            <SelectItem value="methode-card">Method - Card</SelectItem>
+            <SelectItem value="methode-credit">Method - Credit</SelectItem>
             <SelectItem value="date-added-asc">Date Added (Asc)</SelectItem>
             <SelectItem value="date-added-desc">Date Added (Desc)</SelectItem>
             <SelectItem value="date-updated-asc">Date Updated (Asc)</SelectItem>

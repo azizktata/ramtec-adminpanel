@@ -11,37 +11,20 @@ import { CategoryWithProducts } from "@/types/category-with-products";
 
 export default function ShowCategoriesTable({
   categories,
+  numberOfCategories,
 }: {
   categories: CategoryWithProducts[];
+  numberOfCategories: number;
 }) {
-  //   const productsPage = useSearchParams().get("page");
-  //   const page = Math.trunc(Number(productsPage)) || 1;
+  const perPage = useSearchParams().get("perPage") || 5;
+  const page = useSearchParams().get("page") || 1;
+  const category = useSearchParams().get("category") || null;
+  const search = useSearchParams().get("search") || null;
+  const thereIsFilter = category || search ? true : false;
+  const items = thereIsFilter ? categories.length : numberOfCategories;
+  const numberOfPages =
+    items > Number(perPage) ? Math.trunc(items / Number(+perPage)) : 1;
 
-  //   const {
-  //     data: products,
-  //     isLoading,
-  //     isError,
-  //     refetch,
-  //   } = useQuery({
-  //     queryKey: ["products", page],
-  //     queryFn: () => fetchProducts({ page, perPage }),
-  //     placeholderData: keepPreviousData,
-  //     select: (productsData) => {
-  //       const { data, pages, ...rest } = productsData;
-
-  //       return {
-  //         data: data,
-  //         pagination: {
-  //           ...rest,
-  //           pages,
-  //           current: page < 1 ? 1 : Math.min(page, pages),
-  //           perPage,
-  //         },
-  //       };
-  //     },
-  //   });
-
-  //
   // if (isLoading)
   //   return <TableSkeleton perPage={perPage} columns={skeletonColumns} />;
 
@@ -53,14 +36,14 @@ export default function ShowCategoriesTable({
   //     />
   //   );
   const pagination = {
-    pages: 1,
-    current: 1,
-    perPage: 10,
-    items: 1,
+    pages: +numberOfPages,
+    current: Number(page),
+    perPage: Number(perPage),
+    items,
     first: 1,
-    last: 1,
-    next: null,
-    prev: null,
+    last: numberOfPages,
+    next: items > Number(perPage) ? Number(page) + 1 : null,
+    prev: Number(page) > 1 ? Number(page) - 1 : null,
   };
 
   return (

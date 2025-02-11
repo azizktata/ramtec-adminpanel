@@ -8,15 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import Typography from "@/components/ui/typography";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -42,12 +39,39 @@ import { formatAmount } from "@/utils/formatAmount";
 import { ProductBadgeVariants } from "@/constants/badge";
 // import { Product, ProductStatus } from "@/types/product";
 import { ProductALL } from "@/types/products-IncludeAll";
+import ProductForm from "../productForm";
+import {
+  deleteProduct,
+  updatePublisherStatus,
+  updateStatus,
+} from "@/actions/product";
+import toast from "react-hot-toast";
+import React from "react";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
   cell: React.JSX.Element;
 }
-const handleSwitchChange = () => {};
+const handleSwitchChange = async (id: string) => {
+  const res = await updatePublisherStatus(id);
+  if (res) {
+    if (res?.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res!.message);
+    }
+  }
+};
+const handleProductStatus = async (id: string) => {
+  const res = await updateStatus(id);
+  if (res) {
+    if (res?.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res!.message);
+    }
+  }
+};
 
 export const columns: ColumnDef<ProductALL>[] = [
   {
@@ -76,11 +100,17 @@ export const columns: ColumnDef<ProductALL>[] = [
       <div className="flex gap-2 items-center">
         {row.original.images.length > 0 && (
           <Image
-            src={row.original.images[0].url}
+            src={row.original.images[0].url || "https://placehold.co/32x32"}
             alt={row.original.name}
             width={32}
             height={32}
             className="size-8 rounded-full"
+            placeholder="blur"
+            blurDataURL="https://placehold.co/32x32"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "https://placehold.co/32x32"; // Fallback image URL
+              (e.target as HTMLImageElement).onerror = null; // Prevent an infinite loop if the fallback image fails
+            }}
           />
         )}
 
@@ -88,6 +118,14 @@ export const columns: ColumnDef<ProductALL>[] = [
           {row.original.name}
         </Typography>
       </div>
+    ),
+  },
+  {
+    header: "sku",
+    cell: ({ row }) => (
+      <Typography className="block max-w-52 truncate">
+        {row.original.sku}
+      </Typography>
     ),
   },
   {
@@ -124,7 +162,8 @@ export const columns: ColumnDef<ProductALL>[] = [
       return (
         <Badge
           variant={ProductBadgeVariants[status]}
-          className="flex-shrink-0 text-xs"
+          className="flex-shrink-0 text-xs cursor-pointer"
+          onClick={() => handleProductStatus(row.original.id)}
         >
           {status === "SELLING" ? "Selling" : "Out of stock"}
         </Badge>
@@ -147,7 +186,7 @@ export const columns: ColumnDef<ProductALL>[] = [
       <div className="pl-5">
         <Switch
           checked={row.original.published}
-          onCheckedChange={(value) => handleSwitchChange()}
+          onCheckedChange={() => handleSwitchChange(row.original.id)}
         />
       </div>
     ),
@@ -176,7 +215,7 @@ export const columns: ColumnDef<ProductALL>[] = [
               </TooltipContent>
             </Tooltip>
 
-            <SheetContent>
+            <SheetContent className="overflow-y-auto">
               <SheetHeader>
                 <SheetTitle>Edit profile</SheetTitle>
                 <SheetDescription>
@@ -184,33 +223,9 @@ export const columns: ColumnDef<ProductALL>[] = [
                   done.
                 </SheetDescription>
               </SheetHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name
-                  </Label>
-                  <Input
-                    id="name"
-                    value="Pedro Duarte"
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="username" className="text-right">
-                    Username
-                  </Label>
-                  <Input
-                    id="username"
-                    value="@peduarte"
-                    className="col-span-3"
-                  />
-                </div>
+              <div className="grid gap-4 py-4 overflow-y-auto">
+                <ProductForm action={"update"} product={row.original} />
               </div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button type="submit">Save changes</Button>
-                </SheetClose>
-              </SheetFooter>
             </SheetContent>
           </Sheet>
 
@@ -243,7 +258,20 @@ export const columns: ColumnDef<ProductALL>[] = [
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
+                <AlertDialogAction
+                  onClick={async () => {
+                    const res = await deleteProduct(row.original.id);
+                    if (res) {
+                      if (res?.success) {
+                        toast.success(res.message);
+                      } else {
+                        toast.error(res!.message);
+                      }
+                    }
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -301,3 +329,4 @@ export const skeletonColumns: SkeletonColumn[] = [
     cell: <Skeleton className="w-20 h-8" />,
   },
 ];
+// Add a delete icon from react-icons

@@ -30,7 +30,7 @@ export default async function DashboardPage() {
           Recent Orders
         </Typography>
 
-        <RecentOrders />
+        {/* <RecentOrders /> */}
       </section>
     </>
   );

@@ -21,20 +21,33 @@ export default async function Products({
       | "date-added-desc"
       | "date-updated-asc"
       | "date-updated-desc";
+    search: string;
+    perPage: number;
+    page: number;
   };
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const orderBy: any = {};
-
+  const perPage = (await searchParams).perPage || 3;
+  const page = (await searchParams).page || 1;
+  const take = +perPage;
+  // page est le coefficient multiplicateur de perPage
+  const skip = (page - 1) * perPage;
   // Apply category filter
-  if (searchParams.category) {
-    where.category = { some: { name: searchParams.category } };
+
+  if ((await searchParams).category) {
+    where.category = { some: { name: (await searchParams).category } };
+  } else {
+    where.category = { some: {} };
+  }
+  if ((await searchParams).search) {
+    where.sku = { startsWith: (await searchParams).search };
   }
 
   // Apply filter conditions
-  switch (searchParams.filter) {
+  switch ((await searchParams).filter) {
     case "low":
       orderBy.prices = { price: "asc" };
       break;
@@ -67,6 +80,9 @@ export default async function Products({
       break;
   }
   const products = await prisma.product.findMany({
+    where,
+    skip,
+    take,
     include: {
       category: true,
       prices: true,
@@ -76,9 +92,10 @@ export default async function Products({
         },
       },
     },
-    where,
     orderBy,
   });
+
+  const numberOfProducts = await prisma.product.count();
 
   const categories = await prisma.category.findMany();
   return (
@@ -89,9 +106,12 @@ export default async function Products({
         </Typography>
 
         <div className="space-y-8 mb-8">
-          <ProductActions categories={categories} />
+          <ProductActions />
           <ProductFilters categories={categories} />
-          <AllProducts products={products} />
+          <AllProducts
+            products={products}
+            numberOfProducts={numberOfProducts}
+          />
           {/*
            */}
 

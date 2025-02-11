@@ -35,7 +35,8 @@ import {
 } from "@/components/ui/tooltip";
 
 import { Customer } from "@prisma/client";
-// import { Product, ProductStatus } from "@/types/product";
+import { removeCustomer, updateCustomer } from "@/actions/customer";
+import toast from "react-hot-toast";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
@@ -43,6 +44,23 @@ export interface SkeletonColumn {
 }
 // const handleSwitchChange = () => {};
 
+async function handleSubmit(formData: FormData) {
+  const res = await updateCustomer(formData);
+  if (res?.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res?.message);
+  }
+}
+
+async function handleDeleteCustomer(id: string) {
+  const res = await removeCustomer(id);
+  if (res?.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res?.message);
+  }
+}
 export const columns: ColumnDef<Customer>[] = [
   {
     id: "select",
@@ -148,14 +166,16 @@ export const columns: ColumnDef<Customer>[] = [
                   done.
                 </SheetDescription>
               </SheetHeader>
-              <div className="grid gap-4 py-4">
+              <form action={handleSubmit} className="grid gap-4 py-4">
+                <input type="hidden" name="id" value={row.original.id} />
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="name" className="text-right">
                     Name
                   </Label>
                   <Input
                     id="name"
-                    value={row.original.name}
+                    name="name"
+                    defaultValue={row.original.name}
                     className="col-span-3"
                   />
                 </div>
@@ -165,7 +185,19 @@ export const columns: ColumnDef<Customer>[] = [
                   </Label>
                   <Input
                     id="email"
-                    value={row.original.email}
+                    name="email"
+                    defaultValue={row.original.email}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="phone" className="text-right">
+                    phone
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    defaultValue={row.original.phone || ""}
                     className="col-span-3"
                   />
                 </div>
@@ -175,16 +207,17 @@ export const columns: ColumnDef<Customer>[] = [
                   </Label>
                   <Input
                     id="address"
-                    value={row.original.address || ""}
+                    name="address"
+                    defaultValue={row.original.address || ""}
                     className="col-span-3"
                   />
                 </div>
-              </div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button type="submit">Save changes</Button>
-                </SheetClose>
-              </SheetFooter>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button type="submit">Save changes</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </form>
             </SheetContent>
           </Sheet>
 
@@ -192,18 +225,14 @@ export const columns: ColumnDef<Customer>[] = [
             <Tooltip>
               <TooltipTrigger asChild>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-foreground"
-                  >
+                  <Button variant="ghost" size="icon" className="text-red-500">
                     <Trash2 className="size-5" />
                   </Button>
                 </AlertDialogTrigger>
               </TooltipTrigger>
 
               <TooltipContent>
-                <p>Delete Product</p>
+                <p>Delete Customer</p>
               </TooltipContent>
             </Tooltip>
 
@@ -217,7 +246,11 @@ export const columns: ColumnDef<Customer>[] = [
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
+                <AlertDialogAction
+                  onClick={() => handleDeleteCustomer(row.original.id)}
+                >
+                  Continue
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

@@ -35,6 +35,8 @@ import {
 } from "@/components/ui/tooltip";
 
 import { CategoryWithProducts } from "@/types/category-with-products";
+import { deleteCategory, updateCategory } from "@/actions/categorie";
+import toast from "react-hot-toast";
 // import { Product, ProductStatus } from "@/types/product";
 
 export interface SkeletonColumn {
@@ -42,6 +44,23 @@ export interface SkeletonColumn {
   cell: React.JSX.Element;
 }
 // const handleSwitchChange = () => {};
+async function handleSubmit(formData: FormData) {
+  const res = await updateCategory(formData);
+  if (res.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res.message);
+  }
+}
+
+async function handleDeleteCategory(id: string) {
+  const res = await deleteCategory(id);
+  if (res.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res.message);
+  }
+}
 
 export const columns: ColumnDef<CategoryWithProducts>[] = [
   {
@@ -91,7 +110,7 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
     ),
   },
   {
-    header: "description",
+    header: "number of items",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
         {row.original.products.length}
@@ -99,7 +118,7 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
     ),
   },
   {
-    header: "number of items",
+    header: "description",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
         {row.original.description}
@@ -156,33 +175,36 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
                   done.
                 </SheetDescription>
               </SheetHeader>
-              <div className="grid gap-4 py-4">
+              <form action={handleSubmit} className="grid gap-4 py-4">
+                <input type="hidden" name="id" value={row.original.id} />
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="name" className="text-right">
                     Nom de categorie
                   </Label>
                   <Input
                     id="name"
-                    value={row.original.name}
+                    name="name"
+                    defaultValue={row.original.name}
                     className="col-span-3"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="username" className="text-right">
+                  <Label htmlFor="description" className="text-right">
                     Description
                   </Label>
                   <Input
-                    id="username"
-                    value={row.original.description}
+                    id="description"
+                    name="description"
+                    defaultValue={row.original.description || ""}
                     className="col-span-3"
                   />
                 </div>
-              </div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button type="submit">Save changes</Button>
-                </SheetClose>
-              </SheetFooter>
+                <SheetFooter>
+                  <SheetClose asChild>
+                    <Button type="submit">Save changes</Button>
+                  </SheetClose>
+                </SheetFooter>
+              </form>
             </SheetContent>
           </Sheet>
 
@@ -215,7 +237,11 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
+                <AlertDialogAction
+                  onClick={() => handleDeleteCategory(row.original.id)}
+                >
+                  Continue
+                </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

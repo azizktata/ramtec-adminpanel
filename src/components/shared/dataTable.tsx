@@ -23,6 +23,7 @@ import {
 import Typography from "@/components/ui/typography";
 import { PaginationProps } from "@/types/pagination";
 import { getPaginationButtons } from "@/utils/getPaginationButtons";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface DataTableProps<TData> {
   table: TableType<TData>;
@@ -37,6 +38,9 @@ export default function DataTable<TData>({
     totalPages: pagination.pages,
     currentPage: pagination.current,
   });
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   return (
     <div className="rounded-md border overflow-hidden">
@@ -105,7 +109,17 @@ export default function DataTable<TData>({
           <PaginationContent className="flex-wrap">
             <PaginationItem>
               {pagination.prev ? (
-                <PaginationPrevious href={`?page=${pagination.prev}`} />
+                (() => {
+                  const params = new URLSearchParams(searchParams.toString()); // Clone existing search params
+                  params.set("perPage", pagination.perPage.toString()); // Ensure it's a string
+                  params.set("page", pagination.prev.toString()); // Ensure it's a string
+
+                  return (
+                    <PaginationPrevious
+                      href={`${pathname}?${params.toString()}`}
+                    />
+                  );
+                })()
               ) : (
                 <PaginationPrevious className="disabled" />
               )}
@@ -116,19 +130,34 @@ export default function DataTable<TData>({
                 {page === "..." ? (
                   <PaginationEllipsis />
                 ) : (
-                  <PaginationLink
-                    href={`?page=${page}`}
-                    isActive={page === pagination.current}
-                  >
-                    {page}
-                  </PaginationLink>
+                  (() => {
+                    const params = new URLSearchParams(searchParams.toString()); // Clone existing search params
+                    params.set("perPage", pagination.perPage.toString()); // Ensure it's a string
+                    params.set("page", page.toString()); // Ensure it's a string
+                    return (
+                      <PaginationLink
+                        href={`${pathname}?${params.toString()}`}
+                        isActive={page === pagination.current}
+                      >
+                        {page}
+                      </PaginationLink>
+                    );
+                  })()
                 )}
               </PaginationItem>
             ))}
 
             <PaginationItem>
               {pagination.next ? (
-                <PaginationNext href={`?page=${pagination.next}`} />
+                (() => {
+                  const params = new URLSearchParams(searchParams.toString()); // Clone existing search params
+                  params.set("perPage", pagination.perPage.toString()); // Ensure it's a string
+                  params.set("page", pagination.next.toString()); // Ensure it's a string
+
+                  return (
+                    <PaginationNext href={`${pathname}?${params.toString()}`} />
+                  );
+                })()
               ) : (
                 <PaginationNext className="disabled" />
               )}

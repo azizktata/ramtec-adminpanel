@@ -47,15 +47,15 @@ model Price {
   id        String  @id @default(uuid())
   price     Float
   discount  Float
-  product   Product @relation(fields: [productId], references: [id]) //one-to-one
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade) //one-to-one
   productId String  @unique
 }
 
 model Image {
-  id  String @id @default(uuid())
-  url String
-
-  product   Product  @relation(fields: [productId], references: [id])
+  id        String   @id @default(uuid())
+  url       String
+  filename  String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
   variant   Variant? @relation(fields: [variantId], references: [id])
   variantId String?
@@ -90,21 +90,21 @@ model Variant {
   status    ProductStatus
   stock     Int
   sku       String        @unique
-  product   Product       @relation(fields: [productId], references: [id])
+  product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 }
 
 model Order {
-  id           String      @id @default(uuid())
-  invoiceNo    String      @unique
-  orderTime    DateTime    @default(now())
-  customerName String
-  method       OrderMethod
-  amount       Float
-  status       OrderStatus
-  items        OrderItem[]
-  customer     Customer    @relation(fields: [customerId], references: [id])
-  customerId   String
+  id         String      @id @default(uuid())
+  invoiceNo  String      @unique
+  orderTime  DateTime    @default(now())
+  method     OrderMethod
+  amount     Float
+  status     OrderStatus
+  items      OrderItem[]
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  customerId String
+  updatedAt  DateTime    @updatedAt
 }
 
 model OrderItem {
