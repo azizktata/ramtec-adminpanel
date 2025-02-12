@@ -41,20 +41,19 @@ export default function CategoryActions() {
 
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Edit profile</SheetTitle>
+            <SheetTitle>Add new category</SheetTitle>
             <SheetDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
+              Click save when you&apos;re done.
             </SheetDescription>
           </SheetHeader>
-          <form action={handleSubmit} className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
+          <form action={handleSubmit} className="flex flex-col gap-4 my-4 py-4">
+            <div className="flex flex-col items-start gap-4">
               <Label htmlFor="name" className="text-right">
                 Nom de categorie
               </Label>
-              <Input id="name" name="name" className="col-span-3" />
+              <Input id="name" name="name" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
+            <div className="flex flex-col items-start gap-4">
               <Label htmlFor="description" className="text-right">
                 Description
               </Label>

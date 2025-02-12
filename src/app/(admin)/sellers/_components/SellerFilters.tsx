@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function CustomerFilters() {
+export default function SellerFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -56,7 +56,9 @@ export default function CustomerFilters() {
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value="none">none</SelectItem>
+              <SelectItem className="text-gray-300" value="none">
+                Filter
+              </SelectItem>
 
               <SelectItem value="date-added-asc">Date Added (Asc)</SelectItem>
               <SelectItem value="date-added-desc">Date Added (Desc)</SelectItem>

@@ -46,7 +46,7 @@ export default function DataTable<TData>({
     <div className="rounded-md border overflow-hidden">
       {/* data table */}
       <Table>
-        <TableHeader className="bg-popover">
+        <TableHeader className="bg-white">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="hover:bg-transparent">
               {headerGroup.headers.map((header) => {
@@ -74,7 +74,7 @@ export default function DataTable<TData>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="hover:bg-transparent"
+                className="hover:bg-transparent bg-white"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="whitespace-nowrap">
@@ -97,7 +97,7 @@ export default function DataTable<TData>({
       </Table>
 
       {/* pagination */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3.5 p-4 bg-popover text-muted-foreground">
+      <div className="flex bg-white flex-col md:flex-row items-center justify-between gap-3.5 p-4 bg-popover text-muted-foreground">
         <Typography className="text-sm flex-shrink-0 uppercase font-medium">
           Showing{" "}
           {Math.max((pagination.current - 1) * pagination.perPage + 1, 1)} to{" "}

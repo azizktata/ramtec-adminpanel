@@ -11,5 +11,6 @@ body {
     --radius: 0.5rem;
     --admin-primary: #1655a3;
     --admin-secondary: #277be2;
+    --text-muted-foreground: #6c757d;
   }
 }

@@ -1,11 +1,16 @@
 "use client";
-import { addProduct, updateProduct } from "@/actions/product";
+import {
+  addProduct,
+  deleteImage,
+  deleteProduct,
+  updateProduct,
+} from "@/actions/product";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Typography from "@/components/ui/typography";
 import { ProductALL } from "@/types/products-IncludeAll";
-import { Loader2, ShieldAlert } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import toast from "react-hot-toast";
@@ -38,8 +43,8 @@ export default function ProductForm({
   product?: ProductALL;
 }) {
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(false);
+  // const [loading, setLoading] = React.useState(true);
+  // const [error, setError] = React.useState(false);
   React.useEffect(() => {
     async function fetchCategories() {
       try {
@@ -48,10 +53,10 @@ export default function ProductForm({
 
         const data = await response.json();
         setCategories(data);
-        setLoading(false);
-      } catch (error) {
-        setError(true);
-        console.error(error);
+        // setLoading(false);
+      } catch {
+        // setError(true);
+        // console.error(error);
       }
     }
     fetchCategories();
@@ -79,46 +84,70 @@ export default function ProductForm({
       }
     }
   }
+  async function handleDeleteImage(id: string) {
+    const res = await deleteImage(id);
+
+    if (res?.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res!.message);
+    }
+  }
   return (
     <form className="flex flex-col gap-2 p-2" action={handleSubmit}>
+      <div className="flex gap-2">
+        <div className="flex-grow">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            type="text"
+            name="name"
+            defaultValue={product.name}
+            id="name"
+            className="block border"
+          />
+        </div>
+        <div className="flex-grow">
+          <Label htmlFor="sku">SKU</Label>
+          <Input
+            type="text"
+            name="sku"
+            defaultValue={product.sku}
+            id="sku"
+            className="block border"
+          />
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <div className="flex-grow">
+          <Label htmlFor="price">Price</Label>
+          <Input
+            type="number"
+            defaultValue={product.prices?.price}
+            name="price"
+            id="price"
+            className="block border"
+          />
+        </div>
+        <div className="flex-grow">
+          <Label htmlFor="price">Discount</Label>
+          <Input
+            type="number"
+            defaultValue={product.prices?.discount}
+            name="discount"
+            id="price"
+            className="block border"
+          />
+        </div>
+      </div>
       <div className="">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="description">Description</Label>
         <Input
           type="text"
-          name="name"
-          defaultValue={product.name}
-          id="name"
+          name="description"
+          id="description"
           className="block border"
-        />
-      </div>
-
-      <div className="">
-        <Label htmlFor="price">Price</Label>
-        <Input
-          type="number"
-          defaultValue={product.prices?.price}
-          name="price"
-          id="price"
-          className="block border"
-        />
-        <Label htmlFor="price">Discount</Label>
-        <Input
-          type="number"
-          defaultValue={product.prices?.discount}
-          name="discount"
-          id="price"
-          className="block border"
-        />
-      </div>
-      <div className="">
-        <Label htmlFor="sku">SKU</Label>
-        <Input
-          type="text"
-          name="sku"
-          defaultValue={product.sku}
-          id="sku"
-          className="block border"
-        />
+          defaultValue={product.description}
+        ></Input>
       </div>
       <div className="">
         <Label htmlFor="quantity">Quantity</Label>
@@ -130,19 +159,74 @@ export default function ProductForm({
           className="block border"
         />
       </div>
+      {/* {loading ? (
+        <div className="flex flex-col gap-2 items-center px-2 py-6">
+          <Loader2 className="size-4 animate-spin" />
+          <Typography>Loading...</Typography>
+        </div>
+      ) : error || !categories ? (
+        <div className="flex flex-col gap-2 items-center px-2 py-6 max-w-full">
+          <ShieldAlert className="size-6" />
+          <Typography>
+            Sorry, something went wrong while fetching categories
+          </Typography>
+        </div>
+      ) : ( */}
+      <div className="flex gap-8 my-4">
+        <div className="space-y-4 ">
+          <h3>Select Existing Categories</h3>
+          {categories.map((category) => (
+            <div className="flex items-center gap-2" key={category.id}>
+              <Label htmlFor={category.id} className="ml-2">
+                {category.name}
+              </Label>
+              <Checkbox
+                name="categories"
+                value={category.id}
+                defaultChecked={product.category.some(
+                  (c) => c.id === category.id
+                )}
+                id={category.id}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="flex-grow space-y-2 mt-8">
+          <Label htmlFor="newCategory" className="text-sm font-light">
+            Or Add New Category
+          </Label>
+          <Input
+            type="text"
+            name="newCategory"
+            id="newCategory"
+            className="block border"
+          />
+        </div>
+      </div>
       <div className="">
         {product.images.length > 0 ? (
           // If there are images, display them with an "Edit Image" button
           <>
             {product.images.map((image, index) => (
               <div key={index} className="mb-4">
-                <Image
-                  src={image.url}
-                  alt={product.name}
-                  width={100}
-                  height={100}
-                  className="size-8 rounded-sm"
-                />
+                <div className="flex justify-between items-center gap-2 mt-2">
+                  <Image
+                    src={image.url}
+                    alt={product.name}
+                    width={150}
+                    height={150}
+                    className="size-16 rounded-sm"
+                  />
+
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleDeleteImage(image.id)}
+                    type="button"
+                  >
+                    <Trash2Icon className="size-4 text-red-500 cursor-pointer" />
+                  </Button>
+                </div>
                 <label
                   htmlFor={`image-${index}`}
                   className="block font-semibold text-sm mb-2"
@@ -166,7 +250,7 @@ export default function ProductForm({
               >
                 Add Another Image
               </label>
-              <input
+              <Input
                 id="add-image"
                 className="block w-full border-slate-400 rounded focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 type="file"
@@ -191,15 +275,6 @@ export default function ProductForm({
         )}
       </div>
 
-      <div className="">
-        <Label htmlFor="description">Description</Label>
-        <textarea
-          name="description"
-          id="description"
-          className="block border"
-          defaultValue={product.description}
-        ></textarea>
-      </div>
       {/* {categories.length > 0 && (
         <div className="space-y-2">
           <h3>Select Existing Categories</h3>
@@ -218,51 +293,8 @@ export default function ProductForm({
           ))}
         </div>
       )} */}
-      {loading ? (
-        <div className="flex flex-col gap-2 items-center px-2 py-6">
-          <Loader2 className="size-4 animate-spin" />
-          <Typography>Loading...</Typography>
-        </div>
-      ) : error || !categories ? (
-        <div className="flex flex-col gap-2 items-center px-2 py-6 max-w-full">
-          <ShieldAlert className="size-6" />
-          <Typography>
-            Sorry, something went wrong while fetching categories
-          </Typography>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          <h3>Select Existing Categories</h3>
-          {categories.map((category) => (
-            <div className="flex items-center gap-2" key={category.id}>
-              <Label htmlFor={category.id} className="ml-2">
-                {category.name}
-              </Label>
-              <input
-                type="checkbox"
-                name="categories"
-                value={category.id}
-                defaultChecked={product.category.some(
-                  (c) => c.id === category.id
-                )}
-                id={category.id}
-              />
-            </div>
-          ))}
-        </div>
-      )}
 
-      <div className="m-4">
-        <Label htmlFor="newCategory">Or Add New Category</Label>
-        <Input
-          type="text"
-          name="newCategory"
-          id="newCategory"
-          className="block border"
-        />
-      </div>
-
-      <div className="m-4">
+      <div className="flex  mt-4">
         <Button type="submit">Save changes</Button>
         {/* <button type="submit" className="bg-blue-500 text-white px-4 py-2">
           Add Product

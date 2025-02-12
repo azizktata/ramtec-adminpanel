@@ -23,14 +23,23 @@ import { formatAmount } from "@/utils/formatAmount";
 
 import { ORDER_STATUSES } from "@/constants/orders";
 import { OrderBadgeVariants } from "@/constants/badge";
-import { OrderStatus } from "@/types/order";
 import { OrderALL } from "@/types/orders-includeAll";
+import { updateOrderStatus } from "@/actions/orders";
+import { OrderStatus } from "@prisma/client";
+import toast from "react-hot-toast";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
   cell: React.JSX.Element;
 }
-const changeStatus = (value: OrderStatus, invoiceNo: string) => {};
+const changeStatus = async (value: OrderStatus, invoiceNo: string) => {
+  const res = await updateOrderStatus(invoiceNo, value);
+  if (res.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res.message);
+  }
+};
 const printInvoice = (invoiceNo: string) => {};
 
 export const columns: ColumnDef<OrderALL>[] = [

@@ -1,11 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
-import { columns, skeletonColumns } from "./Columns";
-import TableSkeleton from "@/components/shared/tableSkeleton";
-import TableError from "@/components/shared/tableError";
+import { columns } from "./Columns";
+
 import CategoriesTable from "./Table";
 import { CategoryWithProducts } from "@/types/category-with-products";
 

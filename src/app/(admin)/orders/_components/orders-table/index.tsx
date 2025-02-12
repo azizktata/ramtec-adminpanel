@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { columns, skeletonColumns } from "./Columns";
+import { columns } from "./Columns";
 
 import OrdersTable from "./Table";
 import { OrderALL } from "@/types/orders-includeAll";

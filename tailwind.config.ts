@@ -22,6 +22,7 @@ export default {
   			foreground: 'var(--foreground)',
 			adminPrimary: 'var(--admin-primary)',
 			adminSecondary: 'var(--admin-secondary)',
+			mutedForeground: 'var(--text-muted-foreground)',
   		},
 		  spacing: {
 			sidebar: "16.25rem",

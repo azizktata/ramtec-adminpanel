@@ -16,12 +16,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { addCustomer } from "@/actions/customer";
 import toast from "react-hot-toast";
+import { addSeller } from "@/actions/seller";
 
-export default function CustomerActions() {
+export default function SellerActions() {
   async function handleSubmit(formData: FormData) {
-    const res = await addCustomer(formData);
+    const res = await addSeller(formData);
     if (res?.success) {
       toast.success(res.message);
     } else {
@@ -46,16 +46,15 @@ export default function CustomerActions() {
                 size="lg"
                 className="sm:flex-grow xl:flex-grow-0 h-12"
               >
-                <Plus className="mr-2 size-4 " /> Add Customer
+                <Plus className="mr-2 size-4 " /> Add Seller
               </Button>
             </SheetTrigger>
 
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Add new customer</SheetTitle>
+                <SheetTitle>Add new seller</SheetTitle>
                 <SheetDescription>
-                  Make changes to your profile here. Click save when you&apos;re
-                  done.
+                  Click save when you&apos;re done.
                 </SheetDescription>
               </SheetHeader>
               <form

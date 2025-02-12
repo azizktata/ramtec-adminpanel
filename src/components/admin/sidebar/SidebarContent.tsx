@@ -13,16 +13,18 @@ export default function SidebarContent() {
   return (
     <div className="pb-[5rem] h-full">
       <div className="py-6 px-2 flex flex-col overflow-y-auto h-full">
-        <Link
-          href="/"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "font-bold text-2xl px-6 gap-2 justify-start items-center min-h-fit"
-          )}
-        >
-          <Briefcase size={38} className=" text-adminPrimary mb-1.5 " />
-          <Typography component="span">Admin</Typography>
-        </Link>
+        <div className="flex items-center justify-start px-5">
+          <Briefcase className="size-8 text-adminPrimary mb-1.5 " />
+          <Link
+            href="/"
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "font-bold text-2xl px-4 gap-2 min-h-fit"
+            )}
+          >
+            <Typography component="span">Admin</Typography>
+          </Link>
+        </div>
 
         <ul className="pt-6 flex flex-col gap-y-2">
           {navItems.map((navItem, index) => (

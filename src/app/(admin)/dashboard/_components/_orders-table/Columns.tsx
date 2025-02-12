@@ -49,7 +49,7 @@ export const columns: ColumnDef<Order>[] = [
     header: "customer name",
     cell: ({ row }) => (
       <span className="block max-w-52 truncate">
-        {row.original.customerName}
+        {/* {row.original.customer} */}
       </span>
     ),
   },

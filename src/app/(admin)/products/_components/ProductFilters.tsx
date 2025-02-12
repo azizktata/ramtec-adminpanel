@@ -25,7 +25,7 @@ export default function ProductFilters({
 
   const filterValue = searchParams.get("filter") || "";
   const categoryValue = searchParams.get("category") || "";
-  const perPageValue = searchParams.get("perPage") || "3";
+  const perPageValue = searchParams.get("perPage") || "5";
   function handleChange(name: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -44,7 +44,7 @@ export default function ProductFilters({
       <div className="flex flex-col md:items-center md:flex-row gap-4 lg:gap-6">
         <Input
           type="search"
-          placeholder="Search product..."
+          placeholder="Search product by name, sku..."
           className="h-12 md:basis-[30%]"
           name="search"
           onChange={(e) => handleChange("search", e.target.value)}
@@ -55,11 +55,15 @@ export default function ProductFilters({
           name="category"
           value={categoryValue}
         >
-          <SelectTrigger className="md:basis-1/5 py-5">
+          <SelectTrigger className="md:basis-1/5 h-12">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
 
           <SelectContent>
+            <SelectItem className="text-gray-200" value="none">
+              Category
+            </SelectItem>
+
             {categories.map((category) => (
               <SelectItem key={category.slug} value={category.name}>
                 {category.name}
@@ -73,12 +77,14 @@ export default function ProductFilters({
           name="filter"
           value={filterValue}
         >
-          <SelectTrigger className="md:basis-1/5 py-5">
-            <SelectValue placeholder="Price" />
+          <SelectTrigger className="md:basis-1/5 h-12">
+            <SelectValue placeholder="Filter" />
           </SelectTrigger>
 
           <SelectContent>
-            <SelectItem value="none">none</SelectItem>
+            <SelectItem className="text-gray-200" value="none">
+              Fitler
+            </SelectItem>
             <SelectItem value="low">Low to High</SelectItem>
             <SelectItem value="high">High to Low</SelectItem>
             <SelectItem value="published">Published</SelectItem>
@@ -100,11 +106,14 @@ export default function ProductFilters({
           name="perPage"
           value={perPageValue}
         >
-          <SelectTrigger className="md:basis-[15%] py-5">
+          <SelectTrigger className="md:basis-[15%] h-12">
             <SelectValue />
           </SelectTrigger>
 
           <SelectContent>
+            <SelectItem className="text-gray-200" value="none">
+              page
+            </SelectItem>
             <SelectItem value="3">3</SelectItem>
             <SelectItem value="5">5</SelectItem>
             <SelectItem value="10">10</SelectItem>

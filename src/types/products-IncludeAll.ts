@@ -6,6 +6,7 @@ export type ProductALL = Prisma.ProductGetPayload<{
     images: {
     select: {
         url: true;
+        id: true;
     }
   } };
 }>;

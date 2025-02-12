@@ -4,21 +4,21 @@ import { useSearchParams } from "next/navigation";
 
 import { columns } from "./Columns";
 
-import { Customer } from "@prisma/client";
-import CustomersTable from "./Table";
+import { Seller } from "@prisma/client";
+import SellersTable from "./Table";
 
-export default function ShowCustomersTable({
-  customers,
-  numberOfCustomers,
+export default function ShowSellersTable({
+  sellers,
+  numberOfSellers,
 }: {
-  customers: Customer[];
-  numberOfCustomers: number;
+  sellers: Seller[];
+  numberOfSellers: number;
 }) {
   const perPage = useSearchParams().get("perPage") || 5;
   const page = useSearchParams().get("page") || 1;
   const search = useSearchParams().get("search") || null;
   const thereIsFilter = search ? true : false;
-  const items = thereIsFilter ? customers.length : numberOfCustomers;
+  const items = thereIsFilter ? sellers.length : numberOfSellers;
   const numberOfPages =
     items > Number(perPage) ? Math.ceil(items / Number(+perPage)) : 1;
 
@@ -34,10 +34,6 @@ export default function ShowCustomersTable({
   };
 
   return (
-    <CustomersTable
-      columns={columns}
-      data={customers}
-      pagination={pagination}
-    />
+    <SellersTable columns={columns} data={sellers} pagination={pagination} />
   );
 }

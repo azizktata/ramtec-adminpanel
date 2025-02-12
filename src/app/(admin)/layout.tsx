@@ -18,7 +18,7 @@ export default async function RootLayout({
           <div className="w-full relative overflow-y-auto">
             <Header />
 
-            <main className="pt-6 pb-8">
+            <main className="pt-6 pb-8 bg-[#F9FAFB] ">
               <Container>{children}</Container>
             </main>
           </div>

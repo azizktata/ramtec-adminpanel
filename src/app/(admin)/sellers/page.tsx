@@ -1,11 +1,12 @@
 import Typography from "@/components/ui/typography";
 import React from "react";
-import ShowCustomersTable from "./_components/customer-table";
 import prisma from "@/lib/db";
-import CustomerActions from "./_components/CustomerActions";
-import CustomerFilters from "./_components/CustomerFilters";
 
-export default async function Customers({
+import SellerActions from "./_components/SellerActions";
+import SellerFilters from "./_components/SellerFilters";
+import ShowSellersTable from "./_components/seller-table";
+
+export default async function Sellers({
   searchParams,
 }: {
   searchParams: {
@@ -51,31 +52,27 @@ export default async function Customers({
       orderBy.updatedAt = "desc";
       break;
   }
-  const customers = await prisma.customer.findMany({
+  const sellers = await prisma.seller.findMany({
     where,
     take,
     skip,
     orderBy,
   });
-  const numberOfCustomers = await prisma.customer.count();
+  const numberOfSellers = await prisma.seller.count();
   return (
     <>
       <section>
         <Typography variant="h1" className="mb-6">
-          Customers
+          Re-sellers
         </Typography>
 
         <div className="space-y-8 mb-8">
-          <CustomerActions />
-          <CustomerFilters />
-          <ShowCustomersTable
-            customers={customers}
-            numberOfCustomers={numberOfCustomers}
+          <SellerActions />
+          <SellerFilters />
+          <ShowSellersTable
+            sellers={sellers}
+            numberOfSellers={numberOfSellers}
           />
-          {/*
-           */}
-
-          {/* <DashboardCharts /> */}
         </div>
       </section>
     </>

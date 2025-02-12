@@ -9,15 +9,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Typography from "@/components/ui/typography";
 import { getPastDates } from "@/utils/getPastDates";
 import useGetMountStatus from "@/hooks/useGetMountStatus";
+import { WeeklySalesData } from "../../_types/WeeklySales";
 
-export default function WeeklySales() {
+export default function WeeklySales({
+  last7DaysSales,
+}: {
+  last7DaysSales: WeeklySalesData;
+}) {
   const labels = getPastDates(7);
   //   const { theme } = useTheme();
   const mounted = useGetMountStatus();
-
+  console.log("last7DaysSales", last7DaysSales);
   const gridColor = `rgba(161, 161, 170, 0.5)`;
   //   const gridColor = `rgba(161, 161, 170, ${theme === "light" ? "0.5" : "0.3"})`;
 
+  const revenuData = last7DaysSales.map((data) => data.totalRevenue);
+  const orderData = last7DaysSales.map((data) => data.totalOrders);
   return (
     <Card>
       <Typography variant="h3" className="mb-4">
@@ -49,7 +56,7 @@ export default function WeeklySales() {
                   datasets: [
                     {
                       label: "Sales",
-                      data: [400, 300, 100, 250, 200, 300, 1000],
+                      data: revenuData,
                       borderColor: "rgb(34, 197, 94)",
                       backgroundColor: "rgb(34, 197, 94)",
                     },
@@ -105,7 +112,7 @@ export default function WeeklySales() {
                   datasets: [
                     {
                       label: "Orders",
-                      data: [3, 3, 1, 4, 1, 1, 2],
+                      data: orderData,
                       borderColor: "rgb(249, 115, 22)",
                       backgroundColor: "rgb(249, 115, 22)",
                     },

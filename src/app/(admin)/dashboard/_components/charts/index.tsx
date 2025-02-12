@@ -13,6 +13,8 @@ import {
 
 import WeeklySales from "./WeeklySales";
 import BestSellers from "./BestSellers";
+import { WeeklySalesData } from "../../_types/WeeklySales";
+import { BestProductSellers } from "../../_types/BestSellers";
 
 ChartJS.register(
   LinearScale,
@@ -24,7 +26,13 @@ ChartJS.register(
   Tooltip
 );
 
-export default function DashboardCharts() {
+export default function DashboardCharts({
+  last7DaysSales,
+  bestSellers,
+}: {
+  last7DaysSales: WeeklySalesData;
+  bestSellers: BestProductSellers;
+}) {
   ChartJS.defaults.font.family = "'Poppins', sans-serif";
   ChartJS.defaults.font.size = 12;
   ChartJS.defaults.font.weight = "normal";
@@ -32,8 +40,8 @@ export default function DashboardCharts() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <WeeklySales />
-      <BestSellers />
+      <WeeklySales last7DaysSales={last7DaysSales} />
+      <BestSellers bestSellers={bestSellers} />
     </div>
   );
 }

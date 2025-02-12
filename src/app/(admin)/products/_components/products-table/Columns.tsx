@@ -30,6 +30,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -196,7 +204,7 @@ export const columns: ColumnDef<ProductALL>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-1">
-          <Sheet>
+          {/* <Sheet>
             <Tooltip>
               <TooltipTrigger asChild>
                 <SheetTrigger asChild>
@@ -227,7 +235,25 @@ export const columns: ColumnDef<ProductALL>[] = [
                 <ProductForm action={"update"} product={row.original} />
               </div>
             </SheetContent>
-          </Sheet>
+          </Sheet> */}
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-foreground">
+                <PenSquare className="size-5" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] lg:max-w-[600px] overflow-y-auto h-[550px]">
+              <DialogHeader>
+                <DialogTitle>Edit product</DialogTitle>
+                <DialogDescription>
+                  Make changes to product here. Click save when you&apos;re
+                  done.
+                </DialogDescription>
+              </DialogHeader>
+              <ProductForm action={"update"} product={row.original} />
+            </DialogContent>
+          </Dialog>
 
           <AlertDialog>
             <Tooltip>
@@ -253,7 +279,7 @@ export const columns: ColumnDef<ProductALL>[] = [
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  this product and remove the data from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

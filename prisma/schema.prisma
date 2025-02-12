@@ -44,17 +44,17 @@ model Category {
 }
 
 model Price {
-  id        String  @id @default(uuid())
-  price     Float
-  discount  Float
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade) //one-to-one
-  productId String  @unique
+  id             String  @id @default(uuid())
+  price          Float
+  discount       Float
+  discountSeller Float?
+  product        Product @relation(fields: [productId], references: [id], onDelete: Cascade) //one-to-one
+  productId      String  @unique
 }
 
 model Image {
   id        String   @id @default(uuid())
   url       String
-  filename  String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
   variant   Variant? @relation(fields: [variantId], references: [id])
@@ -102,7 +102,7 @@ model Order {
   amount     Float
   status     OrderStatus
   items      OrderItem[]
-  customer   Customer    @relation(fields: [customerId], references: [id])
+  customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String
   updatedAt  DateTime    @updatedAt
 }
@@ -111,9 +111,9 @@ model OrderItem {
   id        String  @id @default(uuid())
   quantity  Int
   price     Float
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId   String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
 }
 
@@ -124,6 +124,17 @@ model Customer {
   phone     String?
   address   String?
   orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Seller {
+  id      String  @id @default(uuid())
+  name    String
+  email   String
+  phone   String?
+  address String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

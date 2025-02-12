@@ -13,37 +13,43 @@ type DashboardCard = {
   className: string;
 };
 import Typography from "@/components/ui/typography";
+import { SalesSummary } from "../_types/SalesSummary";
 
-export default function SalesOverview() {
+export default function SalesOverview({
+  salesSummary,
+}: {
+  salesSummary: SalesSummary;
+}) {
+  const { today, yesterday, thisMonth, lastMonth, allTime } = salesSummary;
   const cards: DashboardCard[] = [
     {
       icon: <Layers />,
       title: "Today Orders",
-      value: "$897.40",
+      value: `${today.totalAmount}`,
       className: "bg-teal-600",
     },
     {
       icon: <Layers />,
       title: "Yesterday Orders",
-      value: "$679.93",
+      value: `${yesterday.totalAmount}`,
       className: "bg-orange-400",
     },
     {
       icon: <RefreshCcw />,
       title: "This Month",
-      value: "$13146.96",
+      value: `${thisMonth.totalAmount}`,
       className: "bg-blue-500",
     },
     {
       icon: <CalendarDays />,
       title: "Last Month",
-      value: "$31964.92",
+      value: `${lastMonth.totalAmount}`,
       className: "bg-cyan-600",
     },
     {
       icon: <CalendarDays />,
       title: "All-Time Sales",
-      value: "$626513.05",
+      value: `${allTime.totalAmount}`,
       className: "bg-emerald-600",
     },
   ];
@@ -64,6 +70,7 @@ export default function SalesOverview() {
 
           <Typography className="text-2xl font-semibold">
             {card.value}
+            <span className="text-sm px-1">TND</span>
           </Typography>
         </div>
       ))}

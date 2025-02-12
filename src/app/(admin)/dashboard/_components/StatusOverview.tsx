@@ -3,8 +3,13 @@ import { ShoppingCart, RefreshCcw, Check, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
+import { StatusSummary } from "../_types/StatusSummary";
 
-export default function StatusOverview() {
+export default function StatusOverview({
+  statusSummary,
+}: {
+  statusSummary: StatusSummary;
+}) {
   type DashboardCard = {
     icon: React.ReactNode;
     title: string;
@@ -12,32 +17,34 @@ export default function StatusOverview() {
     className: string;
   };
 
+  const { processing, pending, delivered, total } = statusSummary;
+
   const cards: DashboardCard[] = [
     {
       icon: <ShoppingCart />,
       title: "Total Orders",
-      value: "815",
+      value: `${total}`,
       className:
         "text-orange-600 dark:text-orange-100 bg-orange-100 dark:bg-orange-500",
     },
     {
       icon: <RefreshCcw />,
       title: "Orders Pending",
-      value: "263",
+      value: `${pending}`,
       className:
         "text-teal-600 dark:text-teal-100 bg-teal-100 dark:bg-teal-500",
     },
     {
       icon: <Truck />,
       title: "Orders Processing",
-      value: "97",
+      value: `${processing}`,
       className:
         "text-blue-600 dark:text-blue-100 bg-blue-100 dark:bg-blue-500",
     },
     {
       icon: <Check />,
       title: "Orders Delivered",
-      value: "418",
+      value: `${delivered}`,
       className:
         "text-emerald-600 dark:text-emerald-100 bg-emerald-100 dark:bg-emerald-500",
     },

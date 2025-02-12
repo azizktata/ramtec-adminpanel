@@ -7,11 +7,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Typography from "@/components/ui/typography";
 import useGetMountStatus from "@/hooks/useGetMountStatus";
+import { BestProductSellers } from "../../_types/BestSellers";
 
-export default function BestSellers() {
+export default function BestSellers({
+  bestSellers,
+}: {
+  bestSellers: BestProductSellers;
+}) {
   const mounted = useGetMountStatus();
   //   const { theme } = useTheme();
-
+  const productNames = bestSellers.map((product) => product.name);
+  const sales = bestSellers.map((product) => product.sales);
   return (
     <Card>
       <Typography variant="h3" className="mb-4">
@@ -23,16 +29,11 @@ export default function BestSellers() {
           {mounted ? (
             <Pie
               data={{
-                labels: [
-                  "Green Leaf Lettuce",
-                  "Rainbow Chard",
-                  "Clementine",
-                  "Mint",
-                ],
+                labels: productNames,
                 datasets: [
                   {
                     label: "Orders",
-                    data: [270, 238, 203, 153],
+                    data: sales,
                     backgroundColor: [
                       "rgb(34, 197, 94)",
                       "rgb(59, 130, 246)",

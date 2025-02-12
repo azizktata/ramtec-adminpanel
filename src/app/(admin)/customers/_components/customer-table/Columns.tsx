@@ -166,9 +166,12 @@ export const columns: ColumnDef<Customer>[] = [
                   done.
                 </SheetDescription>
               </SheetHeader>
-              <form action={handleSubmit} className="grid gap-4 py-4">
+              <form
+                action={handleSubmit}
+                className="flex flex-col my-4 gap-4 py-4"
+              >
                 <input type="hidden" name="id" value={row.original.id} />
-                <div className="grid grid-cols-4 items-center gap-4">
+                <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="name" className="text-right">
                     Name
                   </Label>
@@ -179,7 +182,7 @@ export const columns: ColumnDef<Customer>[] = [
                     className="col-span-3"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
+                <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="email" className="text-right">
                     email
                   </Label>
@@ -190,7 +193,7 @@ export const columns: ColumnDef<Customer>[] = [
                     className="col-span-3"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
+                <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="phone" className="text-right">
                     phone
                   </Label>
@@ -201,7 +204,7 @@ export const columns: ColumnDef<Customer>[] = [
                     className="col-span-3"
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
+                <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="address" className="text-right">
                     address
                   </Label>

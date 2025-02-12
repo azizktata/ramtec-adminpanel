@@ -34,35 +34,35 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { CategoryWithProducts } from "@/types/category-with-products";
-import { deleteCategory, updateCategory } from "@/actions/categorie";
+import { Seller } from "@prisma/client";
+
 import toast from "react-hot-toast";
-// import { Product, ProductStatus } from "@/types/product";
+import { removeSeller, updateSeller } from "@/actions/seller";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
   cell: React.JSX.Element;
 }
 // const handleSwitchChange = () => {};
+
 async function handleSubmit(formData: FormData) {
-  const res = await updateCategory(formData);
-  if (res.success) {
+  const res = await updateSeller(formData);
+  if (res?.success) {
     toast.success(res.message);
   } else {
-    toast.error(res.message);
+    toast.error(res?.message);
   }
 }
 
-async function handleDeleteCategory(id: string) {
-  const res = await deleteCategory(id);
-  if (res.success) {
+async function handleDeleteCustomer(id: string) {
+  const res = await removeSeller(id);
+  if (res?.success) {
     toast.success(res.message);
   } else {
-    toast.error(res.message);
+    toast.error(res?.message);
   }
 }
-
-export const columns: ColumnDef<CategoryWithProducts>[] = [
+export const columns: ColumnDef<Seller>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -92,7 +92,7 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
     ),
   },
   {
-    header: "Category name",
+    header: "Seller name",
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         {/* <Image
@@ -110,35 +110,27 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
     ),
   },
   {
-    header: "number of items",
+    header: "email",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
-        {row.original.products.length}
+        {row.original.email}
       </Typography>
     ),
   },
   {
-    header: "description",
+    header: "phone",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
-        {row.original.description}
+        {row.original.phone}
       </Typography>
     ),
   },
 
   {
-    header: "published",
+    header: "address",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
-        {row.original.published ? "Yes" : "No"}
-      </Typography>
-    ),
-  },
-  {
-    header: "created at",
-    cell: ({ row }) => (
-      <Typography className="block max-w-52 truncate">
-        {row.original.createdAt.toLocaleString()}
+        {row.original.address}
       </Typography>
     ),
   },
@@ -163,25 +155,26 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
               </TooltipTrigger>
 
               <TooltipContent>
-                <p>Edit Categorie</p>
+                <p>Edit Customer</p>
               </TooltipContent>
             </Tooltip>
 
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Edit category</SheetTitle>
+                <SheetTitle>Edit Customer details</SheetTitle>
                 <SheetDescription>
-                  Click save when you&apos;re done.
+                  Make changes to his profile here. Click save when you&apos;re
+                  done.
                 </SheetDescription>
               </SheetHeader>
               <form
                 action={handleSubmit}
-                className="flex flex-col gap-4 my-4 py-4"
+                className="flex flex-col my-4 gap-4 py-4"
               >
                 <input type="hidden" name="id" value={row.original.id} />
                 <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="name" className="text-right">
-                    Nom de categorie
+                    Name
                   </Label>
                   <Input
                     id="name"
@@ -191,13 +184,35 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
                   />
                 </div>
                 <div className="flex flex-col items-start gap-4">
-                  <Label htmlFor="description" className="text-right">
-                    Description
+                  <Label htmlFor="email" className="text-right">
+                    email
                   </Label>
                   <Input
-                    id="description"
-                    name="description"
-                    defaultValue={row.original.description || ""}
+                    id="email"
+                    name="email"
+                    defaultValue={row.original.email}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="flex flex-col items-start gap-4">
+                  <Label htmlFor="phone" className="text-right">
+                    phone
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    defaultValue={row.original.phone || ""}
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="flex flex-col items-start gap-4">
+                  <Label htmlFor="address" className="text-right">
+                    address
+                  </Label>
+                  <Input
+                    id="address"
+                    name="address"
+                    defaultValue={row.original.address || ""}
                     className="col-span-3"
                   />
                 </div>
@@ -221,7 +236,7 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
               </TooltipTrigger>
 
               <TooltipContent>
-                <p>Delete Categories</p>
+                <p>Delete Customer</p>
               </TooltipContent>
             </Tooltip>
 
@@ -230,13 +245,13 @@ export const columns: ColumnDef<CategoryWithProducts>[] = [
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete
-                  your category and its products.
+                  your account and remove your data from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
-                  onClick={() => handleDeleteCategory(row.original.id)}
+                  onClick={() => handleDeleteCustomer(row.original.id)}
                 >
                   Continue
                 </AlertDialogAction>
@@ -255,22 +270,39 @@ export const skeletonColumns: SkeletonColumn[] = [
     cell: <Skeleton className="size-4 rounded-sm" />,
   },
   {
-    header: "id",
-    cell: <Skeleton className="w-32 h-8" />,
-  },
-  {
-    header: "category name",
-    cell: <Skeleton className="w-32 h-8" />,
-  },
-  {
-    header: "description",
-    cell: <Skeleton className="w-20 h-8" />,
-  },
-  {
-    header: "number of items",
-    cell: <Skeleton className="w-20 h-8" />,
-  },
+    header: "product name",
+    cell: (
+      <div className="flex gap-2 items-center">
+        <Skeleton className="size-8 rounded-full" />
 
+        <Skeleton className="w-28 h-8" />
+      </div>
+    ),
+  },
+  {
+    header: "category",
+    cell: <Skeleton className="w-32 h-8" />,
+  },
+  {
+    header: "price",
+    cell: <Skeleton className="w-20 h-8" />,
+  },
+  {
+    header: "sale price",
+    cell: <Skeleton className="w-20 h-8" />,
+  },
+  {
+    header: "stock",
+    cell: <Skeleton className="w-20 h-8" />,
+  },
+  {
+    header: "status",
+    cell: <Skeleton className="w-24 h-8" />,
+  },
+  {
+    header: "view",
+    cell: <Skeleton className="w-8 h-8" />,
+  },
   {
     header: "published",
     cell: <Skeleton className="w-16 h-10" />,

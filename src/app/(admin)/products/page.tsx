@@ -39,11 +39,13 @@ export default async function Products({
 
   if ((await searchParams).category) {
     where.category = { some: { name: (await searchParams).category } };
-  } else {
-    where.category = { some: {} };
   }
+
   if ((await searchParams).search) {
-    where.sku = { startsWith: (await searchParams).search };
+    where.OR = [
+      { sku: { contains: (await searchParams).search } },
+      { name: { contains: (await searchParams).search } },
+    ];
   }
 
   // Apply filter conditions
@@ -89,6 +91,7 @@ export default async function Products({
       images: {
         select: {
           url: true,
+          id: true,
         },
       },
     },

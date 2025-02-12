@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 import { v2 as cloudinary } from "cloudinary";
+import { BestProductSellers,  } from "@/app/(admin)/dashboard/_types/BestSellers";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -78,6 +79,7 @@ export async function addProduct(formData: FormData) {
           create: [
             {
               url: (result as { secure_url: string }).secure_url,
+              
             },
           ],
         },
@@ -232,8 +234,8 @@ export async function updateProduct(formData: FormData) {
       revalidatePath("/products");
       return { success: true, message: "Product updated successfully!" };
     }
-  } catch (error) {
-    console.error(error);
+  } catch  {
+
     return { success: false, message: "Error updating product" };
   }
 }
@@ -260,6 +262,33 @@ export async function deleteProduct(id:string) {
     return { success: true, message: 'Product deleted successfully!' };
   } catch  {
     return { success: false, message: 'Error deleting product' };
+  }
+}
+
+export async function deleteImage(id:string){
+  const image = await prisma.image.findFirst({
+    where: { id: id },
+    select: { url: true }
+  });
+  if (!image || !image.url) {
+    return { success: false, message: "Error finding image" };
+  }
+  try {
+    const imageUrl = image.url.split('/').pop()?.split('.')[0]; // Extract image ID from the URL
+    if (!imageUrl) {
+      return { success: false, message: "Invalid image URL" };
+    }
+
+
+      await cloudinary.uploader.destroy(imageUrl); // Deleting image from Cloudinary
+
+    await prisma.image.delete({
+      where: { id },
+    });
+    revalidatePath('/products');
+    return { success: true, message: 'Image deleted successfully!' };
+  } catch  {
+    return { success: false, message: 'Error deleting image' };
   }
 }
 
@@ -303,4 +332,35 @@ export async function updatePublisherStatus(id: string){
   } catch  {
     return { success: false, message: 'Error updating product status' };
   }
+}
+export async function getBestSellingProducts(){
+  const top5BestSellers = await prisma.orderItem.groupBy({
+    by: ["productId"],
+    _sum: { quantity: true }, // Get total quantity sold per product
+    orderBy: {
+      _sum: { quantity: "desc" }, // Order by highest sales
+    },
+    take: 5, // Limit to top 5
+  });
+  
+  const bestSellingProducts = await prisma.product.findMany({
+    where: {
+      id: { in: top5BestSellers.map((item) => item.productId) },
+    },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      
+    },
+  });
+
+  return bestSellingProducts.map((product) => {
+    return {
+      name: product.name,
+      sales: top5BestSellers.find((item) => item.productId === product.id)?._sum.quantity || 0,
+    } ;
+  })as BestProductSellers;
+  
+  
 }

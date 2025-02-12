@@ -40,8 +40,8 @@ export const navItems = [
   //   icon: <Ticket />,
   // },
   {
-    title: "Staff",
-    url: "/staff",
+    title: "Sellers",
+    url: "/sellers",
     icon: <Briefcase />,
   },
   {
