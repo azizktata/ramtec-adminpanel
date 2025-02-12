@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { Printer, ZoomIn } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -40,7 +39,7 @@ const changeStatus = async (value: OrderStatus, invoiceNo: string) => {
     toast.error(res.message);
   }
 };
-const printInvoice = (invoiceNo: string) => {};
+// const printInvoice = (invoiceNo: string) => {};
 
 export const columns: ColumnDef<OrderALL>[] = [
   {
@@ -118,7 +117,7 @@ export const columns: ColumnDef<OrderALL>[] = [
   },
   {
     header: "invoice",
-    cell: ({ row }) => {
+    cell: () => {
       return (
         <div className="flex items-center gap-1">
           <Tooltip>
@@ -126,7 +125,7 @@ export const columns: ColumnDef<OrderALL>[] = [
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => printInvoice(row.original.invoiceNo)}
+                // onClick={() => printInvoice(row.original.invoiceNo)}
                 className="text-foreground"
               >
                 <Printer className="size-5" />
@@ -146,9 +145,9 @@ export const columns: ColumnDef<OrderALL>[] = [
                 className="text-foreground"
                 asChild
               >
-                <Link href={`/orders/${row.original.id}`}>
-                  <ZoomIn className="size-5" />
-                </Link>
+                {/* <Link href={`/orders/${row.original.id}`}> */}
+                <ZoomIn className="size-5" />
+                {/* </Link> */}
               </Button>
             </TooltipTrigger>
 

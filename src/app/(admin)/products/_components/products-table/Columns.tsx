@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ZoomIn, PenSquare, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -10,14 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import Typography from "@/components/ui/typography";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -180,11 +172,11 @@ export const columns: ColumnDef<ProductALL>[] = [
   },
   {
     header: "view",
-    cell: ({ row }) => (
+    cell: () => (
       <Button size="icon" asChild variant="ghost" className="text-foreground">
-        <Link href={`/product/${row.original.slug}`}>
-          <ZoomIn className="size-5" />
-        </Link>
+        {/* <Link href={`/product/${row.original.slug}`}> */}
+        <ZoomIn className="size-5" />
+        {/* </Link> */}
       </Button>
     ),
   },
@@ -204,39 +196,6 @@ export const columns: ColumnDef<ProductALL>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-1">
-          {/* <Sheet>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-foreground"
-                  >
-                    <PenSquare className="size-5" />
-                  </Button>
-                </SheetTrigger>
-              </TooltipTrigger>
-
-              <TooltipContent>
-                <p>Edit Product</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <SheetContent className="overflow-y-auto">
-              <SheetHeader>
-                <SheetTitle>Edit profile</SheetTitle>
-                <SheetDescription>
-                  Make changes to your profile here. Click save when you&apos;re
-                  done.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="grid gap-4 py-4 overflow-y-auto">
-                <ProductForm action={"update"} product={row.original} />
-              </div>
-            </SheetContent>
-          </Sheet> */}
-
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="ghost" size="icon" className="text-foreground">
