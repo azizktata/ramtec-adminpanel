@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 import { v2 as cloudinary } from "cloudinary";
-import { BestProductSellers,  } from "@/app/(admin)/dashboard/_types/BestSellers";
+import { BestProductSellers,  } from "@/app/admin/dashboard/_types/BestSellers";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,

@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { OrderStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { format } from "date-fns";
-import { WeeklySalesData } from "@/app/(admin)/dashboard/_types/WeeklySales";
+import { WeeklySalesData } from "@/app/admin/dashboard/_types/WeeklySales";
 
 export async function updateOrderStatus(id: string, orderStatus: OrderStatus) {
   const order = await prisma.order.findFirst({

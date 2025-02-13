@@ -10,3 +10,7 @@ export type ProductALL = Prisma.ProductGetPayload<{
     }
   } };
 }>;
+
+export interface Item extends ProductALL{
+  quantity?: number;
+}
