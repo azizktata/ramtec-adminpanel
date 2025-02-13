@@ -5,6 +5,9 @@
 body {
   font-family: "Poppins", Arial, Helvetica, sans-serif;
 }
+:target {
+  transform: translateX(0);
+}
 
 @layer base {
   :root {

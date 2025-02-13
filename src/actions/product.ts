@@ -19,7 +19,7 @@ export async function addProduct(formData: FormData) {
     const price = Number(formData.get("price"));
     const stock = Number(formData.get("quantity"));
     const description = formData.get("description") as string;
-    const discount = Number(formData.get("discount"));
+    const discount = Number(formData.get("discount")) || 0;
   
     const newCategory = formData.get("newCategory") as string;
     const selectedCategories = formData.getAll("categories") as string[];

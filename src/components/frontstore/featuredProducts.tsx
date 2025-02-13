@@ -11,7 +11,7 @@ export default async function FeaturedProducts({
 }) {
   return (
     <div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-4 md:gap-8 justify-center items-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-[repeat(auto-fit,minmax(280px,1fr))]  gap-x-4 gap-y-1 md:gap-x-4 justify-center items-center">
         {products.map((product, index) => (
           <ProductCard key={index} product={product} />
         ))}

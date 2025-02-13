@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import React from "react";
 import ClientProvider from "../../store/provider";
 import Header from "../../components/frontstore/header";
+import CartSideBar from "@/components/frontstore/cartSideBar";
 
 export const metadata: Metadata = {
   title: "Ramtec",
@@ -19,7 +20,7 @@ export default async function Layout({
       {" "}
       <ClientProvider>
         <Header />
-        {/* <Sidebar /> */}
+        <CartSideBar />
         <Toaster />
         {children}
       </ClientProvider>

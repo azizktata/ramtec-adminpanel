@@ -16,12 +16,14 @@ import { Menu, Search, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import MobileNavSlider from "./mobileNavSlider";
 import { NotificationCount } from "../shared/notificationCount";
+import { useAppSelector } from "@/store/hooks";
 
 export default function Header() {
   const [showSidebar, setShowSidebar] = React.useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+  const numberOfItems = useAppSelector((state) => state.cart.items.length);
   return (
     <nav className="border-b">
       <div className="container mx-auto flex items-center gap-2 justify-between px-4 py-6 sm:px-6 lg:px-8">
@@ -92,11 +94,13 @@ export default function Header() {
             Sign In
           </Button>
           <div className="relative">
-            <ShoppingBag className="w-6 h-6 text-muted-foreground" />
+            <a href="#sidebar">
+              <ShoppingBag className="w-6 h-6 text-muted-foreground" />
+            </a>
             {/* <a href="#sidebar"></a> */}
             <div className="absolute bottom-4 left-4">
               {/* <span>{cart.items.length}</span> */}
-              <NotificationCount count={2} className="text-white" />
+              <NotificationCount count={numberOfItems} className="text-white" />
             </div>
           </div>
           <Button

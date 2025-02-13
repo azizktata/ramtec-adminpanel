@@ -11,11 +11,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { NotificationCount } from "../shared/notificationCount";
+import { useAppSelector } from "@/store/hooks";
 export default function MobileNavSlider({
   setOpen,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const numberOfItems = useAppSelector((state) => state.cart.items.length);
+
   return (
     <div>
       <div className="flex h-full flex-col justify-between bg-white p-6">
@@ -76,7 +79,7 @@ export default function MobileNavSlider({
                 <div className="relative flex items-center gap-1.5">
                   <ShoppingBag className="w-6" />
                   <div className="absolute bottom-4 left-4">
-                    <NotificationCount count={2} />
+                    <NotificationCount count={numberOfItems} />
                   </div>
                 </div>
               </Link>

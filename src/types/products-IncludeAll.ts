@@ -11,6 +11,8 @@ export type ProductALL = Prisma.ProductGetPayload<{
   } };
 }>;
 
-export interface Item extends ProductALL{
+export interface Item extends Omit<ProductALL, "createdAt" | "updatedAt"> {
   quantity?: number;
 }
+
+

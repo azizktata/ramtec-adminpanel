@@ -1,10 +1,5 @@
 "use client";
-import {
-  addProduct,
-  deleteImage,
-  deleteProduct,
-  updateProduct,
-} from "@/actions/product";
+import { addProduct, deleteImage, updateProduct } from "@/actions/product";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -132,7 +127,7 @@ export default function ProductForm({
           <Label htmlFor="price">Discount</Label>
           <Input
             type="number"
-            defaultValue={product.prices?.discount}
+            defaultValue={product.prices?.discount || 0}
             name="discount"
             id="price"
             className="block border"
