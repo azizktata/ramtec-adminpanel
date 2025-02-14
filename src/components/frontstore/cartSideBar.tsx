@@ -30,13 +30,13 @@ export default function CartSideBar() {
   return (
     <div
       id="sidebar"
-      className="fixed z-20 w-[75%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-gray-100 transform translate-x-full  transition-transform duration-300"
+      className="fixed z-20 w-[75%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full  transition-transform duration-300"
     >
       <div className="flex flex-col  gap-8 p-8">
         <div className="flex justify-between border-b border-gray-300 pb-4">
           <h4>
             Cart{" "}
-            <span className="bg-green-500 text-white text-xs font-bold  px-2 py-1 rounded-full">
+            <span className="bg-blue-500 text-white text-xs font-bold  px-2 py-1 rounded-full">
               {cart.items.length}
             </span>
           </h4>
@@ -48,9 +48,18 @@ export default function CartSideBar() {
         </div>
 
         {cart.items.map((item) => (
-          <div key={item.id} className="flex gap-4">
-            <Image src={item.images[0].url} alt="" width={100} height={100} />
-            <div className="flex flex-col gap-2">
+          <div key={item.id} className="flex items-center gap-4">
+            <div className="w-[120px] px-2  bg-[#E5EAF4]  h-25 rounded-md  mb-4">
+              <Image
+                src={item.images[0].url}
+                alt=""
+                className="p-3 h-[120px] w-full object-contain"
+                width={100}
+                height={120}
+              />
+            </div>
+
+            <div className="flex flex-col  gap-2">
               <p className="text-lg font-semibold">{item.name}</p>
               <p className="text-gray-500">
                 ${item.prices?.price} x {item.quantity}
@@ -69,7 +78,7 @@ export default function CartSideBar() {
               variant={"outline"}
               size={"sm"}
               onClick={() => dispatch(removeFromCart({ id: item.id }))}
-              className="ml-auto cursor-pointer "
+              className="ml-auto cursor-pointer bg-[#E5EAF4]"
             >
               <TrashIcon className=" text-black-500" />
             </Button>
