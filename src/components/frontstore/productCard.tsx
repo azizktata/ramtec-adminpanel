@@ -19,18 +19,10 @@ export default function ProductCard({ product }: { product: ProductALL }) {
             width={312}
             height={269}
             alt={"fallback image"}
-            className="w-[312px] h-[280px] md:h-[269px] lg:w-full object-contain p-4 rounded-md 
+            className="w-[312px] h-[280px] md:h-[269px] mx-auto lg:w-full object-contain p-4 rounded-md 
                transition-transform duration-300 ease-in-out group-hover:scale-110"
           />
 
-          {/* <AddToCart
-            //   variants={product.variants}
-            availableForSale={status === "SELLING" ? true : false}
-            //   defaultVariantId={defaultVariantId}
-            stylesClass={
-              "btn btn-primary max-md:btn-sm z-10 absolute bottom-12 md:bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full md:group-hover:-translate-y-6 duration-300 ease-in-out whitespace-nowrap drop-shadow-md"
-            }
-          /> */}
           {prices?.discount !== 0 && prices?.discount ? (
             <span className="absolute top-0 right-0 bg-[#0188CC] text-white text-xs font-medium p-1 rounded-bl-md">
               -{prices?.discount}%
@@ -86,17 +78,6 @@ export default function ProductCard({ product }: { product: ProductALL }) {
                 {prices?.price} TND
               </span>
             )}
-
-            {/* {parseFloat(compareAtPriceRange?.maxVariantPrice.amount) >
-                  0 ? (
-                    <s className="text-light dark:text-darkmode-light text-xs md:text-base font-medium">
-                     
-                      {compareAtPriceRange?.maxVariantPrice.amount}{" "}
-                      {compareAtPriceRange?.maxVariantPrice?.currencyCode}
-                    </s>
-                  ) : (
-                    ""
-                  )} */}
           </div>
         </div>
       </div>
