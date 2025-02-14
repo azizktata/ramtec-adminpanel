@@ -5,7 +5,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
-import { Input } from "../ui/input";
+import Link from "next/link";
 
 export default function ProductDetails({ product }: { product: ProductALL }) {
   const dispatch = useAppDispatch();
@@ -23,10 +23,8 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
   };
   return (
     <div className="flex flex-col items-start">
-      <div className="flex justify-between items-center w-full">
-        <p className="text-3xl font-medium mb-4 tracking-wider">
-          {product?.name}
-        </p>
+      <div className="flex justify-between items-center w-full mb-2">
+        <p className="text-3xl font-medium  tracking-wider">{product?.name}</p>
         {product?.status === "SELLING" ? (
           <span className="text-green-500 text-sm flex items-center gap-1">
             In Stock
@@ -91,7 +89,14 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
         >
           <Button>Add to cart</Button>
         </a>
-        <Button className="bg-[#0188CC] text-white">Purchase Now</Button>
+        <Button
+          onClick={() =>
+            dispatch(addToCart({ item: product, quantity: count }))
+          }
+          className="bg-[#0188CC] text-white"
+        >
+          <Link href={`/checkout`}>Purchase Now</Link>
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-3 items-center">

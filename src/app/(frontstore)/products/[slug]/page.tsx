@@ -1,4 +1,3 @@
-import ProductCard from "@/components/frontstore/productCard";
 import ProductCarousel from "@/components/frontstore/productCarousel";
 import ProductDetails from "@/components/frontstore/productDetails";
 import ProductImages from "@/components/frontstore/productImagesMultiCarousel";
@@ -66,13 +65,17 @@ export default async function page({
           {product?.description}
         </p>
       </div>
-      <div className="flex flex-col w-full">
-        <h2 className="text-2xl font-semibold mb-4 mt-16 ">Related Products</h2>
-        <div className="">
-          <ProductCarousel products={relatedProducts} />
+      {relatedProducts.length > 0 && (
+        <div className="flex flex-col w-full">
+          <h2 className="text-2xl font-semibold mb-4 mt-16 ">
+            Related Products
+          </h2>
+          <div className="">
+            <ProductCarousel products={relatedProducts} />
+          </div>
+          <Button className="self-center">See all products+</Button>
         </div>
-        <Button className="self-center">See all products+</Button>
-      </div>
+      )}
     </div>
   );
 }

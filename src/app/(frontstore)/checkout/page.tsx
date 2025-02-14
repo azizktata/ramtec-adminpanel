@@ -1,5 +1,3 @@
-import Billing from "@/components/frontstore/billingBox";
-import Login from "@/components/frontstore/loginBox";
 import OrderForm from "@/components/frontstore/orderForm";
 import OrderSummary from "@/components/frontstore/orderSummary";
 import Link from "next/link";

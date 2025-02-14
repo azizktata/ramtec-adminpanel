@@ -30,7 +30,7 @@ export default function CartSideBar() {
   return (
     <div
       id="sidebar"
-      className="fixed z-20 w-[75%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full  transition-transform duration-300"
+      className="fixed z-20 w-[75%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full border border-l  transition-transform duration-300"
     >
       <div className="flex flex-col  gap-8 p-8">
         <div className="flex justify-between border-b border-gray-300 pb-4">
@@ -48,8 +48,8 @@ export default function CartSideBar() {
         </div>
 
         {cart.items.map((item) => (
-          <div key={item.id} className="flex items-center gap-4">
-            <div className="w-[120px] px-2  bg-[#E5EAF4]  h-25 rounded-md  mb-4">
+          <div key={item.id} className="flex items-start gap-4">
+            <div className="w-[120px] px-2  bg-[#E5EAF4]  rounded-md  ">
               <Image
                 src={item.images[0].url}
                 alt=""
@@ -59,35 +59,53 @@ export default function CartSideBar() {
               />
             </div>
 
-            <div className="flex flex-col  gap-2">
+            <div className="flex flex-col self-stretch gap-2">
               <p className="text-lg font-semibold">{item.name}</p>
               <p className="text-gray-500">
                 ${item.prices?.price} x {item.quantity}
               </p>
-              <div className="flex items-center self-start gap-4 mt-auto border  border-gray-300 p-1">
+              <div className="flex items-center self-start gap-4 mt-auto  rounded-md border border-gray-300 px-3  p-2">
                 <button onClick={() => minusCount(item)}>
                   <MinusIcon className="h-4 w-4 text-black-500" />
                 </button>
-                <span>{item.quantity}</span>
+                <span className="border-r border-l border-gray-400 px-5">
+                  {item.quantity}
+                </span>
                 <button onClick={() => addCount(item)}>
                   <PlusIcon className="h-4 w-4 text-black-500" />
                 </button>
               </div>
+              {/* <div className="flex items-center gap-4 border rounded-md border-gray-300 p-2 px-4">
+                        <button onClick={minusCount}>
+                          <MinusIcon className="h-4 w-4 text-black-500 " />
+                        </button>
+                        <input
+                          id="counter"
+                          aria-label="input"
+                          className=" h-full text-center bg-primary border-r border-l border-gray-300 w-14 pb-1"
+                          type="text"
+                          value={count}
+                          onChange={(e) => e.target.value}
+                        />
+                        <button onClick={addCount}>
+                          <PlusIcon className="h-4 w-4 text-black-500" />
+                        </button>
+                      </div> */}
             </div>
             <Button
               variant={"outline"}
               size={"sm"}
               onClick={() => dispatch(removeFromCart({ id: item.id }))}
-              className="ml-auto cursor-pointer bg-[#E5EAF4]"
+              className="ml-auto cursor-pointer bg-[#E5EAF4] text-blue-400"
             >
               <TrashIcon className=" text-black-500" />
             </Button>
           </div>
         ))}
 
-        <div className="flex justify-between mt-auto border-t border-gray-300 pt-4">
+        <div className="flex justify-between mt-auto border-t border-gray-300  pt-8 pb-4">
           <p>Total: </p>
-          <p>${cart.total}</p>
+          <p className="font-semibold text-lg">${cart.total}</p>
         </div>
 
         <Link className="w-[100%] " href="/checkout">

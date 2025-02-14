@@ -2,7 +2,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,11 +11,12 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Menu, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import MobileNavSlider from "./mobileNavSlider";
 import { NotificationCount } from "../shared/notificationCount";
 import { useAppSelector } from "@/store/hooks";
+import SearchBar from "./searchBar";
 
 export default function Header() {
   const [showSidebar, setShowSidebar] = React.useState(false);
@@ -83,11 +83,8 @@ export default function Header() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="flex hidden sm:flex items-center space-x-4 flex-grow max-w-[400px] ">
-          <form className="relative flex-grow w-full flex">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input type="search" placeholder="Search..." className="pl-8 " />
-          </form>
+        <div className="flex hidden sm:flex items-center mx-12 flex-grow  ">
+          <SearchBar />
         </div>
         <div className="flex items-center space-x-4">
           <Button className="hidden sm:flex" variant={"outline"}>
