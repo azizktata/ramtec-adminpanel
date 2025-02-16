@@ -1,6 +1,6 @@
 "use client";
 import { ProductALL } from "@/types/products-IncludeAll";
-import { CheckCircle, MinusIcon, PlusIcon } from "lucide-react";
+import { CheckCircle, MinusIcon, PlusIcon, StopCircle } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/store/hooks";
@@ -31,7 +31,10 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
             <CheckCircle size={16} />
           </span>
         ) : (
-          <span className="">Out of stock</span>
+          <span className="text-red-500 text-sm flex items-center gap-1">
+            <StopCircle size={16} />
+            Out of stock
+          </span>
         )}
       </div>
       <div className="flex w-full   items-center gap-x-2 mt-8 border-b  border-gray-300 pb-6">

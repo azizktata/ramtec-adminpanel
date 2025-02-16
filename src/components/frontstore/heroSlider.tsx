@@ -15,22 +15,14 @@ import { Button } from "../ui/button";
 export default function HeroSlider() {
   const activites = [
     {
-      title: "Bureautique",
-      description: "Photocopie et impression de documents ",
-      image: "/banner (1).png",
-      href: "/products/maintenance-reparation",
-    },
-    {
       title: "Maintenance et Réparation",
-      description:
-        "Une large gamme d’équipements hydrauliques et pneumatiques ",
+      description: "Une large gamme de produits bureautiques ",
       image: "/banner (2).png",
       href: "/products/maintenance-reparation",
     },
     {
       title: "Conseil et Formation",
-      description:
-        "Une large gamme d’équipements hydrauliques et pneumatiques ",
+      description: "Une large gamme de produits bureautiques ",
       image: "/banner (3).png",
       href: "/products/maintenance-reparation",
     },
@@ -76,7 +68,7 @@ export default function HeroSlider() {
                       </h1>
                     </div>
                     {item?.description && (
-                      <p className="mb-2 lg:mb-10 text-2xl lg:text-4xl leading-10 max-w-lg lg:max-w-xl mx-auto font-medium capitalize">
+                      <p className="mb-2 lg:mb-10 text-2xl lg:text-4xl leading-12 max-w-lg lg:max-w-xl mx-auto font-medium capitalize">
                         {item.description}
                       </p>
                     )}

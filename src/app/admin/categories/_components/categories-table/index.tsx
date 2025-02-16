@@ -21,7 +21,7 @@ export default function ShowCategoriesTable({
   const thereIsFilter = category || search ? true : false;
   const items = thereIsFilter ? categories.length : numberOfCategories;
   const numberOfPages =
-    items > Number(perPage) ? Math.trunc(items / Number(+perPage)) : 1;
+    items > Number(perPage) ? Math.ceil(items / Number(+perPage)) : 1;
 
   // if (isLoading)
   //   return <TableSkeleton perPage={perPage} columns={skeletonColumns} />;

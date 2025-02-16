@@ -30,7 +30,7 @@ export default async function Products({
   const where: any = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const orderBy: any = {};
-  const perPage = (await searchParams).perPage || 3;
+  const perPage = (await searchParams).perPage || 5;
   const page = (await searchParams).page || 1;
   const take = +perPage;
   // page est le coefficient multiplicateur de perPage

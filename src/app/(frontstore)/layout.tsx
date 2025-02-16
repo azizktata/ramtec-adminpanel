@@ -4,6 +4,7 @@ import React from "react";
 import ClientProvider from "../../store/provider";
 import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
+import TopBar from "@/components/frontstore/topBar";
 
 export const metadata: Metadata = {
   title: "Ramtec",
@@ -20,6 +21,7 @@ export default async function Layout({
       {" "}
       <ClientProvider>
         <Header />
+        <TopBar />
         <CartSideBar />
         <Toaster />
         {children}

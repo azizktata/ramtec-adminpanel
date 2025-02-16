@@ -102,6 +102,7 @@ model Order {
   amount     Float
   status     OrderStatus
   items      OrderItem[]
+  address    String      @default("Tunis")
   customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String
   updatedAt  DateTime    @updatedAt

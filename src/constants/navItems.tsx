@@ -5,33 +5,32 @@ import {
   Users,
   Truck,
   Briefcase,
-  Settings,
 } from "lucide-react";
 
 export const navItems = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/admin/dashboard",
     icon: <LayoutDashboard />,
   },
   {
     title: "Products",
-    url: "/products",
+    url: "/admin/products",
     icon: <ShoppingCart />,
   },
   {
     title: "Categories",
-    url: "/categories",
+    url: "/admin/categories",
     icon: <Tags />,
   },
   {
     title: "Customers",
-    url: "/customers",
+    url: "/admin/customers",
     icon: <Users />,
   },
   {
     title: "Orders",
-    url: "/orders",
+    url: "/admin/orders",
     icon: <Truck />,
   },
   // {
@@ -41,12 +40,12 @@ export const navItems = [
   // },
   {
     title: "Sellers",
-    url: "/sellers",
+    url: "/admin/sellers",
     icon: <Briefcase />,
   },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: <Settings />,
-  },
+  // {
+  //   title: "Settings",
+  //   url: "/settings",
+  //   icon: <Settings />,
+  // },
 ];

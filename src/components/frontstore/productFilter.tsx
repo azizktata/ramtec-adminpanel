@@ -35,6 +35,7 @@ const ProductFilters = ({
   };
   function resetFilters() {
     router.push(pathname, { scroll: false });
+    setValues([0, maxPriceData]);
   }
 
   const [values, setValues] = React.useState([0, maxPriceData]);
@@ -58,8 +59,10 @@ const ProductFilters = ({
   return (
     <div className="">
       <div>
-        <h5 className="mb-2 lg:text-xl mb-12">Select Price Range</h5>
-        <div className="w-full space-y-5 px-2">
+        <h5 className="mb-2 text-base lg:text-lg font-semibold border-b border-gray-200 pb-3">
+          Select Price Range
+        </h5>
+        <div className="w-full py-12 ">
           <DualRangeSlider
             onValueChange={(value) => {
               setValues(value);
@@ -76,8 +79,10 @@ const ProductFilters = ({
       </div>
 
       <div>
-        <h5 className="mb-2 mt-4 lg:mt-6 lg:text-xl">Product Categories</h5>
-        <hr className="dark:border-darkmode-border" />
+        <h5 className="mb-2 mt-4 text-base lg:text-lg font-semibold  border-b border-gray-200 pb-3 lg:text-xl">
+          Product Categories
+        </h5>
+
         <ul className="mt-4 space-y-4">
           {categories.map((category) => (
             <li

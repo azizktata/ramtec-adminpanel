@@ -30,9 +30,9 @@ export default function ProductImages({
                 src={image.url || "/banner (2).png"}
                 width={312}
                 height={269}
+                priority
                 alt={"fallback image"}
-                className="w-[312px] h-[280px] md:h-[269px] lg:w-full object-contain p-8 rounded-md 
-                            transition-transform duration-300 ease-in-out group-hover:scale-110"
+                className="object-contain rounded-md transition-transform duration-300 ease-in-out group-hover:scale-110"
               />
             </div>
           </SliderMainItem>

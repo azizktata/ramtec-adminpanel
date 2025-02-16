@@ -18,10 +18,13 @@ export default function AllOrders({
   const page = useSearchParams().get("page") || 1;
   const category = useSearchParams().get("category") || null;
   const search = useSearchParams().get("search") || null;
-  const thereIsFilter = category || search ? true : false;
+  const startDate = useSearchParams().get("startDate") || null;
+  const endDate = useSearchParams().get("endDate") || null;
+  const thereIsFilter =
+    category || search || startDate || endDate ? true : false;
   const items = thereIsFilter ? orders.length : numberOfOrders;
   const numberOfPages =
-    items > Number(perPage) ? Math.trunc(items / Number(+perPage)) : 1;
+    items > Number(perPage) ? Math.ceil(items / Number(+perPage)) : 1;
 
   const pagination = {
     pages: +numberOfPages,

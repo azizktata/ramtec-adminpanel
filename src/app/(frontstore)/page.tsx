@@ -75,7 +75,7 @@ export default function page() {
       },
     });
     return (
-      <div className=" flex flex-col sm:flex-row gap-6">
+      <div className=" flex flex-col lg:flex-row gap-6">
         <Banner product={promoProducts[0]} />
         <Banner product={promoProducts[1]} />
         {/* <ProductCarousel products={promoProducts.slice(1)} /> */}
@@ -102,7 +102,7 @@ export default function page() {
         </div>
       </section>
       <section>
-        <div className="container my-16">
+        <div className="container mx-auto my-16">
           <div className="text-center mb-6 md:mb-14">
             <h2 className="mb-2 text-3xl">Featured Products</h2>
             <p className="text-xl">Explore Today&apos;s Featured Picks!</p>

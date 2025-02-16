@@ -10,7 +10,7 @@ import React, {
 import { Button } from "@/components/ui/button";
 import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ArrowLeftIcon } from "lucide-react";
 import { createContext } from "react";
@@ -365,7 +365,7 @@ const CarouselPrevious = forwardRef<
       disabled={!canScroll}
       {...props}
     >
-      <ArrowLeftIcon className="h-4 w-4" />
+      <ChevronLeftIcon className="h-4 w-4" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );

@@ -10,7 +10,8 @@ import {
 import { format } from "date-fns";
 
 export async function RecentSales() {
-  const thisMonthOrders = await getThisMonthOrders();
+  const thisMonthOrders = (await getThisMonthOrders()).toReversed();
+  const last5Orders = thisMonthOrders.slice(0, 5);
   const numberOfOrders = thisMonthOrders.length;
   return (
     <Card>
@@ -22,7 +23,7 @@ export async function RecentSales() {
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
-          {thisMonthOrders.map((order) => (
+          {last5Orders.map((order) => (
             <div key={order.id} className="flex items-start">
               <Avatar className="h-9 w-9">
                 <AvatarImage

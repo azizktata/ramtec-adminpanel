@@ -28,11 +28,17 @@ export default function OrderFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [startDate, setStartDate] = React.useState<Date>();
-  const [endDate, setEndDate] = React.useState<Date>();
 
   const perPageValue = searchParams.get("perPage") || "5";
+  const startDateValue = searchParams.get("startDate") || undefined;
+  const endDateValue = searchParams.get("endDate") || undefined;
 
+  const [startDate, setStartDate] = React.useState<Date | undefined>(
+    startDateValue ? new Date(startDateValue) : undefined
+  );
+  const [endDate, setEndDate] = React.useState<Date | undefined>(
+    endDateValue ? new Date(endDateValue) : undefined
+  );
   function handleDate() {
     const params = new URLSearchParams(searchParams.toString());
     if (startDate) {

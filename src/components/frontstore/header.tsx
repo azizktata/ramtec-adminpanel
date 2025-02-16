@@ -1,22 +1,14 @@
 "use client";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+
 import { Menu, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import MobileNavSlider from "./mobileNavSlider";
 import { NotificationCount } from "../shared/notificationCount";
 import { useAppSelector } from "@/store/hooks";
 import SearchBar from "./searchBar";
+import Image from "next/image";
 
 export default function Header() {
   const [showSidebar, setShowSidebar] = React.useState(false);
@@ -27,63 +19,19 @@ export default function Header() {
   return (
     <nav className="border-b">
       <div className="container mx-auto flex items-center gap-2 justify-between px-4 py-6 sm:px-6 lg:px-8">
-        <div className="flex items-center space-x-4">
-          <Link href="#" className="text-2xl font-bold text-[#3C50E0]">
-            RAMTEC
+        <div className="flex items-center ">
+          <Link href="/" className="flex w-[150px] ">
+            <Image
+              src="/logo.PNG"
+              alt="Logo"
+              width={150}
+              height={150}
+              priority
+              className="cursor-pointer "
+            />
           </Link>
-          <NavigationMenu className="hidden sm:flex">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Products</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="#"
-                        >
-                          <div className="mb-2 mt-4 text-lg font-medium">
-                            Featured Product
-                          </div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Check out our latest and greatest offering
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <ListItem href="#" title="Product 1">
-                      Description for Product 1
-                    </ListItem>
-                    <ListItem href="#" title="Product 2">
-                      Description for Product 2
-                    </ListItem>
-                    <ListItem href="#" title="Product 3">
-                      Description for Product 3
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  href="#"
-                >
-                  About
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink
-                  className={navigationMenuTriggerStyle()}
-                  href="#"
-                >
-                  Contact
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
         </div>
-        <div className="flex hidden sm:flex items-center mx-12 flex-grow  ">
+        <div className="flex hidden sm:flex items-center mx-12 flex-grow max-w-3xl ">
           <SearchBar />
         </div>
         <div className="flex items-center space-x-4">
@@ -135,29 +83,3 @@ export default function Header() {
     </nav>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";

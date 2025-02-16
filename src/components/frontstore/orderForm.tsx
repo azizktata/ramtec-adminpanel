@@ -6,6 +6,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { clearCart } from "@/store/slices/cartSlice";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import { createOrder } from "@/actions/orders";
+import { useFormStatus } from "react-dom";
 
 export default function OrderForm({
   showSelectQuantity,
@@ -16,12 +18,13 @@ export default function OrderForm({
   userInfo?: {
     username: string;
     email: string;
-    phone: string;
+    phone: number;
     address: string;
   };
   product?: ProductALL;
 }) {
   const [countt, setCountt] = React.useState(1);
+  const { pending } = useFormStatus();
   const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
@@ -37,33 +40,32 @@ export default function OrderForm({
       setCountt((prev) => prev - 1);
     }
   };
-  //   async function handleSubmit(formData: FormData) {
-  //     let res;
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-  //     if (product) {
-  //       res = await createOrder(formData, cart.total, [product]);
-  //     } else {
-  //       res = await createOrder(formData, cart.total, cart.items);
-  //     }
-  //     if (res) {
-  //       if (res.success) {
-  //         toast.success(res.message);
-  //         dispatch(clearCart());
-  //         setCountt(1);
-  //       } else {
-  //         toast.error(res.message);
-  //       }
-  //     }
-  //   }
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const res = await createOrder(formData, cart.total, cart.items);
 
+    if (res) {
+      if (res.success) {
+        toast.success(res.message);
+        dispatch(clearCart());
+        setCountt(1);
+        form.reset();
+      } else {
+        toast.error(res.message);
+      }
+    }
+  }
   return (
     <form
       className="flex flex-col gap-4 mt-4 lg:grid lg:grid-cols-[repeat(2,1fr)]"
-      //   action={handleSubmit}
+      onSubmit={handleSubmit}
     >
       <div className="w-full">
         <label htmlFor="firstName" className="block mb-2.5">
-          First Name <span className="text-red">*</span>
+          First Name
         </label>
 
         <input
@@ -77,7 +79,7 @@ export default function OrderForm({
 
       <div className="w-full">
         <label htmlFor="lastName" className="block mb-2.5">
-          Last Name <span className="text-red">*</span>
+          Last Name
         </label>
 
         <input
@@ -90,7 +92,7 @@ export default function OrderForm({
       </div>
       <div className="w-full">
         <label htmlFor="lastName" className="block mb-2.5">
-          Email <span className="text-red">*</span>
+          Email <span className="text-red-500">*</span>
         </label>
         <input
           defaultValue={userInfo?.email || ""}
@@ -103,7 +105,7 @@ export default function OrderForm({
       </div>
       <div className="w-full">
         <label htmlFor="lastName" className="block mb-2.5">
-          Phone <span className="text-red">*</span>
+          Phone <span className="text-red-500">*</span>
         </label>
         <input
           defaultValue={userInfo?.phone}
@@ -116,11 +118,11 @@ export default function OrderForm({
       </div>
       <div className="w-full">
         <label htmlFor="lastName" className="block mb-2.5">
-          Address <span className="text-red">*</span>
+          Address <span className="text-red-500">*</span>
         </label>
         <input
           defaultValue={userInfo?.address}
-          placeholder="Your Address"
+          placeholder="Your full address"
           type="text"
           name="address"
           required
@@ -157,8 +159,9 @@ export default function OrderForm({
       <Button
         type="submit"
         className="bg-[#0188CC] text-white col-span-full py-8 text-lg mt-8"
+        disabled={pending}
       >
-        Purchase Now
+        {pending ? "Loading..." : "Purchase Now"}
       </Button>
     </form>
   );

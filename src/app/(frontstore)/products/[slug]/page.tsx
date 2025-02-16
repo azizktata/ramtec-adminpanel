@@ -4,6 +4,16 @@ import ProductImages from "@/components/frontstore/productImagesMultiCarousel";
 import { Button } from "@/components/ui/button";
 import prisma from "@/lib/db";
 import React from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import Link from "next/link";
+import { Slash } from "lucide-react";
 
 export default async function page({
   params,
@@ -50,12 +60,39 @@ export default async function page({
     },
   });
   return (
-    <div className="w-[90%] md:w-[70%] lg:w-[80%] mx-auto my-16">
+    <div className="w-[90%] md:w-[70%] lg:w-[85%] mx-auto my-12">
+      <Breadcrumb className="mb-8">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link className="text-sm" href="/">
+                Home
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>
+            <Slash />
+          </BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link className="text-sm" href="/products">
+                Products
+              </Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>
+            <Slash />
+          </BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>{product && product.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div className="flex flex-col lg:flex-row gap-16">
-        <div className="w-full lg:w-1/2  lg:mb-8">
+        <div className="w-full lg:w-1/2 max-w-xl  lg:mb-8">
           <ProductImages images={product?.images ?? []} />
         </div>
-        <div className="  w-full lg:w-1/2">
+        <div className="  w-full lg:w-1/2 max-w-xl">
           {product && <ProductDetails product={product} />}
         </div>
       </div>

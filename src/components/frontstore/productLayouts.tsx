@@ -48,76 +48,74 @@ export default function ProductLayouts({
   return (
     <>
       <section className="pt-4">
-        <div className="">
-          <div className="row">
-            <div className="col-3 max-lg:hidden" />
+        <div className="w-full">
+          <div className="flex flex-col  w-full">
+            <div className=" max-lg:hidden" />
 
-            <div className="col-12 lg:col-9">
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-x-4 items-center font-medium text-xs md:text-base">
-                  <p className="max-md:hidden text-dark dark:text-darkmode-dark">
-                    Views
-                  </p>
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleLayoutChange("grid")}
-                      variant={isListView ? "outline" : "default"}
-                      className={`btn border dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
-                    >
-                      <Grid />
-                    </Button>
-                    <Button
-                      onClick={() => handleLayoutChange("list")}
-                      variant={isListView ? "default" : "outline"}
-                      className={`btn border dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
-                    >
-                      <List />
-                    </Button>
-                  </div>
+            <div className="flex w-full gap-4 justify-between justify-center items-center  my-4">
+              <div className="flex gap-x-4 items-center font-medium text-xs md:text-base">
+                <p className="max-md:hidden text-dark dark:text-darkmode-dark">
+                  Views
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => handleLayoutChange("grid")}
+                    variant={isListView ? "outline" : "default"}
+                    className={`btn border dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
+                  >
+                    <Grid />
+                  </Button>
+                  <Button
+                    onClick={() => handleLayoutChange("list")}
+                    variant={isListView ? "default" : "outline"}
+                    className={`btn border dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
+                  >
+                    <List />
+                  </Button>
                 </div>
+              </div>
 
-                <div className="flex gap-x-4 items-center">
-                  {/* Filter Button Trigger */}
-                  <div className="block lg:hidden mt-1">
-                    <Button
-                      {...getToggleProps({
-                        onClick: () =>
-                          setExpanded((prevExpanded) => !prevExpanded),
-                      })}
-                      variant={"outline"}
-                    >
-                      {isExpanded ? (
-                        <span className="font-medium text-base flex gap-x-1 items-center justify-center">
-                          <FilterX /> Filter
-                        </span>
-                      ) : (
-                        <span className="font-medium text-base flex gap-x-1 items-center justify-center">
-                          <Filter /> Filter
-                        </span>
-                      )}
-                    </Button>
-                  </div>
-                  {/* Filter Button Trigger End */}
+              <div className="flex gap-x-4 items-center">
+                {/* Filter Button Trigger */}
+                <div className="block lg:hidden mt-1">
+                  <Button
+                    {...getToggleProps({
+                      onClick: () =>
+                        setExpanded((prevExpanded) => !prevExpanded),
+                    })}
+                    variant={"outline"}
+                  >
+                    {isExpanded ? (
+                      <span className="font-medium text-base flex gap-x-1 items-center justify-center">
+                        <FilterX /> Filter
+                      </span>
+                    ) : (
+                      <span className="font-medium text-base flex gap-x-1 items-center justify-center">
+                        <Filter /> Filter
+                      </span>
+                    )}
+                  </Button>
+                </div>
+                {/* Filter Button Trigger End */}
 
-                  <div className="flex gap-x-4 items-center font-medium text-sm md:text-base ">
-                    <Select
-                      onValueChange={(value) => handleChange("filter", value)}
-                      name="sort"
-                      value={sortValue}
-                    >
-                      <SelectTrigger className="md:basis-1/5 ">
-                        <SelectValue placeholder="Sort By" />
-                      </SelectTrigger>
+                <div className="flex gap-x-4 items-center font-medium text-sm md:text-base ">
+                  <Select
+                    onValueChange={(value) => handleChange("filter", value)}
+                    name="sort"
+                    value={sortValue}
+                  >
+                    <SelectTrigger className="md:basis-1/5 ">
+                      <SelectValue placeholder="Sort By" />
+                    </SelectTrigger>
 
-                      <SelectContent>
-                        <SelectItem className="text-gray-200" value="none">
-                          Sort By
-                        </SelectItem>
-                        <SelectItem value="asc">Low to High</SelectItem>
-                        <SelectItem value="desc">High to Low</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                    <SelectContent>
+                      <SelectItem className="text-gray-200" value="none">
+                        Sort By
+                      </SelectItem>
+                      <SelectItem value="asc">Low to High</SelectItem>
+                      <SelectItem value="desc">High to Low</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>

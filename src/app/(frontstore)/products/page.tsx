@@ -4,6 +4,18 @@ import ProductLayouts from "@/components/frontstore/productLayouts";
 import ProductListView from "@/components/frontstore/productListView";
 import prisma from "@/lib/db";
 import React from "react";
+import Link from "next/link";
+import { Slash } from "lucide-react";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+
 interface SearchParams {
   sort?: string;
   minPrice?: number;
@@ -66,6 +78,8 @@ export default async function Page({
       products: {
         select: {
           id: true,
+          name: true,
+          description: true,
         },
       },
     },
@@ -86,8 +100,8 @@ export default async function Page({
   });
 
   return (
-    <div className=" container">
-      <div className="flex flex-col lg:flex-row gap-12">
+    <div className=" container py-8">
+      <div className="flex flex-col lg:flex-row gap-16">
         <div className=" hidden lg:block lg:w-1/3  lg:max-w-[400] mt-16">
           <ProductFilters
             categories={categories}
@@ -97,6 +111,28 @@ export default async function Page({
 
         <div className="w-full  flex flex-col gap-4">
           <div className="w-full  ">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link className="text-sm" href="/">
+                      Home
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                  <Slash />
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    <Link className="text-sm" href="/products">
+                      Products
+                    </Link>
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+
             <ProductLayouts
               categories={categories}
               maxPriceData={maxPriceData?.prices?.price || 9999}

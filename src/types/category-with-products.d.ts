@@ -5,6 +5,8 @@ export type CategoryWithProducts =  Prisma.CategoryGetPayload<{
       products: {
         select: {
           id: true;
+          name: true;
+          description: true;
         };
       };
     };

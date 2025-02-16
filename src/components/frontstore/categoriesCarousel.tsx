@@ -56,7 +56,7 @@ export default function CategoriesCarousel() {
           {categories.map((category, index) => (
             <CarouselItem
               key={index}
-              className="sm:basis-1/2 md:basis-1/5 flex justify-center items-center"
+              className="basis-1/2 sm:basis-1/3 md:basis-1/5 flex justify-center items-center"
             >
               <div className="group flex flex-col items-center flex-grow rounded-full">
                 <div className="max-w-[160px] w-full bg-[#F2F3F8] h-40 rounded-full flex items-center justify-center mb-4">

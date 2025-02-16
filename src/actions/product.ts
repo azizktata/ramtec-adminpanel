@@ -25,16 +25,16 @@ export async function addProduct(formData: FormData) {
     const selectedCategories = formData.getAll("categories") as string[];
 
     const categoryIds = [...selectedCategories];
-    if (newCategory) {
-      const createdCategory = await prisma.category.create({
-        data: {
-          name: newCategory,
-          slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
-          published: true,
-        },
-      });
-      categoryIds.push(createdCategory.id);
-    }
+    // if (newCategory) {
+    //   const createdCategory = await prisma.category.create({
+    //     data: {
+    //       name: newCategory,
+    //       slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
+    //       published: true,
+    //     },
+    //   });
+    //   categoryIds.push(createdCategory.id);
+    // }
 
     const file = formData.get("image") as File;
 
@@ -85,6 +85,11 @@ export async function addProduct(formData: FormData) {
         },
         category: {
           connect: categoryIds.map((id) => ({ id })),
+          create: newCategory ? {
+            name: newCategory,
+            slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
+            published: true
+          } : undefined
         },
       },
     });

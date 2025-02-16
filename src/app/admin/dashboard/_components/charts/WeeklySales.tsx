@@ -16,7 +16,7 @@ export default function WeeklySales({
 }: {
   last7DaysSales: WeeklySalesData;
 }) {
-  const labels = getPastDates(7);
+  // const labels = getPastDates(7);
   //   const { theme } = useTheme();
   const mounted = useGetMountStatus();
   console.log("last7DaysSales", last7DaysSales);
@@ -25,6 +25,7 @@ export default function WeeklySales({
 
   const revenuData = last7DaysSales.map((data) => data.totalRevenue);
   const orderData = last7DaysSales.map((data) => data.totalOrders);
+  const labels = last7DaysSales.map((data) => data.date);
   return (
     <Card>
       <Typography variant="h3" className="mb-4">

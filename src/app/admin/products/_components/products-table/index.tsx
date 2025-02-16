@@ -21,14 +21,14 @@ export default function AllProducts({
   products: ProductALL[];
   numberOfProducts: number;
 }) {
-  const perPage = useSearchParams().get("perPage") || 3;
+  const perPage = useSearchParams().get("perPage") || 5;
   const page = useSearchParams().get("page") || 1;
   const category = useSearchParams().get("category") || null;
   const search = useSearchParams().get("search") || null;
   const thereIsFilter = category || search ? true : false;
   const items = thereIsFilter ? products.length : numberOfProducts;
   const numberOfPages =
-    items > Number(perPage) ? Math.trunc(items / Number(+perPage)) : 1;
+    items > Number(perPage) ? Math.ceil(items / Number(+perPage)) : 1;
 
   // if (isLoading)
   //   return <TableSkeleton perPage={perPage} columns={skeletonColumns} />;

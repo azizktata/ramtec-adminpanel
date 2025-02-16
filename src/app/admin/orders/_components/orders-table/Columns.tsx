@@ -1,5 +1,5 @@
 import React from "react";
-import { Printer, ZoomIn } from "lucide-react";
+import { Printer, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 
@@ -14,6 +14,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -23,7 +34,7 @@ import { formatAmount } from "@/utils/formatAmount";
 import { ORDER_STATUSES } from "@/constants/orders";
 import { OrderBadgeVariants } from "@/constants/badge";
 import { OrderALL } from "@/types/orders-includeAll";
-import { updateOrderStatus } from "@/actions/orders";
+import { deleteOrder, updateOrderStatus } from "@/actions/orders";
 import { OrderStatus } from "@prisma/client";
 import toast from "react-hot-toast";
 
@@ -39,6 +50,15 @@ const changeStatus = async (value: OrderStatus, invoiceNo: string) => {
     toast.error(res.message);
   }
 };
+
+async function handleDeleteOrder(id: string) {
+  const res = await deleteOrder(id);
+  if (res?.success) {
+    toast.success(res.message);
+  } else {
+    toast.error(res?.message);
+  }
+}
 // const printInvoice = (invoiceNo: string) => {};
 
 export const columns: ColumnDef<OrderALL>[] = [
@@ -66,6 +86,12 @@ export const columns: ColumnDef<OrderALL>[] = [
     header: "method",
     cell: ({ row }) => (
       <span className="capitalize">{row.original.method}</span>
+    ),
+  },
+  {
+    header: "address",
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.address}</span>
     ),
   },
   {
@@ -117,7 +143,7 @@ export const columns: ColumnDef<OrderALL>[] = [
   },
   {
     header: "invoice",
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <div className="flex items-center gap-1">
           <Tooltip>
@@ -137,7 +163,40 @@ export const columns: ColumnDef<OrderALL>[] = [
             </TooltipContent>
           </Tooltip>
 
-          <Tooltip>
+          <AlertDialog>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-red-500">
+                    <Trash2 className="size-5" />
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+
+              <TooltipContent>
+                <p>Delete Order</p>
+              </TooltipContent>
+            </Tooltip>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleDeleteOrder(row.original.id)}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
@@ -145,16 +204,15 @@ export const columns: ColumnDef<OrderALL>[] = [
                 className="text-foreground"
                 asChild
               >
-                {/* <Link href={`/orders/${row.original.id}`}> */}
-                <ZoomIn className="size-5" />
-                {/* </Link> */}
+                <ZoomInIcon className="size-5" />
+              
               </Button>
             </TooltipTrigger>
 
             <TooltipContent>
               <p>View Invoice</p>
             </TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
         </div>
       );
     },
