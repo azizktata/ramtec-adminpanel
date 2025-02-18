@@ -8,23 +8,23 @@ import { MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { createOrder } from "@/actions/orders";
 import { useFormStatus } from "react-dom";
+import { useSession } from "next-auth/react";
 
 export default function OrderForm({
   showSelectQuantity,
-  userInfo,
+
   product,
 }: {
   showSelectQuantity?: boolean;
-  userInfo?: {
-    username: string;
-    email: string;
-    phone: number;
-    address: string;
-  };
+
   product?: ProductALL;
 }) {
   const [countt, setCountt] = React.useState(1);
   const { pending } = useFormStatus();
+  const session = useSession();
+
+  const userInfo = session.data?.user;
+
   const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
@@ -108,7 +108,6 @@ export default function OrderForm({
           Phone <span className="text-red-500">*</span>
         </label>
         <input
-          defaultValue={userInfo?.phone}
           placeholder="Phone number"
           type="number"
           name="phone"
@@ -121,7 +120,6 @@ export default function OrderForm({
           Address <span className="text-red-500">*</span>
         </label>
         <input
-          defaultValue={userInfo?.address}
           placeholder="Your full address"
           type="text"
           name="address"

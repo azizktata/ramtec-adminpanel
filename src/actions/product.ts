@@ -4,7 +4,9 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 import { v2 as cloudinary } from "cloudinary";
-import { BestProductSellers,  } from "@/app/admin/dashboard/_types/BestSellers";
+import { BestProductSellers } from "@/app/admin/dashboard/_types/BestSellers";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -13,6 +15,8 @@ cloudinary.config({
 });
 
 export async function addProduct(formData: FormData) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
     const name = formData.get("name") as string;
     const slug = name.toLowerCase().replace(/\s+/g, "-");
@@ -20,7 +24,7 @@ export async function addProduct(formData: FormData) {
     const stock = Number(formData.get("quantity"));
     const description = formData.get("description") as string;
     const discount = Number(formData.get("discount")) || 0;
-  
+
     const newCategory = formData.get("newCategory") as string;
     const selectedCategories = formData.getAll("categories") as string[];
 
@@ -67,7 +71,7 @@ export async function addProduct(formData: FormData) {
         prices: {
           create: {
             price,
-            discount
+            discount,
           },
         },
         stock,
@@ -79,17 +83,18 @@ export async function addProduct(formData: FormData) {
           create: [
             {
               url: (result as { secure_url: string }).secure_url,
-              
             },
           ],
         },
         category: {
           connect: categoryIds.map((id) => ({ id })),
-          create: newCategory ? {
-            name: newCategory,
-            slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
-            published: true
-          } : undefined
+          create: newCategory
+            ? {
+                name: newCategory,
+                slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
+                published: true,
+              }
+            : undefined,
         },
       },
     });
@@ -104,6 +109,8 @@ export async function addProduct(formData: FormData) {
 }
 
 export async function updateProduct(formData: FormData) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
     const name = formData.get("name") as string;
     const slug = name.toLowerCase().replace(/\s+/g, "-");
@@ -239,23 +246,24 @@ export async function updateProduct(formData: FormData) {
       revalidatePath("/products");
       return { success: true, message: "Product updated successfully!" };
     }
-  } catch  {
-
+  } catch {
     return { success: false, message: "Error updating product" };
   }
 }
-export async function deleteProduct(id:string) {
+export async function deleteProduct(id: string) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   const product = await prisma.product.findFirst({
     where: { id: id },
-    select: { images: { select: { id: true, url:true } }}
+    select: { images: { select: { id: true, url: true } } },
   });
-  if(!product){
-    return { success: false, message: 'Error finding product' };
+  if (!product) {
+    return { success: false, message: "Error finding product" };
   }
   try {
     for (const image of product.images) {
       console.log(image.url);
-      const imageUrl = image.url.split('/').pop()?.split('.')[0]; // Extract image ID from the URL
+      const imageUrl = image.url.split("/").pop()?.split(".")[0]; // Extract image ID from the URL
       if (imageUrl) {
         await cloudinary.uploader.destroy(imageUrl); // Deleting image from Cloudinary
       }
@@ -263,68 +271,73 @@ export async function deleteProduct(id:string) {
     await prisma.product.delete({
       where: { id },
     });
-    revalidatePath('/products');
-    return { success: true, message: 'Product deleted successfully!' };
-  } catch  {
-    return { success: false, message: 'Error deleting product' };
+    revalidatePath("/products");
+    return { success: true, message: "Product deleted successfully!" };
+  } catch {
+    return { success: false, message: "Error deleting product" };
   }
 }
 
-export async function deleteImage(id:string){
+export async function deleteImage(id: string) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   const image = await prisma.image.findFirst({
     where: { id: id },
-    select: { url: true }
+    select: { url: true },
   });
   if (!image || !image.url) {
     return { success: false, message: "Error finding image" };
   }
   try {
-    const imageUrl = image.url.split('/').pop()?.split('.')[0]; // Extract image ID from the URL
+    const imageUrl = image.url.split("/").pop()?.split(".")[0]; // Extract image ID from the URL
     if (!imageUrl) {
       return { success: false, message: "Invalid image URL" };
     }
 
-
-      await cloudinary.uploader.destroy(imageUrl); // Deleting image from Cloudinary
+    await cloudinary.uploader.destroy(imageUrl); // Deleting image from Cloudinary
 
     await prisma.image.delete({
       where: { id },
     });
-    revalidatePath('/products');
-    return { success: true, message: 'Image deleted successfully!' };
-  } catch  {
-    return { success: false, message: 'Error deleting image' };
+    revalidatePath("/products");
+    return { success: true, message: "Image deleted successfully!" };
+  } catch {
+    return { success: false, message: "Error deleting image" };
   }
 }
 
-export async function updateStatus(id:string) {
+export async function updateStatus(id: string) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   const product = await prisma.product.findFirst({
     where: { id: id },
-    select: { status: true }
+    select: { status: true },
   });
-  if(!product){
-    return { success: false, message: 'Error finding product' };
+  if (!product) {
+    return { success: false, message: "Error finding product" };
   }
   try {
-    const status = product.status === 'SELLING' ? 'OUT_OF_STOCK' : 'SELLING';
+    const status = product.status === "SELLING" ? "OUT_OF_STOCK" : "SELLING";
     await prisma.product.update({
       where: { id },
       data: { status },
     });
-    revalidatePath('/products');
-    return { success: true, message: 'Product status updated!' };
-  } catch  {
-    return { success: false, message: 'Error updating product status' };
+    revalidatePath("/products");
+    return { success: true, message: "Product status updated!" };
+  } catch {
+    return { success: false, message: "Error updating product status" };
   }
 }
 
-export async function updatePublisherStatus(id: string){
+export async function updatePublisherStatus(id: string) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   const product = await prisma.product.findFirst({
     where: { id: id },
-    select: { published: true }
+    select: { published: true },
   });
-  if(!product){
-    return { success: false, message: 'Error finding product' };
+  if (!product) {
+    return { success: false, message: "Error finding product" };
   }
   try {
     const published = !product.published;
@@ -332,13 +345,15 @@ export async function updatePublisherStatus(id: string){
       where: { id },
       data: { published },
     });
-    revalidatePath('/products');
-    return { success: true, message: 'Product status updated!' };
-  } catch  {
-    return { success: false, message: 'Error updating product status' };
+    revalidatePath("/products");
+    return { success: true, message: "Product status updated!" };
+  } catch {
+    return { success: false, message: "Error updating product status" };
   }
 }
-export async function getBestSellingProducts(){
+export async function getBestSellingProducts() {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   const top5BestSellers = await prisma.orderItem.groupBy({
     by: ["productId"],
     _sum: { quantity: true }, // Get total quantity sold per product
@@ -347,7 +362,7 @@ export async function getBestSellingProducts(){
     },
     take: 5, // Limit to top 5
   });
-  
+
   const bestSellingProducts = await prisma.product.findMany({
     where: {
       id: { in: top5BestSellers.map((item) => item.productId) },
@@ -356,16 +371,15 @@ export async function getBestSellingProducts(){
       id: true,
       name: true,
       slug: true,
-      
     },
   });
 
   return bestSellingProducts.map((product) => {
     return {
       name: product.name,
-      sales: top5BestSellers.find((item) => item.productId === product.id)?._sum.quantity || 0,
-    } ;
-  })as BestProductSellers;
-  
-  
+      sales:
+        top5BestSellers.find((item) => item.productId === product.id)?._sum
+          .quantity || 0,
+    };
+  }) as BestProductSellers;
 }

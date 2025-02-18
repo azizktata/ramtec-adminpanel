@@ -13,12 +13,13 @@ import { Button } from "@/components/ui/button";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function CustomerFilters() {
+export default function UserFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const filterValue = searchParams.get("filter") || "";
+  const roleValue = searchParams.get("role") || "";
   const perPageValue = searchParams.get("perPage") || "5";
   function handleChange(name: string, value: string) {
     // if (value !== 0) {
@@ -83,6 +84,22 @@ export default function CustomerFilters() {
               <SelectItem value="10">10</SelectItem>
               <SelectItem value="20">20</SelectItem>
               <SelectItem value="30">30</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select
+            onValueChange={(value) => handleChange("role", value)}
+            name="role"
+            value={roleValue}
+          >
+            <SelectTrigger className="md:basis-1/6 py-5">
+              <SelectValue placeholder="Roles" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="none">All</SelectItem>
+              <SelectItem value="ADMIN">Admin</SelectItem>
+              <SelectItem value="CUSTOMER">Customer</SelectItem>
+              <SelectItem value="SELLER">Seller</SelectItem>
             </SelectContent>
           </Select>
         </div>

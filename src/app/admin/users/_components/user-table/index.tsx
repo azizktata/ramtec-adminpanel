@@ -4,14 +4,14 @@ import { useSearchParams } from "next/navigation";
 
 import { columns } from "./Columns";
 
-import { Customer } from "@prisma/client";
-import CustomersTable from "./Table";
+import { User } from "@prisma/client";
+import UsersTable from "./Table";
 
-export default function ShowCustomersTable({
+export default function ShowUsersTable({
   customers,
   numberOfCustomers,
 }: {
-  customers: Customer[];
+  customers: User[];
   numberOfCustomers: number;
 }) {
   const perPage = useSearchParams().get("perPage") || 5;
@@ -34,10 +34,6 @@ export default function ShowCustomersTable({
   };
 
   return (
-    <CustomersTable
-      columns={columns}
-      data={customers}
-      pagination={pagination}
-    />
+    <UsersTable columns={columns} data={customers} pagination={pagination} />
   );
 }

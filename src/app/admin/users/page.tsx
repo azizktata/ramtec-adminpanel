@@ -1,17 +1,18 @@
 import Typography from "@/components/ui/typography";
 import React from "react";
-import ShowCustomersTable from "./_components/customer-table";
+import ShowCustomersTable from "./_components/user-table";
 import prisma from "@/lib/db";
-import CustomerActions from "./_components/CustomerActions";
-import CustomerFilters from "./_components/CustomerFilters";
+import UserFilters from "./_components/UserFilters";
+import UserActions from "./_components/UserActions";
 
-export default async function Customers({
+export default async function Users({
   searchParams,
 }: {
   searchParams: {
     perPage: number;
     page: number;
     search: string;
+    role: "ADMIN" | "CUSTOMER" | "SELLER";
     filter:
       | "date-added-asc"
       | "date-added-desc"
@@ -37,7 +38,7 @@ export default async function Customers({
     ];
   }
 
-  switch (await searchParams.filter) {
+  switch ((await searchParams).filter) {
     case "date-added-asc":
       orderBy.createdAt = "asc";
       break;
@@ -51,23 +52,28 @@ export default async function Customers({
       orderBy.updatedAt = "desc";
       break;
   }
-  const customers = await prisma.customer.findMany({
+
+  if ((await searchParams).role) {
+    where.role = (await searchParams).role;
+  }
+
+  const customers = await prisma.user.findMany({
     where,
     take,
     skip,
     orderBy,
   });
-  const numberOfCustomers = await prisma.customer.count();
+  const numberOfCustomers = await prisma.user.count();
   return (
     <>
       <section>
         <Typography variant="h1" className="mb-6">
-          Customers
+          Users
         </Typography>
 
         <div className="space-y-8 mb-8">
-          <CustomerActions />
-          <CustomerFilters />
+          <UserActions />
+          <UserFilters />
           <ShowCustomersTable
             customers={customers}
             numberOfCustomers={numberOfCustomers}

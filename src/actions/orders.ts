@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { OrderStatus, ProductStatus } from "@prisma/client";
+import { OrderStatus, ProductStatus, Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { format } from "date-fns";
 import { WeeklySalesData } from "@/app/admin/dashboard/_types/WeeklySales";
@@ -27,6 +27,8 @@ async function generateInvoiceNo() {
 }
 
 import { z } from "zod";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const schema = z.object({
   firstName: z.string().min(3, "firstname cannot be blank"),
@@ -42,7 +44,8 @@ export async function createOrder(
   items: Item[]
 ) {
   const formObj = Object.fromEntries(formData.entries());
-
+  const session = await auth();
+  if (session?.user.role === "SELLER") redirect("/sign-in");
   const { firstName, lastName, email, phone, address } = formObj as {
     firstName: string;
     lastName: string;
@@ -63,11 +66,12 @@ export async function createOrder(
   if (!validation.success) {
     return { success: false, message: validation.error.errors[0].message };
   }
-  const customer = await prisma.customer.findFirst({
+  const customer = await prisma.user.findFirst({
     where: {
       email,
+      role: Role.CUSTOMER,
     },
-  })
+  });
 
   const isAvailable = (
     await Promise.all(
@@ -84,20 +88,26 @@ export async function createOrder(
         return product !== null; // Ensure we return true/false
       })
     )
-  ).every(Boolean); 
+  ).every(Boolean);
   if (!isAvailable) {
     return { success: false, message: "Some products are out of stock" };
   }
-  
-  
+
   const invoiceNo = await generateInvoiceNo();
   try {
     await prisma.order.create({
       data: {
-        customer: customer
-        ? { connect: { id: customer.id } } 
-        : { create: { name: `${firstName} ${lastName}`, email, phone, address } } ,
-  
+        user: customer
+          ? { connect: { id: customer.id } }
+          : {
+              create: {
+                name: `${firstName} ${lastName}`,
+                email,
+                phone,
+                address,
+              },
+            },
+
         amount: total,
         status: "PENDING",
         method: "CASH",
@@ -116,19 +126,26 @@ export async function createOrder(
       items.map((item) =>
         prisma.product.update({
           where: { id: item.id },
-          data: { stock: { decrement: item.quantity || 1 }, status: item.quantity === item.stock ? ProductStatus.OUT_OF_STOCK : ProductStatus.SELLING },
+          data: {
+            stock: { decrement: item.quantity || 1 },
+            status:
+              item.quantity === item.stock
+                ? ProductStatus.OUT_OF_STOCK
+                : ProductStatus.SELLING,
+          },
         })
       )
     );
     revalidatePath("/checkout");
     return { success: true, message: "Order created successfully" };
-  } catch  {
-
+  } catch {
     return { success: false, message: "Error creating order" };
   }
 }
 
 export async function updateOrderStatus(id: string, orderStatus: OrderStatus) {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   const order = await prisma.order.findFirst({
     where: { invoiceNo: id },
     select: { status: true },
@@ -151,20 +168,24 @@ export async function updateOrderStatus(id: string, orderStatus: OrderStatus) {
 }
 
 export async function deleteOrder(id: string) {
-  
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
     await prisma.order.delete({
       where: { id },
     });
     revalidatePath("/orders");
     return { success: true, message: "Order deleted successfully" };
-  } catch  {
+  } catch {
     // console.error(error);
     return { success: false, message: "Error deleting order" };
   }
 }
 
 export const getLast7DaysSales = async () => {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+
   const today = new Date();
   const last7Days = [];
   const todayMidnight = new Date(today);
@@ -174,41 +195,42 @@ export const getLast7DaysSales = async () => {
     date.setDate(todayMidnight.getDate() - i);
     last7Days.push(date);
   }
-  console.log(new Date(today.getTime() + 24 * 60 * 60 * 1000));
-  
-const orders = await prisma.order.findMany({
-  where: {
-    orderTime: {
-      gte: last7Days[0],
-      lt: new Date(today.getTime() + 24 * 60 * 60 * 1000)
+
+  const orders = await prisma.order.findMany({
+    where: {
+      orderTime: {
+        gte: last7Days[0],
+        lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+      },
     },
-  },
-  select: {
-    orderTime: true,
-    amount: true,
-    id: true,
-  },
-});
+    select: {
+      orderTime: true,
+      amount: true,
+      id: true,
+    },
+  });
 
   // Process data to return the expected format
   const weeklySales: WeeklySalesData = last7Days.map((date) => {
     const formattedDate = format(date, "MMM dd"); // "Feb 12"
-  const ordersForDay = orders.filter(
-    (order) => format(new Date(order.orderTime), "MMM dd") === formattedDate
-  );
+    const ordersForDay = orders.filter(
+      (order) => format(new Date(order.orderTime), "MMM dd") === formattedDate
+    );
 
-  return {
-    date: formattedDate,
-    totalRevenue: ordersForDay.reduce((sum, order) => sum + order.amount, 0),
-    totalOrders: ordersForDay.length,
-  };});
+    return {
+      date: formattedDate,
+      totalRevenue: ordersForDay.reduce((sum, order) => sum + order.amount, 0),
+      totalOrders: ordersForDay.length,
+    };
+  });
 
   return weeklySales;
 };
 
-
-
 export async function getLastMonthOrders() {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+
   const now = new Date();
 
   // Get the first day of last month
@@ -234,6 +256,9 @@ export async function getLastMonthOrders() {
   return lastMonthOrders;
 }
 export async function getThisMonthOrders() {
+  const session = await auth();
+  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+
   const startOfMonth = new Date();
   startOfMonth.setDate(1); // Set to the first day of the month
   startOfMonth.setHours(0, 0, 0, 0);
@@ -242,7 +267,7 @@ export async function getThisMonthOrders() {
       id: true,
       orderTime: true,
       amount: true,
-      customer: {
+      user: {
         select: {
           name: true,
           email: true,

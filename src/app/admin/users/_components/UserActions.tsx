@@ -11,17 +11,23 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { addCustomer } from "@/actions/customer";
+import { addUser } from "@/actions/user";
 import toast from "react-hot-toast";
 
-export default function CustomerActions() {
+export default function UserActions() {
   async function handleSubmit(formData: FormData) {
-    const res = await addCustomer(formData);
+    const res = await addUser(formData);
     if (res?.success) {
       toast.success(res.message);
     } else {
@@ -46,16 +52,15 @@ export default function CustomerActions() {
                 size="lg"
                 className="sm:flex-grow xl:flex-grow-0 h-12"
               >
-                <Plus className="mr-2 size-4 " /> Add Customer
+                <Plus className="mr-2 size-4 " /> Add User
               </Button>
             </SheetTrigger>
 
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Add new customer</SheetTitle>
+                <SheetTitle>Add new User</SheetTitle>
                 <SheetDescription>
-                  Make changes to your profile here. Click save when you&apos;re
-                  done.
+                  Make changes here. Click save when you&apos;re done.
                 </SheetDescription>
               </SheetHeader>
               <form
@@ -72,19 +77,60 @@ export default function CustomerActions() {
                   <Label htmlFor="email" className="text-right">
                     email
                   </Label>
-                  <Input id="email" name="email" className="col-span-3" />
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    className="col-span-3"
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col items-start gap-4">
+                  <Label htmlFor="password" className="text-right">
+                    password
+                  </Label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    className="col-span-3"
+                    required
+                  />
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="phone" className="text-right">
                     phone
                   </Label>
-                  <Input id="phone" name="phone" className="col-span-3" />
+                  <Input
+                    id="phone"
+                    type="number"
+                    name="phone"
+                    className="col-span-3"
+                  />
                 </div>
                 <div className="flex flex-col items-start gap-4">
                   <Label htmlFor="address" className="text-right">
                     address
                   </Label>
                   <Input id="address" name="address" className="col-span-3" />
+                </div>
+                <div className="flex flex-col items-start gap-4">
+                  <Label htmlFor="role" className="text-right">
+                    role
+                  </Label>
+                  <Select name="role">
+                    <SelectTrigger className=" py-5">
+                      <SelectValue placeholder="Roles" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {/* <SelectItem value="none">All</SelectItem> */}
+                      <SelectItem value="ADMIN">Admin</SelectItem>
+                      {/* <SelectItem value="CUSTOMER">Customer</SelectItem> */}
+                      <SelectItem value="SELLER">Seller</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 <SheetFooter>
                   <SheetClose asChild>

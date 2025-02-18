@@ -9,7 +9,7 @@ import prisma from "@/lib/db";
 import { Ticket } from "lucide-react";
 import React, { Suspense } from "react";
 
-export default function page() {
+export default async function page() {
   // const ShowHeroSlider = async () => {
   //   const sliderImages = await getCollectionProducts({
   //     collection: collections.hero_slider,
@@ -76,8 +76,12 @@ export default function page() {
     });
     return (
       <div className=" flex flex-col lg:flex-row gap-6">
-        <Banner product={promoProducts[0]} />
-        <Banner product={promoProducts[1]} />
+        {promoProducts.length >= 2 && (
+          <>
+            <Banner product={promoProducts[0]} />
+            <Banner product={promoProducts[1]} />
+          </>
+        )}
         {/* <ProductCarousel products={promoProducts.slice(1)} /> */}
       </div>
     );

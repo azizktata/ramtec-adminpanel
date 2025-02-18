@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Typography from "@/components/ui/typography";
-import { getPastDates } from "@/utils/getPastDates";
 import useGetMountStatus from "@/hooks/useGetMountStatus";
 import { WeeklySalesData } from "../../_types/WeeklySales";
 
@@ -74,9 +73,9 @@ export default function WeeklySales({
                         color: gridColor,
                       },
                       ticks: {
-                        stepSize: 200,
+                        stepSize: 100,
                         callback: function (value) {
-                          return "$" + value;
+                          return "TND " + value;
                         },
                         padding: 4,
                       },

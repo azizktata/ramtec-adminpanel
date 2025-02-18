@@ -31,6 +31,12 @@ enum OrderMethod {
   CREDIT
 }
 
+enum Role {
+  ADMIN
+  CUSTOMER
+  SELLER
+}
+
 model Category {
   id          String    @id @default(uuid())
   name        String
@@ -95,17 +101,17 @@ model Variant {
 }
 
 model Order {
-  id         String      @id @default(uuid())
-  invoiceNo  String      @unique
-  orderTime  DateTime    @default(now())
-  method     OrderMethod
-  amount     Float
-  status     OrderStatus
-  items      OrderItem[]
-  address    String      @default("Tunis")
-  customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  customerId String
-  updatedAt  DateTime    @updatedAt
+  id        String      @id @default(uuid())
+  invoiceNo String      @unique
+  orderTime DateTime    @default(now())
+  method    OrderMethod
+  amount    Float
+  status    OrderStatus
+  items     OrderItem[]
+  address   String      @default("Tunis")
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  updatedAt DateTime    @updatedAt
 }
 
 model OrderItem {
@@ -118,12 +124,14 @@ model OrderItem {
   productId String
 }
 
-model Customer {
+model User {
   id        String   @id @default(uuid())
   name      String
-  email     String
+  email     String   @unique
   phone     String?
   address   String?
+  password  String?
+  role      Role     @default(CUSTOMER)
   orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

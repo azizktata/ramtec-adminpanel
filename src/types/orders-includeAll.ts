@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 export type OrderALL = Prisma.OrderGetPayload<{
   
     include: {
-        customer: {
+        user: {
           select: {
             name: true,
             email: true,

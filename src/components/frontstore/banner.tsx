@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
+import Link from "next/link";
 
 export default function Banner({ product }: { product: ProductALL }) {
   const { name, images, prices, category, slug, status, description } = product;
@@ -45,7 +46,7 @@ export default function Banner({ product }: { product: ProductALL }) {
             <Button>Add to cart</Button>
           </a>
           <Button variant={"outline"} className="text-blue-500">
-            Voir produit
+            <Link href={`/products/${slug}`}>Voir produit</Link>
           </Button>
         </div>
       </div>

@@ -7,6 +7,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { navItems } from "@/constants/navItems";
 import Typography from "../../ui/typography";
 
+import { signOut } from "next-auth/react";
+import { SignOut } from "@/components/shared/sign-out";
 export default function SidebarContent() {
   const pathname = usePathname();
 
@@ -46,15 +48,7 @@ export default function SidebarContent() {
       </div>
 
       <div className="px-6 py-4 absolute left-0 w-full right-0 bottom-0 border-t">
-        <form action="/auth/sign-out" method="post">
-          <Button
-            type="submit"
-            className="w-full py-6 text-base whitespace-nowrap bg-adminPrimary"
-          >
-            <LogOut className="size-6 mr-3 flex-shrink-0" />
-            Log out
-          </Button>
-        </form>
+        <SignOut />
       </div>
     </div>
   );

@@ -18,6 +18,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -34,8 +41,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { Customer } from "@prisma/client";
-import { removeCustomer, updateCustomer } from "@/actions/customer";
+import { User } from "@prisma/client";
+import { removeUser, updateUser } from "@/actions/user";
 import toast from "react-hot-toast";
 
 export interface SkeletonColumn {
@@ -45,7 +52,7 @@ export interface SkeletonColumn {
 // const handleSwitchChange = () => {};
 
 async function handleSubmit(formData: FormData) {
-  const res = await updateCustomer(formData);
+  const res = await updateUser(formData);
   if (res?.success) {
     toast.success(res.message);
   } else {
@@ -53,15 +60,15 @@ async function handleSubmit(formData: FormData) {
   }
 }
 
-async function handleDeleteCustomer(id: string) {
-  const res = await removeCustomer(id);
+async function handleDeleteUser(id: string) {
+  const res = await removeUser(id);
   if (res?.success) {
     toast.success(res.message);
   } else {
     toast.error(res?.message);
   }
 }
-export const columns: ColumnDef<Customer>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -91,7 +98,7 @@ export const columns: ColumnDef<Customer>[] = [
     ),
   },
   {
-    header: "Customer name",
+    header: "User name",
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         {/* <Image
@@ -116,6 +123,7 @@ export const columns: ColumnDef<Customer>[] = [
       </Typography>
     ),
   },
+
   {
     header: "phone",
     cell: ({ row }) => (
@@ -130,6 +138,14 @@ export const columns: ColumnDef<Customer>[] = [
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
         {row.original.address}
+      </Typography>
+    ),
+  },
+  {
+    header: "role",
+    cell: ({ row }) => (
+      <Typography className="block max-w-52 truncate">
+        {row.original.role}
       </Typography>
     ),
   },
@@ -154,13 +170,13 @@ export const columns: ColumnDef<Customer>[] = [
               </TooltipTrigger>
 
               <TooltipContent>
-                <p>Edit Customer</p>
+                <p>Edit User</p>
               </TooltipContent>
             </Tooltip>
 
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Edit Customer details</SheetTitle>
+                <SheetTitle>Edit User details</SheetTitle>
                 <SheetDescription>
                   Make changes to his profile here. Click save when you&apos;re
                   done.
@@ -215,6 +231,22 @@ export const columns: ColumnDef<Customer>[] = [
                     className="col-span-3"
                   />
                 </div>
+                <div className="flex flex-col items-start gap-4">
+                  <Label htmlFor="role" className="text-right">
+                    role
+                  </Label>
+                  <Select name="role">
+                    <SelectTrigger className=" py-5">
+                      <SelectValue placeholder="Roles" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      <SelectItem value="ADMIN">Admin</SelectItem>
+                      <SelectItem value="CUSTOMER">Customer</SelectItem>
+                      <SelectItem value="SELLER">Seller</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <SheetFooter>
                   <SheetClose asChild>
                     <Button type="submit">Save changes</Button>
@@ -235,7 +267,7 @@ export const columns: ColumnDef<Customer>[] = [
               </TooltipTrigger>
 
               <TooltipContent>
-                <p>Delete Customer</p>
+                <p>Delete User</p>
               </TooltipContent>
             </Tooltip>
 
@@ -250,7 +282,7 @@ export const columns: ColumnDef<Customer>[] = [
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
-                  onClick={() => handleDeleteCustomer(row.original.id)}
+                  onClick={() => handleDeleteUser(row.original.id)}
                 >
                   Continue
                 </AlertDialogAction>

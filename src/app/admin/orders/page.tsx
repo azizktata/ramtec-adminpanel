@@ -104,7 +104,7 @@ export default async function Orders({
     skip,
     take,
     include: {
-      customer: {
+      user: {
         select: {
           name: true,
           email: true,

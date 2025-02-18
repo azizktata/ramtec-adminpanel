@@ -15,13 +15,13 @@ import { Button } from "../ui/button";
 export default function HeroSlider() {
   const activites = [
     {
-      title: "Maintenance et Réparation",
+      title: "Imprimantes",
       description: "Une large gamme de produits bureautiques ",
       image: "/banner (2).png",
       href: "/products/maintenance-reparation",
     },
     {
-      title: "Conseil et Formation",
+      title: "Photocopies de bureau",
       description: "Une large gamme de produits bureautiques ",
       image: "/banner (3).png",
       href: "/products/maintenance-reparation",

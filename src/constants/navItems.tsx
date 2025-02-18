@@ -24,8 +24,8 @@ export const navItems = [
     icon: <Tags />,
   },
   {
-    title: "Customers",
-    url: "/admin/customers",
+    title: "Users",
+    url: "/admin/users",
     icon: <Users />,
   },
   {
@@ -38,11 +38,11 @@ export const navItems = [
   //   url: "/coupons",
   //   icon: <Ticket />,
   // },
-  {
-    title: "Sellers",
-    url: "/admin/sellers",
-    icon: <Briefcase />,
-  },
+  // {
+  //   title: "Sellers",
+  //   url: "/admin/sellers",
+  //   icon: <Briefcase />,
+  // },
   // {
   //   title: "Settings",
   //   url: "/settings",

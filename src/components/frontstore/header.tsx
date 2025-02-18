@@ -9,12 +9,19 @@ import { NotificationCount } from "../shared/notificationCount";
 import { useAppSelector } from "@/store/hooks";
 import SearchBar from "./searchBar";
 import Image from "next/image";
+import { SignOut } from "../shared/sign-out";
+import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 
 export default function Header() {
   const [showSidebar, setShowSidebar] = React.useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+  const session = useSession();
+  const isLogged = session.data?.user;
+  const userRole = session.data?.user?.role;
+
   const numberOfItems = useAppSelector((state) => state.cart.items.length);
   return (
     <nav className="border-b">
@@ -31,13 +38,33 @@ export default function Header() {
             />
           </Link>
         </div>
-        <div className="flex hidden sm:flex items-center mx-12 flex-grow max-w-3xl ">
+        <div className="flex hidden sm:flex items-center mx-6 flex-grow max-w-3xl ">
           <SearchBar />
         </div>
         <div className="flex items-center space-x-4">
-          <Button className="hidden sm:flex" variant={"outline"}>
-            Sign In
-          </Button>
+          {userRole === "ADMIN" && (
+            <Button>
+              <Link href="/admin/dashboard">Admin</Link>
+            </Button>
+          )}
+
+          {isLogged ? (
+            <>
+              <Avatar className="h-9 w-9">
+                <AvatarFallback>
+                  {" "}
+                  {session.data?.user.name?.slice(0, 2)}{" "}
+                </AvatarFallback>
+              </Avatar>
+              <SignOut />
+            </>
+          ) : (
+            <Button asChild className="hidden sm:flex" variant={"outline"}>
+              <Link href="/sign-in" className="hidden sm:flex">
+                Sign In
+              </Link>
+            </Button>
+          )}
           <div className="relative">
             <a href="#sidebar">
               <ShoppingBag className="w-6 h-6 text-muted-foreground" />

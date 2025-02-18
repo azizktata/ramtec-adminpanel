@@ -4,7 +4,6 @@ import React from "react";
 import ClientProvider from "../../store/provider";
 import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
-import TopBar from "@/components/frontstore/topBar";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
@@ -24,7 +23,6 @@ export default async function Layout({
         <ClientProvider>
           <Header />
 
-          <TopBar />
           <CartSideBar />
           <Toaster />
           {children}

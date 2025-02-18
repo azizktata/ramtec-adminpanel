@@ -34,10 +34,10 @@ export async function RecentSales() {
               </Avatar>
               <div className="ml-4 space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {order.customer.name}
+                  {order.user.name}
                 </p>
                 <p className="text-sm text-mutedForeground">
-                  {order.customer.email}
+                  {order.user.email}
                 </p>
                 <p className="text-mutedForeground font-light text-xs ">
                   {format(order.orderTime, "MMM dd, yyyy")}
