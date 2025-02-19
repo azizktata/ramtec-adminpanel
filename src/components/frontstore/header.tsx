@@ -12,16 +12,24 @@ import Image from "next/image";
 import { SignOut } from "../shared/sign-out";
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Skeleton } from "../ui/skeleton";
+// import { CategoryWithProducts } from "@/types/category-with-products";
 
 export default function Header() {
   const [showSidebar, setShowSidebar] = React.useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
-  const session = useSession();
-  const isLogged = session.data?.user;
-  const userRole = session.data?.user?.role;
-
+  const { data: session, status } = useSession();
+  const isLogged = session?.user;
+  const userRole = session?.user?.role;
+  React.useEffect(() => {
+    if (showSidebar) {
+      document.documentElement.classList.add("overflow-hidden");
+    } else {
+      document.documentElement.classList.remove("overflow-hidden");
+    }
+  }, [showSidebar]);
   const numberOfItems = useAppSelector((state) => state.cart.items.length);
   return (
     <nav className="border-b">
@@ -48,23 +56,26 @@ export default function Header() {
             </Button>
           )}
 
-          {isLogged ? (
-            <>
-              <Avatar className="h-9 w-9">
-                <AvatarFallback>
-                  {" "}
-                  {session.data?.user.name?.slice(0, 2)}{" "}
-                </AvatarFallback>
-              </Avatar>
-              <SignOut />
-            </>
-          ) : (
-            <Button asChild className="hidden sm:flex" variant={"outline"}>
-              <Link href="/sign-in" className="hidden sm:flex">
-                Sign In
-              </Link>
-            </Button>
-          )}
+          <div className="hidden sm:flex items-center gap-4">
+            {status === "loading" ? (
+              <Skeleton className="h-9 w-30 rounded-sm" /> // Placeholder while loading
+            ) : isLogged ? (
+              <>
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback>
+                    {session.user.name?.slice(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                <SignOut />
+              </>
+            ) : (
+              <Button asChild className="hidden sm:flex" variant={"outline"}>
+                <Link href="/sign-in" className="hidden sm:flex">
+                  Sign In
+                </Link>
+              </Button>
+            )}
+          </div>
           <div className="relative">
             <a href="#sidebar">
               <ShoppingBag className="w-6 h-6 text-muted-foreground" />
@@ -98,7 +109,7 @@ export default function Header() {
               className={`fixed top-0 left-0 h-full bg-white dark:bg-darkmode-body overflow-y-auto w-full md:w-96 p-9 ${showSidebar ? "transition-transform transform translate-x-0" : "transition-transform transform -translate-x-full"}`}
             > */}
         <div
-          className={`absolute left-0 top-0 z-10 grid min-h-[100dvh] w-full grid-cols-[11fr_1fr] transition-transform duration-300 ease-in md:grid-cols-[10fr_2fr] md:w-96 ${
+          className={`absolute left-0 top-0 z-10 grid min-h-[100dvh] overflow-y-none w-full grid-cols-[11fr_1fr] transition-transform duration-300 ease-in md:grid-cols-[10fr_2fr] md:w-96 ${
             showSidebar
               ? "transition-transform transform translate-x-0"
               : "transition-transform transform -translate-x-full"

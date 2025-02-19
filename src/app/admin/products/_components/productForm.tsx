@@ -38,8 +38,7 @@ export default function ProductForm({
   product?: ProductALL;
 }) {
   const [categories, setCategories] = React.useState<Category[]>([]);
-  // const [loading, setLoading] = React.useState(true);
-  // const [error, setError] = React.useState(false);
+
   React.useEffect(() => {
     async function fetchCategories() {
       try {
@@ -129,6 +128,16 @@ export default function ProductForm({
             type="number"
             defaultValue={product.prices?.discount || 0}
             name="discount"
+            id="price"
+            className="block border"
+          />
+        </div>
+        <div className="flex-grow">
+          <Label htmlFor="price">Discount Seller</Label>
+          <Input
+            type="number"
+            defaultValue={product.prices?.discountSeller || 0}
+            name="discountSeller"
             id="price"
             className="block border"
           />

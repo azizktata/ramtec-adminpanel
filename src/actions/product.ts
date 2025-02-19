@@ -102,8 +102,8 @@ export async function addProduct(formData: FormData) {
       revalidatePath("/products");
       return { success: true, message: "Product added successfully!" };
     }
-  } catch {
-    // console.error(error);
+  } catch (error) {
+    console.error(error);
     return { success: false, message: `Error adding product ` };
   }
 }
@@ -117,6 +117,7 @@ export async function updateProduct(formData: FormData) {
     const price = Number(formData.get("price"));
     const stock = Number(formData.get("quantity"));
     const discount = Number(formData.get("discount"));
+    const discountSeller = Number(formData.get("discountSeller"));
     const sku = formData.get("sku") as string;
     const description = formData.get("description") as string;
     const newCategory = formData.get("newCategory") as string;
@@ -227,6 +228,7 @@ export async function updateProduct(formData: FormData) {
           update: {
             price,
             discount,
+            discountSeller,
           },
         },
         stock,
@@ -246,7 +248,8 @@ export async function updateProduct(formData: FormData) {
       revalidatePath("/products");
       return { success: true, message: "Product updated successfully!" };
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { success: false, message: "Error updating product" };
   }
 }
@@ -352,34 +355,38 @@ export async function updatePublisherStatus(id: string) {
   }
 }
 export async function getBestSellingProducts() {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
-  const top5BestSellers = await prisma.orderItem.groupBy({
-    by: ["productId"],
-    _sum: { quantity: true }, // Get total quantity sold per product
-    orderBy: {
-      _sum: { quantity: "desc" }, // Order by highest sales
-    },
-    take: 5, // Limit to top 5
-  });
+  try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+    const top5BestSellers = await prisma.orderItem.groupBy({
+      by: ["productId"],
+      _sum: { quantity: true }, // Get total quantity sold per product
+      orderBy: {
+        _sum: { quantity: "desc" }, // Order by highest sales
+      },
+      take: 5, // Limit to top 5
+    });
 
-  const bestSellingProducts = await prisma.product.findMany({
-    where: {
-      id: { in: top5BestSellers.map((item) => item.productId) },
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-    },
-  });
+    const bestSellingProducts = await prisma.product.findMany({
+      where: {
+        id: { in: top5BestSellers.map((item) => item.productId) },
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+    });
 
-  return bestSellingProducts.map((product) => {
-    return {
-      name: product.name,
-      sales:
-        top5BestSellers.find((item) => item.productId === product.id)?._sum
-          .quantity || 0,
-    };
-  }) as BestProductSellers;
+    return bestSellingProducts.map((product) => {
+      return {
+        name: product.name,
+        sales:
+          top5BestSellers.find((item) => item.productId === product.id)?._sum
+            .quantity || 0,
+      };
+    }) as BestProductSellers;
+  } catch (error) {
+    console.error(error);
+  }
 }

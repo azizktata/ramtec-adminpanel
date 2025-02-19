@@ -4,7 +4,6 @@ import {
   Tags,
   Users,
   Truck,
-  Briefcase,
 } from "lucide-react";
 
 export const navItems = [

@@ -6,6 +6,7 @@ import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
 import TopBar from "@/components/frontstore/topBar";
 import { SessionProvider } from "next-auth/react";
+// import MobileNavSlider from "@/components/frontstore/mobileNavSlider";
 
 export const metadata: Metadata = {
   title: "Ramtec",
@@ -19,17 +20,16 @@ export default async function Layout({
 }>) {
   return (
     <div>
-      {" "}
-      <SessionProvider>
-        <ClientProvider>
+      <ClientProvider>
+        <SessionProvider>
           <Header />
 
           <TopBar />
           <CartSideBar />
           <Toaster />
           {children}
-        </ClientProvider>
-      </SessionProvider>
+        </SessionProvider>
+      </ClientProvider>
     </div>
   );
 }

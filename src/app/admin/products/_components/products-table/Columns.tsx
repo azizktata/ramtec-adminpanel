@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ZoomIn, PenSquare, Trash2 } from "lucide-react";
+import { ZoomIn, PenSquare, Trash2, ZoomInIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
@@ -47,6 +47,7 @@ import {
 } from "@/actions/product";
 import toast from "react-hot-toast";
 import React from "react";
+import Link from "next/link";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
@@ -143,10 +144,18 @@ export const columns: ColumnDef<ProductALL>[] = [
     },
   },
   {
-    header: "sale price",
+    header: "sale price CS",
     cell: ({ row }) => {
       const { price, discount } = row.original.prices!;
 
+      return formatAmount((price * (100 - discount)) / 100);
+    },
+  },
+  {
+    header: "sale price SE",
+    cell: ({ row }) => {
+      const { price, discountSeller } = row.original.prices!;
+      const discount = discountSeller || 0;
       return formatAmount((price * (100 - discount)) / 100);
     },
   },
@@ -172,11 +181,11 @@ export const columns: ColumnDef<ProductALL>[] = [
   },
   {
     header: "view",
-    cell: () => (
-      <Button size="icon" asChild variant="ghost" className="text-foreground">
-        {/* <Link href={`/product/${row.original.slug}`}> */}
-        <ZoomIn className="size-5" />
-        {/* </Link> */}
+    cell: ({ row }) => (
+      <Button asChild variant="ghost" size="icon" className="text-foreground">
+        <Link href={`/products/${row.original.slug}`}>
+          <ZoomInIcon className="size-5" />
+        </Link>
       </Button>
     ),
   },

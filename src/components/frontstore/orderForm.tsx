@@ -45,6 +45,7 @@ export default function OrderForm({
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+
     const res = await createOrder(formData, cart.total, cart.items);
 
     if (res) {

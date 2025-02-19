@@ -4,10 +4,9 @@ import FeaturedProducts from "@/components/frontstore/featuredProducts";
 import HeroSlider from "@/components/frontstore/heroSlider";
 import ProductCarousel from "@/components/frontstore/productCarousel";
 import ProductsByCategory from "@/components/frontstore/productsByCategory";
-import SkeletonFeaturedProducts from "@/components/skeleton/skeletonFeaturedProducts";
 import prisma from "@/lib/db";
 import { Ticket } from "lucide-react";
-import React, { Suspense } from "react";
+import React from "react";
 
 export default async function page() {
   // const ShowHeroSlider = async () => {
@@ -41,23 +40,7 @@ export default async function page() {
 
     return <ProductCarousel products={products} />;
   };
-  // const ShowProductsByCategory = async () => {
-  //   const products = await prisma.product.findMany({
-  //     where: {
-  //       category: {
-  //         slug: "category",
-  //       },
-  //     },
-  //     take: 8,
-  //     include: {
-  //       images: true,
-  //       category: true,
-  //       prices: true,
-  //     },
-  //   });
 
-  //   return <FeaturedProducts products={products} />;
-  // };
   const ShowPromoProducts = async () => {
     const promoProducts = await prisma.product.findMany({
       where: {
@@ -111,9 +94,8 @@ export default async function page() {
             <h2 className="mb-2 text-3xl">Featured Products</h2>
             <p className="text-xl">Explore Today&apos;s Featured Picks!</p>
           </div>
-          <Suspense fallback={<SkeletonFeaturedProducts />}>
-            <ShowFeaturedProducts />
-          </Suspense>
+
+          <ShowFeaturedProducts />
         </div>
       </section>
       <section>
@@ -131,9 +113,8 @@ export default async function page() {
             <h2 className="mb-2 text-3xl">Best Offers</h2>
             <p className="text-xl">Explore our best products!</p>
           </div>
-          <Suspense fallback={<SkeletonFeaturedProducts />}>
-            <ShowBestOffers />
-          </Suspense>
+
+          <ShowBestOffers />
         </div>
       </section>
       <section>
@@ -141,9 +122,8 @@ export default async function page() {
           <div className="text-center mb-6 md:mb-8">
             <h2 className="mb-2 text-3xl">Promotions</h2>
           </div>
-          <Suspense fallback={<SkeletonFeaturedProducts />}>
-            <ShowPromoProducts />
-          </Suspense>
+
+          <ShowPromoProducts />
         </div>
       </section>
     </>

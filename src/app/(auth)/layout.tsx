@@ -1,15 +1,9 @@
-import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import React from "react";
 import ClientProvider from "../../store/provider";
 import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
 import { SessionProvider } from "next-auth/react";
-
-export const metadata: Metadata = {
-  title: "Ramtec",
-  description: "ecommerce",
-};
 
 export default async function Layout({
   children,
@@ -18,7 +12,6 @@ export default async function Layout({
 }>) {
   return (
     <div>
-      {" "}
       <SessionProvider>
         <ClientProvider>
           <Header />

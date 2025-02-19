@@ -7,7 +7,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 import { CategoryWithProducts } from "@/types/category-with-products";
@@ -36,7 +35,7 @@ export default function TopBar() {
     fetchCategories();
   }, []);
   return (
-    <header className=" px-4 py-6 sm:px-6 lg:px-8 border-b border-accent-foreground">
+    <header className="hidden sm:flex px-4 py-6 sm:px-6 lg:px-8 border-b border-accent-foreground">
       <nav className="container mx-auto">
         {loading ? (
           <div className="h-10 bg-gray-200 animate-pulse w-full" />
@@ -57,7 +56,9 @@ export default function TopBar() {
                           title={product.name}
                         >
                           <span className="text-gray-500">
-                            {product.description}
+                            {product.description
+                              ? product.description
+                              : "No description"}
                           </span>
                         </ListItem>
                       ))}

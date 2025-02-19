@@ -29,12 +29,13 @@ async function generateInvoiceNo() {
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { sendEmail } from "@/utils/sendEmail";
 
 const schema = z.object({
   firstName: z.string().min(3, "firstname cannot be blank"),
   lastName: z.string().min(3, "lastname cannot be blank"),
   email: z.string().email("enter valid email").min(1, "Email cannot be blank"),
-  phone: z.number().min(8, "Enter valid phone number"),
+  phone: z.string().min(8, "Enter valid phone number"),
   address: z.string().min(3, "Address cannot be blank"),
 });
 
@@ -54,13 +55,13 @@ export async function createOrder(
     address: string;
   };
   if (items.length === 0) {
-    return { success: false, message: "No items in cart" };
+    return { success: false, message: "No items in the cart yet!" };
   }
   const validation = schema.safeParse({
     firstName,
     lastName,
     email,
-    phone: parseInt(phone),
+    phone,
     address,
   });
   if (!validation.success) {
@@ -136,6 +137,11 @@ export async function createOrder(
         })
       )
     );
+    await sendEmail({
+      email: email,
+      text: `Hello ${firstName}${lastName}, \n\nThank you for ordering from RAMTEC! \n\nYWe’re pleased to inform you that your order has been successfully placed. Your invoice number is ${invoiceNo}, with a total cost of ${total} TND. \n\nIf you have any questions or need assistance, feel free to reach out to us at 48155254. Our team will be in touch with you soon. \n\nThank you for shopping with us! \n\nBest Regards, \n\n RAMTEC Team`,
+      sujet: `Order Confirmation – Invoice #${invoiceNo}`,
+    });
     revalidatePath("/checkout");
     return { success: true, message: "Order created successfully" };
   } catch {
@@ -183,102 +189,117 @@ export async function deleteOrder(id: string) {
 }
 
 export const getLast7DaysSales = async () => {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+  try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
 
-  const today = new Date();
-  const last7Days = [];
-  const todayMidnight = new Date(today);
-  todayMidnight.setHours(0, 0, 0, 0);
-  for (let i = 7; i >= 0; i--) {
-    const date = new Date(todayMidnight);
-    date.setDate(todayMidnight.getDate() - i);
-    last7Days.push(date);
-  }
+    const today = new Date();
+    const last7Days = [];
+    const todayMidnight = new Date(today);
+    todayMidnight.setHours(0, 0, 0, 0);
+    for (let i = 7; i >= 0; i--) {
+      const date = new Date(todayMidnight);
+      date.setDate(todayMidnight.getDate() - i);
+      last7Days.push(date);
+    }
 
-  const orders = await prisma.order.findMany({
-    where: {
-      orderTime: {
-        gte: last7Days[0],
-        lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+    const orders = await prisma.order.findMany({
+      where: {
+        orderTime: {
+          gte: last7Days[0],
+          lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+        },
       },
-    },
-    select: {
-      orderTime: true,
-      amount: true,
-      id: true,
-    },
-  });
+      select: {
+        orderTime: true,
+        amount: true,
+        id: true,
+      },
+    });
 
-  // Process data to return the expected format
-  const weeklySales: WeeklySalesData = last7Days.map((date) => {
-    const formattedDate = format(date, "MMM dd"); // "Feb 12"
-    const ordersForDay = orders.filter(
-      (order) => format(new Date(order.orderTime), "MMM dd") === formattedDate
-    );
+    // Process data to return the expected format
+    const weeklySales: WeeklySalesData = last7Days.map((date) => {
+      const formattedDate = format(date, "MMM dd"); // "Feb 12"
+      const ordersForDay = orders.filter(
+        (order) => format(new Date(order.orderTime), "MMM dd") === formattedDate
+      );
 
-    return {
-      date: formattedDate,
-      totalRevenue: ordersForDay.reduce((sum, order) => sum + order.amount, 0),
-      totalOrders: ordersForDay.length,
-    };
-  });
+      return {
+        date: formattedDate,
+        totalRevenue: ordersForDay.reduce(
+          (sum, order) => sum + order.amount,
+          0
+        ),
+        totalOrders: ordersForDay.length,
+      };
+    });
 
-  return weeklySales;
+    return weeklySales;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export async function getLastMonthOrders() {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+  try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
 
-  const now = new Date();
+    const now = new Date();
 
-  // Get the first day of last month
-  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  startOfLastMonth.setHours(0, 0, 0, 0); // Set time to midnight
+    // Get the first day of last month
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    startOfLastMonth.setHours(0, 0, 0, 0); // Set time to midnight
 
-  // Get the last day of last month
-  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-  endOfLastMonth.setHours(23, 59, 59, 999); // Set time to end of the day
-  const lastMonthOrders = await prisma.order.findMany({
-    select: {
-      id: true,
-      orderTime: true,
-      amount: true,
-    },
-    where: {
-      orderTime: {
-        gte: startOfLastMonth, // Start of last month
-        lte: endOfLastMonth, // End of last month
+    // Get the last day of last month
+    const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    endOfLastMonth.setHours(23, 59, 59, 999); // Set time to end of the day
+    const lastMonthOrders = await prisma.order.findMany({
+      select: {
+        id: true,
+        orderTime: true,
+        amount: true,
       },
-    },
-  });
-  return lastMonthOrders;
-}
-export async function getThisMonthOrders() {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
-
-  const startOfMonth = new Date();
-  startOfMonth.setDate(1); // Set to the first day of the month
-  startOfMonth.setHours(0, 0, 0, 0);
-  const thisMonthOrders = await prisma.order.findMany({
-    select: {
-      id: true,
-      orderTime: true,
-      amount: true,
-      user: {
-        select: {
-          name: true,
-          email: true,
+      where: {
+        orderTime: {
+          gte: startOfLastMonth, // Start of last month
+          lte: endOfLastMonth, // End of last month
         },
       },
-    },
-    where: {
-      orderTime: {
-        gte: startOfMonth,
+    });
+    return lastMonthOrders;
+  } catch (error) {
+    console.error(error);
+  }
+}
+export async function getThisMonthOrders() {
+  try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
+
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1); // Set to the first day of the month
+    startOfMonth.setHours(0, 0, 0, 0);
+    const thisMonthOrders = await prisma.order.findMany({
+      select: {
+        id: true,
+        orderTime: true,
+        amount: true,
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
       },
-    },
-  });
-  return thisMonthOrders;
+      where: {
+        orderTime: {
+          gte: startOfMonth,
+        },
+      },
+    });
+    return thisMonthOrders;
+  } catch (error) {
+    console.error(error);
+  }
 }

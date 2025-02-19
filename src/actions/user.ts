@@ -19,20 +19,20 @@ const schema = z.object({
   phone: z.number().min(8, "Enter valid phone number"),
   address: z.string().min(3, "Address cannot be blank"),
 });
-const loggingSchema = z.object({
-  name: z.string().min(3, "name cannot be blank"),
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z
-    .string()
-    .min(1, "Password is required")
-    .min(8, "Password must be more than 8 characters")
-    .max(32, "Password must be less than 32 characters"),
-});
+// const loggingSchema = z.object({
+//   name: z.string().min(3, "name cannot be blank"),
+//   email: z.string().min(1, "Email is required").email("Invalid email"),
+//   password: z
+//     .string()
+//     .min(1, "Password is required")
+//     .min(8, "Password must be more than 8 characters")
+//     .max(32, "Password must be less than 32 characters"),
+// });
 
 export async function addUser(formData: FormData) {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
@@ -66,58 +66,76 @@ export async function addUser(formData: FormData) {
       revalidatePath("/users");
       return { success: true, message: "User account added successfully!" };
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { success: false, message: `Error adding User account` };
   }
 }
 
-export async function registerUser(formData: FormData) {
+// export async function registerUser(formData: FormData) {
+//   try {
+//     const name = formData.get("name") as string;
+//     const email = formData.get("email") as string;
+
+//     const password = formData.get("password") as string;
+
+//     const validation = loggingSchema.safeParse({
+//       email,
+//       name,
+//       password,
+//     });
+
+//     if (!validation.success) {
+//       return { success: false, message: validation.error.errors[0].message };
+//     }
+//     const foundUser = await prisma.user.findFirst({
+//       where: {
+//         email: email.toLowerCase(),
+//       },
+//     });
+//     if (foundUser) {
+//       return { success: false, message: `Email already exists` };
+//     }
+//     const pwHash = await saltAndHashPassword(password);
+//     const res = await prisma.user.create({
+//       data: {
+//         email: email.toLowerCase(),
+//         name,
+//         role: Role.CUSTOMER,
+//         password: pwHash,
+//       },
+//     });
+
+//     if (res) {
+//       // revalidatePath("/");
+//       return { success: true, message: "Account added successfully!" };
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     return { success: false, message: `Error creating new account` };
+//   }
+// }
+export async function checkUserAccount(email: string) {
   try {
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-
-    const password = formData.get("password") as string;
-
-    const validation = loggingSchema.safeParse({
-      email,
-      name,
-      password,
-    });
-
-    if (!validation.success) {
-      return { success: false, message: validation.error.errors[0].message };
-    }
-    const foundUser = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
-        email: email.toLowerCase(),
+        email: email,
+        role: Role.SELLER,
       },
     });
-    if (foundUser) {
-      return { success: false, message: `Email already exists` };
+    if (!user) {
+      return { success: false, message: `User account not found` };
     }
-    const pwHash = await saltAndHashPassword(password);
-    const res = await prisma.user.create({
-      data: {
-        email: email.toLowerCase(),
-        name,
-        role: Role.CUSTOMER,
-        password: pwHash,
-      },
-    });
-
-    if (res) {
-      // revalidatePath("/");
-      return { success: true, message: "Account added successfully!" };
-    }
-  } catch {
-    return { success: false, message: `Error creating new account` };
+    return { success: true, message: "User account found!" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: `Error checking user account` };
   }
 }
-
 export async function removeUser(id: string) {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
     const customer = await prisma.user.findFirst({
       where: {
         id,
@@ -138,15 +156,16 @@ export async function removeUser(id: string) {
         message: "User account removed successfully!",
       };
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { success: false, message: `Error removing user account` };
   }
 }
 
 export async function updateUser(formData: FormData) {
-  const session = await auth();
-  if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
+    const session = await auth();
+    if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
@@ -181,7 +200,8 @@ export async function updateUser(formData: FormData) {
         message: "User account updated successfully!",
       };
     }
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { success: false, message: `Error updating User account` };
   }
 }
@@ -193,6 +213,7 @@ export async function getUserFromDb(email: string, password: string) {
       },
       where: {
         email: email,
+        role: { in: [Role.ADMIN, Role.SELLER] },
       },
     });
     if (!user) {
@@ -212,7 +233,8 @@ export async function getUserFromDb(email: string, password: string) {
       email: user.email,
       role: user.role,
     };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }

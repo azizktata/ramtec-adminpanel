@@ -11,13 +11,16 @@ export async function GET() {
             id: true,
             name: true,
             description: true,
-            
           },
-        }
-      }
+        },
+      },
     });
     return NextResponse.json(categories);
-  } catch  {
-    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to fetch categories" },
+      { status: 500 }
+    );
   }
 }

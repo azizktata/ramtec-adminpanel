@@ -6,18 +6,17 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 
 export default function Page() {
-  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-
+  const { pending } = useFormStatus();
   const handleSubmit = async (event: {
     preventDefault: () => void;
     currentTarget: HTMLFormElement | undefined;
   }) => {
     event.preventDefault();
-    setLoading(true);
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
@@ -29,7 +28,6 @@ export default function Page() {
         redirect: false,
       });
 
-      setLoading(false);
       console.log(res);
       if (res?.error) {
         toast.error(`Sign-in failed: Please check your credentials`);
@@ -38,13 +36,12 @@ export default function Page() {
         router.push("/");
       }
     } catch {
-      setLoading(false);
       toast.error("Sign in failed. Please check your credentials.");
     }
   };
   return (
     <div className="flex flex-col gap-4 container mx-auto p-4 my-16 max-w-md bg-white shadow-md rounded-md">
-      <h1>Sign-in</h1>
+      <h1>Sign-in for Sellers only</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4 flex flex-col gap-2">
           <Label className="block text-sm font-medium text-gray-700">
@@ -74,13 +71,15 @@ export default function Page() {
                 "
           />
         </div>
-        <Button disabled={loading} className="w-full" type="submit">
-          {loading ? "Signing in..." : "Sign In"}
+        <Button disabled={pending} className="w-full" type="submit">
+          {pending ? "Signing in..." : "Sign In"}
         </Button>
       </form>
       <div className="text-center">
         <Button asChild variant="link">
-          <Link href="/sign-up">don&apos;t have an account? Sign up</Link>
+          <Link href="/sign-up" className="text-xs">
+            if you don&apos;t have an account! submit your request here.
+          </Link>
         </Button>
       </div>
     </div>
