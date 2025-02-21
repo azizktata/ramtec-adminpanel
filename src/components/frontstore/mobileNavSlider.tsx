@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import {
   FacebookIcon,
   InstagramIcon,
-  SearchIcon,
   ShoppingBag,
   X,
   YoutubeIcon,
@@ -24,6 +23,7 @@ import { Skeleton } from "../ui/skeleton";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { SignOut } from "../shared/sign-out";
 import { CategoryWithProducts } from "@/types/category-with-products";
+import SearchBar from "./searchBar";
 export default function MobileNavSlider({
   setOpen,
 }: {
@@ -52,7 +52,7 @@ export default function MobileNavSlider({
     fetchCategories();
   }, []);
   return (
-    <div>
+    <div className="">
       <div className="flex h-full flex-col justify-between bg-white p-6">
         {/* top section */}
         <div className="flex flex-col gap-4">
@@ -66,16 +66,8 @@ export default function MobileNavSlider({
           </div>
 
           {/* search input */}
-          <div className="flex h-12 items-center gap-2 rounded-md border border-[#6C7275] px-4">
-            <label htmlFor="search" className="cursor-pointer">
-              <SearchIcon />
-            </label>
-            <input
-              id="search"
-              name="search"
-              className="font-inter text-sm font-normal text-[#141718] outline-none placeholder:opacity-70"
-              placeholder="Search"
-            />
+          <div className="flex h-12 items-center gap-2  ">
+            <SearchBar />
           </div>
           {/* navbar links */}
           <Accordion className="grid grid-cols-1" type="single" collapsible>

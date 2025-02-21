@@ -14,16 +14,27 @@ export default function ProductCard({ product }: { product: ProductALL }) {
   const { data: session } = useSession();
   const isSeller = session?.user?.role === "SELLER";
   return (
-    <div className="text-center  flex-grow  mb-4  group relative ">
+    <div className="text-center  flex-grow self-stretch mb-4  group relative ">
       <div className="relative bg-[#F2F3F8] p-8  overflow-hidden">
-        <Image
-          src={images[0].url || "/banner (2).png"}
-          width={312}
-          height={269}
-          alt={"fallback image"}
-          className="w-[312px] h-[280px] md:h-[269px] mx-auto lg:w-full object-contain p-4 rounded-md 
-               transition-transform duration-300 ease-in-out group-hover:scale-110"
-        />
+        {images[0].url !== null ? (
+          <Image
+            src={images[0].url || "/banner (2).png"}
+            width={312}
+            height={269}
+            alt={"fallback image"}
+            className="w-[312px] h-[280px] md:h-[269px] mx-auto lg:w-full object-contain p-4 rounded-md 
+                 transition-transform duration-300 ease-in-out group-hovr:scale-110"
+          />
+        ) : (
+          <Image
+            src={"/banner (2).png"}
+            width={312}
+            height={269}
+            alt={"fallback image"}
+            className="w-[312px] h-[280px] md:h-[269px] mx-auto lg:w-full object-contain p-4 rounded-md 
+                 transition-transform duration-300 ease-in-out group-hover:scale-110"
+          />
+        )}
 
         {isSeller ? (
           prices?.discountSeller !== 0 && prices?.discountSeller ? (

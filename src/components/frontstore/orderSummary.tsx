@@ -16,7 +16,8 @@ export default function OrderSummary() {
               <div key={item.id} className="flex justify-between py-2">
                 <p className="font-medium">{item.name}</p>
                 <p>
-                  {item.prices!.price}${" "}
+                  {item.prices!.price}{" "}
+                  <span className="text-gray-400 font-light text-sm ">TND</span>
                   <span className="dt"> x {item.quantity}</span>
                 </p>
               </div>
@@ -28,7 +29,7 @@ export default function OrderSummary() {
           <div className="flex justify-between">
             <p className="font-normal">Shipping</p>
             <p>
-              0 <span className="text-gray-400 font-light">DT</span>
+              0 <span className="text-gray-400 font-light text-sm ">TND</span>
             </p>
           </div>
           <div className="flex justify-between">
@@ -37,7 +38,7 @@ export default function OrderSummary() {
             </p>
             <p>
               <strong> {cart.total}</strong>
-              <span className="text-gray-400 font-light"> DT</span>
+              <span className="text-gray-400 font-light"> TND</span>
             </p>
           </div>
         </div>

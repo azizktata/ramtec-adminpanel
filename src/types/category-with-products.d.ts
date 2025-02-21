@@ -8,6 +8,11 @@ export type CategoryWithProducts = Prisma.CategoryGetPayload<{
         slug: true;
         name: true;
         description: true;
+        images: {
+          select: {
+            url: true;
+          };
+        };
       };
     };
   };

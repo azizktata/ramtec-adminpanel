@@ -17,6 +17,27 @@ export default async function page() {
   //   const { products } = sliderImages;
   //   return <HeroSlider products={products} />;
   // };
+
+  const ShowCategoriesSilder = async () => {
+    const categories = await prisma.category.findMany({
+      include: {
+        products: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            description: true,
+            images: {
+              select: {
+                url: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return <CategoriesCarousel categories={categories} />;
+  };
   const ShowFeaturedProducts = async () => {
     const products = await prisma.product.findMany({
       take: 10,
@@ -86,7 +107,7 @@ export default async function page() {
             <p className="text-sm ">Categories</p>
           </div>
           <h2 className="text-2xl font-semibold mb-16">Browse by Category</h2>
-          <CategoriesCarousel />
+          <ShowCategoriesSilder />
         </div>
       </section>
       <section>

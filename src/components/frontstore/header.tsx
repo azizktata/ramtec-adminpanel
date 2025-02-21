@@ -109,7 +109,7 @@ export default function Header() {
               className={`fixed top-0 left-0 h-full bg-white dark:bg-darkmode-body overflow-y-auto w-full md:w-96 p-9 ${showSidebar ? "transition-transform transform translate-x-0" : "transition-transform transform -translate-x-full"}`}
             > */}
         <div
-          className={`absolute left-0 top-0 z-10 grid min-h-[100dvh] overflow-y-none w-full grid-cols-[11fr_1fr] transition-transform duration-300 ease-in md:grid-cols-[10fr_2fr] md:w-96 ${
+          className={`absolute left-0 top-0 z-30 grid min-h-[100dvh] overflow-y-none w-full grid-cols-[11fr_1fr] transition-transform duration-300 ease-in md:grid-cols-[10fr_2fr] md:w-96 ${
             showSidebar
               ? "transition-transform transform translate-x-0"
               : "transition-transform transform -translate-x-full"

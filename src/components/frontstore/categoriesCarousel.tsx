@@ -3,45 +3,13 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
+import { CategoryWithProducts } from "@/types/category-with-products";
 
-export default function CategoriesCarousel() {
-  const categories = [
-    // {
-    //   title: "Bureautique",
-    //   image: "/banner (1).png",
-    //   href: "/products/maintenance-reparation",
-    // },
-    {
-      title: "Imprimantes",
-      image: "/banner (2).png",
-      href: "/products/maintenance-reparation",
-    },
-    {
-      title: "Photocopies",
-      image: "/banner (3).png",
-      href: "/products/maintenance-reparation",
-    },
-    {
-      title: "Imprimantes",
-      image: "/banner (2).png",
-      href: "/products/maintenance-reparation",
-    },
-    {
-      title: "Photocopies",
-      image: "/banner (3).png",
-      href: "/products/maintenance-reparation",
-    },
-    {
-      title: "Imprimantes",
-      image: "/banner (2).png",
-      href: "/products/maintenance-reparation",
-    },
-    {
-      title: "Photocopies",
-      image: "/banner (3).png",
-      href: "/products/maintenance-reparation",
-    },
-  ];
+export default function CategoriesCarousel({
+  categories,
+}: {
+  categories: CategoryWithProducts[];
+}) {
   const plugin = React.useRef(Autoplay());
   return (
     <div>
@@ -61,7 +29,7 @@ export default function CategoriesCarousel() {
               <div className="group flex flex-col items-center flex-grow rounded-full">
                 <div className="max-w-[160px] w-full bg-[#F2F3F8] h-40 rounded-full flex items-center justify-center mb-4">
                   <Image
-                    src={category.image}
+                    src={category.products[0].images[0].url}
                     alt="Category"
                     width={120}
                     height={62}
@@ -70,7 +38,7 @@ export default function CategoriesCarousel() {
 
                 <div className="flex justify-center">
                   <h3 className="inline-block font-medium text-center text-dark bg-gradient-to-r from-blue to-blue bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px] group-hover:text-blue">
-                    {category.title}
+                    {category.name}
                   </h3>
                 </div>
               </div>

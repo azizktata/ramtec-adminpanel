@@ -21,6 +21,7 @@ const SearchBar = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputEditing(true);
+
     setInputValue(e.target.value);
 
     const newParams = new URLSearchParams(searchParams.toString());
