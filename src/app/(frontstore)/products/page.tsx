@@ -79,6 +79,7 @@ export default async function Page({
         select: {
           id: true,
           name: true,
+          slug: true,
           description: true,
         },
       },
@@ -101,7 +102,7 @@ export default async function Page({
 
   return (
     <div className=" container py-8">
-      <div className="flex flex-col lg:flex-row gap-16">
+      <div className="flex flex-col lg:flex-row  gap-16">
         <div className=" hidden lg:block lg:w-1/3  lg:max-w-[400] mt-16">
           <ProductFilters
             categories={categories}

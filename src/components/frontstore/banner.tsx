@@ -8,10 +8,10 @@ import { addToCart } from "@/store/slices/cartSlice";
 import Link from "next/link";
 
 export default function Banner({ product }: { product: ProductALL }) {
-  const { name, images, prices, category, slug, status, description } = product;
+  const { name, images, prices, category, slug, description } = product;
   const dispatch = useAppDispatch();
   return (
-    <div className="flex flex-col gap-2 w-full sm:flex-row items-center justify-center bg-[#F5F5F5] px-8 py-8 rounded-md">
+    <div className="flex flex-col gap-6 sm:gap-2 w-full sm:flex-row items-center justify-center bg-[#F5F5F5] px-8 py-8 rounded-md">
       <div className="flex flex-col items-start max-w-md w-full sm:w-1/2">
         {category && (
           <span className="text-xs font-semibold text-[#0188CC]/60 dark:text-darkmode-dark">

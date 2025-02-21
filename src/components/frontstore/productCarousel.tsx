@@ -1,13 +1,7 @@
 "use client";
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "../ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 // import Image from "next/image";
 import { ProductALL } from "@/types/products-IncludeAll";
 import ProductCard from "./productCard";
@@ -19,7 +13,7 @@ export default function ProductCarousel({
 }) {
   const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
   return (
-    <div className="relative">
+    <div className="relative ">
       <Carousel
         plugins={[plugin.current]}
         opts={{

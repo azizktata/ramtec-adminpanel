@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ZoomIn, PenSquare, Trash2, ZoomInIcon } from "lucide-react";
+import { PenSquare, Trash2, ZoomInIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";

@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FileWarning, OctagonAlert } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,8 +41,12 @@ export default function Page() {
     }
   };
   return (
-    <div className="flex flex-col gap-4 container mx-auto p-4 my-16 max-w-md bg-white shadow-md rounded-md">
-      <h1>Sign-in for Sellers only</h1>
+    <div className="flex flex-col gap-4 container w-[90%] p-8 my-16 max-w-md bg-white shadow-md rounded-md">
+      <h1 className="text-xl font-semibold">Sign-in </h1>
+      <div className="text-yellow-500 flex items-center gap-1 text-sm">
+        <OctagonAlert className="size-4" />
+        <p>for Re-sellers only</p>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4 flex flex-col gap-2">
           <Label className="block text-sm font-medium text-gray-700">
@@ -75,10 +80,11 @@ export default function Page() {
           {pending ? "Signing in..." : "Sign In"}
         </Button>
       </form>
-      <div className="text-center">
-        <Button asChild variant="link">
-          <Link href="/sign-up" className="text-xs">
-            if you don&apos;t have an account! submit your request here.
+      <div className="text-center ">
+        <Button asChild variant="link" className="text-gray-500">
+          <Link href="/sign-up" className="text-xs flex flex-wrap ">
+            if you don&apos;t have an account!{" "}
+            <span>submit your request here.</span>
           </Link>
         </Button>
       </div>

@@ -84,7 +84,9 @@ export default function MobileNavSlider({
                 <AccordionTrigger>{categorie.name}</AccordionTrigger>
                 {categorie.products.map((product) => (
                   <AccordionContent className="pl-4" key={product.id}>
-                    {product.name}
+                    <Link href={`/products/${product.slug}`}>
+                      {product.name}
+                    </Link>
                   </AccordionContent>
                 ))}
               </AccordionItem>
@@ -131,10 +133,7 @@ export default function MobileNavSlider({
               </div>
             </li>
             <li>
-              <Link
-                href="/cart"
-                className="flex items-center justify-between border-b border-[#E8ECEF] py-4"
-              >
+              <div className="flex items-center justify-between border-b border-[#E8ECEF] py-4">
                 <span className="font-inter text-sm font-medium text-[#141718]">
                   Cart
                 </span>
@@ -145,7 +144,7 @@ export default function MobileNavSlider({
                     <NotificationCount count={numberOfItems} />
                   </div>
                 </div>
-              </Link>
+              </div>
             </li>
 
             {/* <li>

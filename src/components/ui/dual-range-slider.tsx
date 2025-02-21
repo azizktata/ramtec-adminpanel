@@ -37,7 +37,7 @@ const DualRangeSlider = React.forwardRef<
             {label && (
               <span
                 className={cn(
-                  "absolute flex w-full justify-center",
+                  "absolute flex text-sm text-gray-700 font-base w-full justify-center",
                   labelPosition === "top" && "-top-7",
                   labelPosition === "bottom" && "top-4"
                 )}

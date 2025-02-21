@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { sendEmail } from "@/utils/sendEmail";
+import { OctagonAlert } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useFormStatus } from "react-dom";
@@ -42,8 +43,12 @@ export default function Page() {
     }
   }
   return (
-    <div className="flex flex-col gap-4 container my-16 mx-auto p-4 max-w-md bg-white shadow-md rounded-md">
-      <h1>Create an account (Sellers only)</h1>
+    <div className="flex flex-col gap-4 container w-[90%] p-8 my-16 mx-auto  max-w-md bg-white shadow-md rounded-md">
+      <h1 className="text-lg font-semibold">Submit to request an account</h1>
+      <div className="text-yellow-500 flex items-center gap-1 text-sm">
+        <OctagonAlert className="size-4" />
+        <p>for Re-sellers only</p>
+      </div>
       <form action={handleSubmit}>
         <div className="mb-4 flex flex-col gap-2">
           <Label className="block text-sm font-medium text-gray-700">
@@ -116,7 +121,11 @@ export default function Page() {
         </Button>
       </form>
       <div className="text-center">
-        <Button asChild variant="link">
+        <Button
+          asChild
+          variant="link"
+          className="text-xs flex flex-wrap text-gray-500"
+        >
           <Link href="/sign-in">Already have an account? Sign in</Link>
         </Button>
       </div>

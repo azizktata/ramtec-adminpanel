@@ -4,6 +4,7 @@ import FeaturedProducts from "@/components/frontstore/featuredProducts";
 import HeroSlider from "@/components/frontstore/heroSlider";
 import ProductCarousel from "@/components/frontstore/productCarousel";
 import ProductsByCategory from "@/components/frontstore/productsByCategory";
+import PromotionalAd from "@/components/frontstore/promotionalAd";
 import prisma from "@/lib/db";
 import { Ticket } from "lucide-react";
 import React from "react";
@@ -118,13 +119,17 @@ export default async function page() {
         </div>
       </section>
       <section>
-        <div className="container my-16">
+        <div className="container  my-16">
           <div className="text-center mb-6 md:mb-8">
             <h2 className="mb-2 text-3xl">Promotions</h2>
           </div>
 
           <ShowPromoProducts />
         </div>
+      </section>
+
+      <section className="">
+        <PromotionalAd />
       </section>
     </>
   );

@@ -57,7 +57,7 @@ const SearchBar = () => {
     >
       <input
         id="searchInput"
-        className="bg-transparent border-none search-input focus:ring-transparent pl-6 font-light w-full"
+        className="bg-transparent border-none search-input focus:outline-none pl-6 font-light w-full"
         key={searchParams?.get("q")}
         type="search"
         name="search"

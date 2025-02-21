@@ -6,6 +6,7 @@ import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
 import TopBar from "@/components/frontstore/topBar";
 import { SessionProvider } from "next-auth/react";
+import Footer from "@/components/frontstore/footer";
 // import MobileNavSlider from "@/components/frontstore/mobileNavSlider";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default async function Layout({
           <CartSideBar />
           <Toaster />
           {children}
+          <Footer />
         </SessionProvider>
       </ClientProvider>
     </div>

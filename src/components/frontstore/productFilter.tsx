@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DualRangeSlider } from "../ui/dual-range-slider";
 import React from "react";
 import { Button } from "../ui/button";
-import { RefreshCcw } from "lucide-react";
+import { ArrowRight, RefreshCcw } from "lucide-react";
 // import { Slider } from "@/components/ui/slider";
 
 const ProductFilters = ({
@@ -57,7 +57,7 @@ const ProductFilters = ({
   }
 
   return (
-    <div className="">
+    <div className="lg:border-r border-gray-200 dark:border-gray-700 p-2  w-full lg:px-8">
       <div>
         <h5 className="mb-2 text-base lg:text-lg font-semibold border-b border-gray-200 pb-3">
           Select Price Range
@@ -73,7 +73,12 @@ const ProductFilters = ({
             max={maxPriceData}
             value={values}
             step={100}
-            label={(value) => <span>{value}TND</span>}
+            label={(value) => (
+              <span className="flex items-center gap-1">
+                {value}{" "}
+                <span className="text-xs text-gray-600 font-light"> TND</span>
+              </span>
+            )}
           />
         </div>
       </div>
@@ -84,7 +89,7 @@ const ProductFilters = ({
         </h5>
 
         <ul className="mt-4 space-y-4">
-          {categories.map((category) => (
+          {/* {categories.map((category) => (
             <li
               key={category.id}
               className={`flex items-center justify-between cursor-pointer ${
@@ -97,6 +102,39 @@ const ProductFilters = ({
               {category.name}{" "}
               <span className="text-light dark:text-darkmode-light">
                 ({category.products.length})
+              </span>
+            </li>
+          ))} */}
+          {categories.map((category) => (
+            <li
+              key={category.id}
+              onClick={() => handleCategoryClick(category.slug)}
+              className={`flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50  dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 cursor-pointer`}
+            >
+              <div className="flex items-center ">
+                <svg
+                  className="me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"
+                  ></path>
+                </svg>
+                <span className="text-sm font-medium text-gray-900  dark:text-white">
+                  {category.name}
+                </span>
+              </div>
+              <span className="group opacity-0 w-full  hover:opacity-100 transition-opacity duration-200">
+                <ArrowRight className="size-4 ml-auto" />
               </span>
             </li>
           ))}

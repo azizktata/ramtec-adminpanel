@@ -30,7 +30,7 @@ export default function CartSideBar() {
   return (
     <div
       id="sidebar"
-      className="fixed z-20 w-[75%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full border border-l  transition-transform duration-300"
+      className="fixed overflow-y-auto z-20 w-[90%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full border border-l  transition-transform duration-300"
     >
       <div className="flex flex-col  gap-8 p-8">
         <div className="flex justify-between border-b border-gray-300 pb-4">
@@ -40,20 +40,26 @@ export default function CartSideBar() {
               {cart.items.length}
             </span>
           </h4>
-          <a href="#">
-            <button id="toggleSidebar" className="close-btn">
-              &times;
-            </button>
-          </a>
+
+          <button
+            id="toggleSidebar"
+            onClick={() => {
+              window.location.hash = "#close";
+              history.replaceState(null, "", window.location.pathname); // Remove the hash without scrolling
+            }}
+            className="close-btn"
+          >
+            &times;
+          </button>
         </div>
 
         {cart.items.map((item) => (
           <div key={item.id} className="flex items-start gap-4">
-            <div className="w-[120px] px-2  bg-[#E5EAF4]  rounded-md  ">
+            <div className="w-[120px] sm:px-2  bg-[#E5EAF4]  rounded-md  ">
               <Image
                 src={item.images[0].url}
                 alt=""
-                className="p-3 h-[120px] w-full object-contain"
+                className="p-2 h-[120px] w-full object-contain"
                 width={100}
                 height={120}
               />

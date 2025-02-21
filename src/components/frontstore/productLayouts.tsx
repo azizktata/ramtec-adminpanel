@@ -124,10 +124,10 @@ export default function ProductLayouts({
               <div className="lg:block relative">
                 <div className="block lg:hidden w-full">
                   <section
-                    className="collapse-container-class z-20 bg-body dark:bg-darkmode-body w-full px-4 rounded-md"
+                    className="collapse-container-class z-20 bg-body dark:bg-darkmode-body w-full  rounded-md"
                     {...getCollapseProps()}
                   >
-                    <div className="pb-8">
+                    <div className="pb-8 border-b border-gray-200 dark:border-gray-700">
                       <ProductFilters
                         categories={categories}
                         maxPriceData={maxPriceData}

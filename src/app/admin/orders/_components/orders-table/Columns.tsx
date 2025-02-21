@@ -77,9 +77,7 @@ export const columns: ColumnDef<OrderALL>[] = [
   {
     header: "customer name",
     cell: ({ row }) => (
-      <span className="block max-w-52 truncate">
-        {row.original.customer.name}
-      </span>
+      <span className="block max-w-52 truncate">{row.original.user.name}</span>
     ),
   },
   {
