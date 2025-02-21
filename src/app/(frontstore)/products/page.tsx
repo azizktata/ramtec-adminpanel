@@ -15,6 +15,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 
 interface SearchParams {
   sort?: string;
@@ -57,6 +58,7 @@ export default async function Page({
         },
       },
     },
+
     include: {
       category: true,
       prices: true,
@@ -81,6 +83,11 @@ export default async function Page({
           name: true,
           slug: true,
           description: true,
+          images: {
+            select: {
+              url: true,
+            },
+          },
         },
       },
     },
@@ -146,6 +153,7 @@ export default async function Page({
               <ProductGridView products={products} />
             )}
           </div>
+          <Button className="self-center bg-storeSecondary">Show More</Button>
         </div>
       </div>
     </div>

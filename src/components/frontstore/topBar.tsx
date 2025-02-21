@@ -11,7 +11,6 @@ import {
 
 import { CategoryWithProducts } from "@/types/category-with-products";
 import { cn } from "@/lib/utils";
-import { slugify } from "@/utils/slugify";
 
 export default function TopBar() {
   const [categories, setCategories] = React.useState<CategoryWithProducts[]>(
@@ -52,7 +51,7 @@ export default function TopBar() {
                       {category.products.map((product) => (
                         <ListItem
                           key={product.id}
-                          href={`/products/${slugify(product.name)}`}
+                          href={`/products/${product.slug}`}
                           title={product.name}
                         >
                           <span className="text-gray-500">

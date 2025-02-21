@@ -55,11 +55,11 @@ export default function CartSideBar() {
 
         {cart.items.map((item) => (
           <div key={item.id} className="flex items-start gap-4">
-            <div className="w-[120px] sm:px-2  bg-[#E5EAF4]  rounded-md  ">
+            <div className="w-[120px] sm:px-2 self-stretch bg-[#E5EAF4]  rounded-md  ">
               <Image
                 src={item.images[0].url}
                 alt=""
-                className="p-2 h-[120px] w-full object-contain"
+                className="p-1 h-[120px] w-full object-contain"
                 width={100}
                 height={120}
               />
@@ -68,17 +68,18 @@ export default function CartSideBar() {
             <div className="flex flex-col self-stretch gap-2">
               <p className="text-lg font-semibold">{item.name}</p>
               <p className="text-gray-500">
-                ${item.prices?.price} x {item.quantity}
+                {item.prices?.price} <span className="TND">TND</span> x{" "}
+                {item.quantity}
               </p>
-              <div className="flex items-center self-start gap-4 mt-auto  rounded-md border border-gray-300 px-3  p-2">
+              <div className="flex items-center self-start  mt-auto  rounded-md border border-gray-300   py-1">
                 <button onClick={() => minusCount(item)}>
-                  <MinusIcon className="h-4 w-4 text-black-500" />
+                  <MinusIcon className="h-4 w-4 text-black-500 mx-2" />
                 </button>
-                <span className="border-r border-l border-gray-400 px-5">
+                <span className="border-r border-l border-gray-200 px-4">
                   {item.quantity}
                 </span>
                 <button onClick={() => addCount(item)}>
-                  <PlusIcon className="h-4 w-4 text-black-500" />
+                  <PlusIcon className="h-4 w-4 text-black-500 mx-2" />
                 </button>
               </div>
               {/* <div className="flex items-center gap-4 border rounded-md border-gray-300 p-2 px-4">
@@ -111,7 +112,9 @@ export default function CartSideBar() {
 
         <div className="flex justify-between mt-auto border-t border-gray-300  pt-8 pb-4">
           <p>Total: </p>
-          <p className="font-semibold text-lg">${cart.total}</p>
+          <p className="font-semibold text-lg">
+            {cart.total} <span className="TND">TND</span>{" "}
+          </p>
         </div>
 
         <Link className="w-[100%] " href="/checkout">

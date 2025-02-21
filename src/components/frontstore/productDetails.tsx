@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function ProductDetails({ product }: { product: ProductALL }) {
   const dispatch = useAppDispatch();
@@ -21,6 +22,8 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
       setCount((prev) => prev - 1);
     }
   };
+  const { data: session } = useSession();
+  const isSeller = session?.user?.role === "SELLER";
   return (
     <div className="flex flex-col items-start">
       <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
@@ -43,17 +46,36 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
         )}
       </div> */}
       <div className="flex w-full   items-center gap-x-2 mt-8  mb-12">
-        {product?.prices?.discount !== 0 && product?.prices?.discount ? (
+        {isSeller ? (
+          product?.prices?.discountSeller !== 0 &&
+          product?.prices?.discountSeller ? (
+            <>
+              <span className="text-base  font-base text-gray-500 dark:text-darkmode-dark line-through">
+                {product?.prices?.price} <span className="TND">TND</span>
+              </span>
+              <span className="text-base md:text-xl font-medium text-storeSecondary dark:text-darkmode-dark">
+                {product?.prices?.price -
+                  (product?.prices?.price * product?.prices?.discountSeller) /
+                    100}{" "}
+                <span className="TND">TND</span>
+              </span>
+            </>
+          ) : (
+            <span className="text-base md:text-xl font-medium text-storeSecondary dark:text-darkmode-dark">
+              {product?.prices?.price} <span className="TND">TND</span>
+            </span>
+          )
+        ) : product?.prices?.discount !== 0 && product?.prices?.discount ? (
           <div className="flex items-center justify-between w-full ">
             <div className="flex items-center gap-2">
               <p className="text-2xl  text-gray-600 linethrough line-through dark:text-white">
-                {product?.prices?.price} TND
+                {product?.prices?.price} <span className="TND">TND</span>
               </p>
               <span className="text-base md:text-2xl lg:text-3xl tracking-wider font-extrabold text-[#0188CC] dark:text-darkmode-dark">
                 {product?.prices?.price -
                   (product?.prices?.price * product?.prices?.discount) /
                     100}{" "}
-                TND
+                <span className="TND">TND</span>
               </span>
             </div>
 
@@ -62,8 +84,8 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
             </div>
           </div>
         ) : (
-          <p className="text-2xl font-extrabold text-gray-900 sm:text-3xl dark:text-white">
-            {product?.prices?.price} TND
+          <p className="text-2xl font-extrabold text-storeSecondary sm:text-3xl dark:text-white">
+            {product?.prices?.price} <span className="TND">TND</span>
           </p>
         )}
       </div>
@@ -96,23 +118,23 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
           <Link href={`/checkout`}>Purchase Now</Link>
         </Button>
       </div>
-      <div className="flex items-center gap-4 border rounded-md border-gray-300 p-1 px-4">
+      <div className="flex items-center gap-4 border rounded-md border-gray-300 p-1 ">
         <button onClick={minusCount}>
-          <MinusIcon className="h-4 w-4 text-black-500 " />
+          <MinusIcon className="h-4 w-4 text-black-500 text-center ml-2" />
         </button>
         <input
           id="counter"
           aria-label="input"
-          className=" h-full text-center bg-primary border-r border-l border-gray-300 w-14 pb-1"
+          className=" h-full text-center bg-primary border-r border-l border-gray-300 w-12 pb-1"
           type="text"
           value={count}
           onChange={(e) => e.target.value}
         />
         <button onClick={addCount}>
-          <PlusIcon className="h-4 w-4 text-black-500" />
+          <PlusIcon className="h-4 w-4 text-black-500 mr-2" />
         </button>
       </div>
-      <hr className=" dark:border-gray-800" />
+      <hr className=" " />
       <div className="flex flex-wrap gap-3 items-center my-3">
         <h5 className="max-md:text-base font-semibold">Categories:</h5>
         {product?.category.map((cat) => cat.name).join(", ")}

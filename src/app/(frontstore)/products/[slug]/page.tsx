@@ -71,7 +71,7 @@ export default async function page({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
-            <Slash />
+            <Slash className="text-storeAccent" />
           </BreadcrumbSeparator>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
@@ -81,7 +81,7 @@ export default async function page({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator>
-            <Slash />
+            <Slash className="text-storeAccent" />
           </BreadcrumbSeparator>
           <BreadcrumbItem>
             <BreadcrumbPage>{product && product.name}</BreadcrumbPage>
@@ -97,7 +97,7 @@ export default async function page({
         </div>
       </div>
       <div className="w-full bg-[#F5F5F5] px-8 py-12 rounded-md mt-8">
-        <h2 className="text-2xl font-semibold mb-4">Product Description</h2>
+        <h2 className="text-xl font-semibold mb-4">Product Description</h2>
         <p className="text-base text-gray-500 dark:text-darkmode-dark">
           {product?.description}
         </p>

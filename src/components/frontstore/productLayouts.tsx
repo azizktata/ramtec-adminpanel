@@ -100,7 +100,7 @@ export default function ProductLayouts({
 
                 <div className="flex gap-x-4 items-center font-medium text-sm md:text-base ">
                   <Select
-                    onValueChange={(value) => handleChange("filter", value)}
+                    onValueChange={(value) => handleChange("sort", value)}
                     name="sort"
                     value={sortValue}
                   >

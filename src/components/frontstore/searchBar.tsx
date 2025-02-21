@@ -68,7 +68,7 @@ const SearchBar = () => {
         onChange={handleChange}
       />
 
-      <button className="bg-black text-white p-2 m-1 rounded-full">
+      <button className="bg-storeAccent text-white p-2 m-1 rounded-full">
         <Search size={20} />
       </button>
     </form>

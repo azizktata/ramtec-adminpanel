@@ -61,12 +61,12 @@ export default function Header() {
               <Skeleton className="h-9 w-30 rounded-sm" /> // Placeholder while loading
             ) : isLogged ? (
               <>
+                <SignOut />
                 <Avatar className="h-9 w-9">
                   <AvatarFallback>
                     {session.user.name?.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
-                <SignOut />
               </>
             ) : (
               <Button asChild className="hidden sm:flex" variant={"outline"}>

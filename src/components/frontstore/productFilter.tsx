@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DualRangeSlider } from "../ui/dual-range-slider";
 import React from "react";
 import { Button } from "../ui/button";
-import { ArrowRight, RefreshCcw } from "lucide-react";
+import { ArrowRight, Printer, RefreshCcw } from "lucide-react";
 // import { Slider } from "@/components/ui/slider";
 
 const ProductFilters = ({
@@ -84,11 +84,11 @@ const ProductFilters = ({
       </div>
 
       <div>
-        <h5 className="mb-2 mt-4 text-base lg:text-lg font-semibold  border-b border-gray-200 pb-3 lg:text-xl">
-          Product Categories
+        <h5 className="mb-2 mt-4 text-base lg:text-lg font-semibold  border-b border-gray-200 pb-3 ">
+          Categories
         </h5>
 
-        <ul className="mt-4 space-y-4">
+        <ul className="mt-4 space-y-4 w-full">
           {/* {categories.map((category) => (
             <li
               key={category.id}
@@ -111,29 +111,13 @@ const ProductFilters = ({
               onClick={() => handleCategoryClick(category.slug)}
               className={`flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50  dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 cursor-pointer`}
             >
-              <div className="flex items-center ">
-                <svg
-                  className="me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z"
-                  ></path>
-                </svg>
+              <div className="flex items-center w-full">
+                <Printer className="size-4 mr-2" />
                 <span className="text-sm font-medium text-gray-900  dark:text-white">
                   {category.name}
                 </span>
               </div>
-              <span className="group opacity-0 w-full  hover:opacity-100 transition-opacity duration-200">
+              <span className="group opacity-0   hover:opacity-100 transition-opacity duration-200">
                 <ArrowRight className="size-4 ml-auto" />
               </span>
             </li>

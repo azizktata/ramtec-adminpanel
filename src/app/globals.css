@@ -9,6 +9,11 @@ body {
   transform: translateX(0);
 }
 
+.TND {
+  font-size: small;
+  font-weight: lighter;
+}
+
 @layer base {
   :root {
     --radius: 0.5rem;
@@ -17,7 +22,7 @@ body {
     --text-muted-foreground: #6c757d;
     --primary: #13657b;
     --primary-dark: #0c3e4c;
-    --secondary: #2b8ead;
+    --secondary: #0188cc;
     --accent: #d2b325;
     --background: #e0fbfc;
     --sidebar-background: 0 0% 98%;

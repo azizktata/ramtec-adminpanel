@@ -73,7 +73,7 @@ export default function WeeklySales({
                         color: gridColor,
                       },
                       ticks: {
-                        stepSize: 100,
+                        stepSize: 200,
                         callback: function (value) {
                           return "TND " + value;
                         },
