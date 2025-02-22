@@ -22,7 +22,7 @@ interface SearchParams {
   minPrice?: number;
   maxPrice?: number;
   q?: string;
-  c?: string;
+  c?: string | string[];
   layout?: "list" | "grid";
 }
 export default async function Page({
@@ -35,11 +35,17 @@ export default async function Page({
     minPrice,
     maxPrice,
     q: searchValue,
-    c: category,
+    c: categoryParam,
     layout,
   } = (await searchParams) as {
     [key: string]: string;
   };
+
+  const categorySlugs = Array.isArray(categoryParam)
+    ? categoryParam
+    : categoryParam
+    ? [categoryParam]
+    : [];
 
   const products = await prisma.product.findMany({
     where: {
@@ -54,7 +60,9 @@ export default async function Page({
       },
       category: {
         some: {
-          name: category,
+          slug: {
+            in: categorySlugs.length > 0 ? categorySlugs : undefined,
+          },
         },
       },
     },
@@ -109,13 +117,14 @@ export default async function Page({
 
   return (
     <div className=" container py-8">
-      <div className="flex flex-col lg:flex-row  gap-16">
+      <div className="flex">
+        {/* <div className="flex flex-col lg:flex-row  gap-16">
         <div className=" hidden lg:block lg:w-1/3  lg:max-w-[400] mt-16">
           <ProductFilters
             categories={categories}
             maxPriceData={maxPriceData?.prices?.price || 9999}
           />
-        </div>
+        </div> */}
 
         <div className="w-full  flex flex-col gap-4">
           <div className="w-full  ">
@@ -129,7 +138,7 @@ export default async function Page({
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>
-                  <Slash />
+                  <Slash className="text-storeAccent" />
                 </BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage>
@@ -140,11 +149,18 @@ export default async function Page({
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-
-            <ProductLayouts
-              categories={categories}
-              maxPriceData={maxPriceData?.prices?.price || 9999}
-            />
+            <div className="flex justify-between items-center ">
+              <div className="hidden md:flex">
+                <ProductFilters
+                  categories={categories}
+                  maxPriceData={maxPriceData?.prices?.price || 9999}
+                />
+              </div>
+              <ProductLayouts
+                categories={categories}
+                maxPriceData={maxPriceData?.prices?.price || 9999}
+              />
+            </div>
           </div>
           <div className="">
             {layout === "list" ? (

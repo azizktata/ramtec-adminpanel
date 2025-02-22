@@ -2,6 +2,7 @@ import CategoriesCarousel from "@/components/frontstore/categoriesCarousel";
 import CategoriesGrid from "@/components/frontstore/categoriesGrid";
 import FeaturedProducts from "@/components/frontstore/featuredProducts";
 import HeroSlider from "@/components/frontstore/heroSlider";
+import { PartnersCarousel } from "@/components/frontstore/partnersCarousel";
 import ProductCarousel from "@/components/frontstore/productCarousel";
 import PromotionalAd from "@/components/frontstore/promotionalAd";
 import PromotionsCarousel from "@/components/frontstore/promotionsCarousel";
@@ -85,6 +86,7 @@ export default async function page() {
 
     return <ProductCarousel products={products} />;
   };
+
   const ShowBestOffers = async () => {
     const products = await prisma.product.findMany({
       take: 10,
@@ -132,11 +134,13 @@ export default async function page() {
           </div>
         </div>
       </section>
+
       <section className="container my-16">
         <ServicesContainer />
       </section>
+
       <section>
-        <div className="container my-8">
+        <div className="container my-16">
           {/* <div className="flex items-center gap-2 mb-3">
             <Ticket size={24} className="text-blue-500" />
             <p className="text-sm ">Categories</p>
@@ -145,6 +149,10 @@ export default async function page() {
           <ShowCategoriesGrid />
         </div>
       </section>
+      <section className="container ">
+        <PartnersCarousel />
+      </section>
+
       <section>
         <div className="container my-16  border-b border-gray-200 pb-8">
           <div className="border-l-[12px]  border-storeSecondary pl-4 mb-4">
@@ -228,6 +236,7 @@ export default async function page() {
           <ProductsByCategory />
         </div>
       </section> */}
+
       <section className="">
         <div className="container my-16">
           <div className="border-l-[12px]  border-storeSecondary pl-4 mb-4">
