@@ -1,8 +1,6 @@
 import { ProductALL } from "@/types/products-IncludeAll";
 import React from "react";
 import ProductCard from "./productCard";
-import Link from "next/link";
-import { Button } from "../ui/button";
 
 export default async function FeaturedProducts({
   products,
@@ -15,14 +13,6 @@ export default async function FeaturedProducts({
         {products.map((product, index) => (
           <ProductCard key={index} product={product} />
         ))}
-      </div>
-      <div className="flex justify-center">
-        <Link
-          className="btn btn-sm md:btn-lg btn-primary font-medium"
-          href={"/products"}
-        >
-          <Button>+ See All Products</Button>
-        </Link>
       </div>
     </div>
   );

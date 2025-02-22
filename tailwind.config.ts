@@ -25,7 +25,7 @@ export default {
         storePrimaryDark: "var(--primary-dark)",
         storeSecondary: "var(--secondary)",
         storeAccent: "var(--accent)",
-
+        cardBackground: "var(--background)",
         mutedForeground: "var(--text-muted-foreground)",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

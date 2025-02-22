@@ -1,7 +1,13 @@
 "use client";
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../ui/carousel";
 import Image from "next/image";
 import { CategoryWithProducts } from "@/types/category-with-products";
 
@@ -20,6 +26,10 @@ export default function CategoriesCarousel({
         // }}
         className="w-full   m-auto"
       >
+        <div className="absolute hidden md:block -top-10 right-12 flex gap-1 z-10">
+          <CarouselPrevious className=" rounded bg-storeSecondary border-none text-white hover:bg-gray-300" />
+          <CarouselNext className=" rounded bg-storeSecondary border-none text-white hover:bg-gray-300" />
+        </div>
         <CarouselContent className="mx-auto flex ">
           {categories.map((category, index) => (
             <CarouselItem
@@ -27,7 +37,7 @@ export default function CategoriesCarousel({
               className="basis-1/2 sm:basis-1/3 md:basis-1/5 flex justify-center items-center"
             >
               <div className="group flex flex-col items-center flex-grow rounded-full">
-                <div className="max-w-[160px] w-full bg-[#F2F3F8] h-40 rounded-full flex items-center justify-center mb-4">
+                <div className="max-w-[160px] w-full bg-[#F2F3F8] hover:bg-storeSecondary cursor-pointer transition-colors duration-500 h-40 rounded-full flex items-center justify-center mb-4">
                   <Image
                     src={category.products[0].images[0].url}
                     alt="Category"
@@ -37,7 +47,7 @@ export default function CategoriesCarousel({
                 </div>
 
                 <div className="flex justify-center">
-                  <h3 className="inline-block font-medium text-center text-dark bg-gradient-to-r from-blue to-blue bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px] group-hover:text-blue">
+                  <h3 className="inline-block font-medium  hover:text-storeSecondary cursor-pointer transition-colors duration-200 text-center text-dark bg-gradient-to-r from-blue to-blue bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px] group-hover:text-blue">
                     {category.name}
                   </h3>
                 </div>

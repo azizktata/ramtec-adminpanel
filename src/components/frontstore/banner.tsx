@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
 import Link from "next/link";
+import { ShoppingBasket } from "lucide-react";
 
 export default function Banner({ product }: { product: ProductALL }) {
   const { name, images, prices, category, slug, description } = product;
@@ -43,7 +44,10 @@ export default function Banner({ product }: { product: ProductALL }) {
             onClick={() => dispatch(addToCart({ item: product, quantity: 1 }))}
             href="#sidebar"
           >
-            <Button>Add to cart</Button>
+            <Button className="bg-storeSecondary hover:bg-storePrimary">
+              <ShoppingBasket className="size-12 " />
+              Add to cart
+            </Button>
           </a>
           <Button variant={"outline"} className="text-blue-500">
             <Link href={`/products/${slug}`}>Voir produit</Link>

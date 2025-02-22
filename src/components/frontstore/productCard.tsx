@@ -16,9 +16,9 @@ export default function ProductCard({ product }: { product: ProductALL }) {
   const { data: session } = useSession();
   const isSeller = session?.user?.role === "SELLER";
   return (
-    <div className="text-center  flex-grow self-stretch mb-4 border rounded-lg group relative ">
-      <div className="relative bg-[#F2F3F8] p-8  overflow-hidden">
-        {images[0].url !== null ? (
+    <div className="text-center  flex-grow self-stretch mb-4  rounded-lg group relative ">
+      <div className="relative bg-cardBackground p-8 h-[307px]   overflow-hidden ">
+        {images[0] ? (
           <Image
             src={images[0].url || "/banner (2).png"}
             width={312}
@@ -40,21 +40,21 @@ export default function ProductCard({ product }: { product: ProductALL }) {
 
         {isSeller ? (
           prices?.discountSeller !== 0 && prices?.discountSeller ? (
-            <Badge className="absolute top-0 right-0 bg-storeAccent text-white text-xs font-medium p-1 rounded-bl-md">
+            <Badge className="absolute top-0 left-0 bg-storeAccent text-white text-xs font-medium p-1 rounded-bl-md">
               {prices?.discountSeller}% OFF
             </Badge>
           ) : (
             ""
           )
         ) : prices?.discount !== 0 && prices?.discount ? (
-          <Badge className="absolute top-2 right-2 bg-storeSecondary text-white text-xs font-medium py-1 px-2 rounded-full">
-            {prices?.discount}% OFF
+          <Badge className="absolute top-2 left-2 bg-storeSecondary text-white text-xs font-medium py-1 px-2 rounded-lg">
+            -{prices?.discount}%
           </Badge>
         ) : (
           ""
         )}
         {status === "OUT_OF_STOCK" && (
-          <Badge className="absolute top-0 left-0 bg-red-500 text-white text-xs font-medium p-1 rounded-tr-md">
+          <Badge className="absolute top-0 right-0 bg-red-500 text-white text-xs font-medium p-1 rounded-tr-md">
             Out of stock
           </Badge>
         )}
@@ -72,9 +72,9 @@ export default function ProductCard({ product }: { product: ProductALL }) {
           </Button>
         </a>
       </div>
-      <div className="py-2 md:py-4 flex flex-col items-start px-4 z-20">
+      <div className="py-2 md:py-4 flex flex-col items-start px-1 z-20">
         {category && (
-          <span className="text-xs font-base text-[#0188CC]/50 dark:text-darkmode-dark">
+          <span className="text-xs font-base text-gray-400 dark:text-darkmode-dark">
             {product.category.map((cat) => cat.name).join(", ")}
           </span>
         )}
@@ -93,14 +93,14 @@ export default function ProductCard({ product }: { product: ProductALL }) {
                 <span className="text-base  font-base text-gray-500 dark:text-darkmode-dark line-through">
                   {prices?.price} <span className="TND">TND</span>
                 </span>
-                <span className="text-base md:text-xl font-medium text-storeSecondary dark:text-darkmode-dark">
+                <span className="text-base md:text-lg font-medium text-storeSecondary dark:text-darkmode-dark">
                   {prices?.price -
                     (prices?.price * prices?.discountSeller) / 100}{" "}
                   <span className="TND">TND</span>
                 </span>
               </>
             ) : (
-              <span className="text-base md:text-xl font-medium text-storeSecondary dark:text-darkmode-dark">
+              <span className="text-base md:text-lg font-medium text-storeSecondary dark:text-darkmode-dark">
                 {prices?.price} <span className="TND">TND</span>
               </span>
             )
@@ -109,13 +109,13 @@ export default function ProductCard({ product }: { product: ProductALL }) {
               <span className="text-sm  font-base text-gray-500 dark:text-darkmode-dark line-through">
                 {prices?.price} <span className="TND">TND</span>
               </span>
-              <span className="text-base md:text-xl font-medium text-storeSecondary dark:text-darkmode-dark">
+              <span className="text-base md:text-lg font-medium text-storeSecondary dark:text-darkmode-dark">
                 {prices?.price - (prices?.price * prices?.discount) / 100}{" "}
                 <span className="TND">TND</span>
               </span>
             </>
           ) : (
-            <span className="text-base md:text-xl font-medium text-storeSecondary dark:text-darkmode-dark">
+            <span className="text-base  font-medium text-storeSecondary dark:text-darkmode-dark">
               {prices?.price} <span className="TND">TND</span>
             </span>
           )}
