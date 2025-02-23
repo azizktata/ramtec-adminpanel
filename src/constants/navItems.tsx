@@ -4,6 +4,7 @@ import {
   Tags,
   Users,
   Truck,
+  Handshake,
 } from "lucide-react";
 
 export const navItems = [
@@ -32,11 +33,11 @@ export const navItems = [
     url: "/admin/orders",
     icon: <Truck />,
   },
-  // {
-  //   title: "Coupons",
-  //   url: "/coupons",
-  //   icon: <Ticket />,
-  // },
+  {
+    title: "Marques",
+    url: "/admin/marques",
+    icon: <Handshake />,
+  },
   // {
   //   title: "Sellers",
   //   url: "/admin/sellers",

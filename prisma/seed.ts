@@ -51,6 +51,37 @@ async function main() {
     },
   });
 
+  const marque1 = await prisma.marque.create({
+    data: {
+      name: "HP",
+      image: {
+        create: {
+          url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740308588/file_fnp3we.png",
+        },
+      },
+    },
+  });
+  const marque2 = await prisma.marque.create({
+    data: {
+      name: "Canon",
+      image: {
+        create: {
+          url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740307244/file_o5bldk.png",
+        },
+      },
+    },
+  });
+  const marque3 = await prisma.marque.create({
+    data: {
+      name: "ColorJet",
+      image: {
+        create: {
+          url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740316398/file_fdguow.png",
+        },
+      },
+    },
+  });
+
   // Create a Product
   const product1 = await prisma.product.create({
     data: {
@@ -63,6 +94,7 @@ async function main() {
       sku: "COPIER-800MX",
       status: "SELLING",
       slug: "multifunction-copier-mx-800",
+      marque: { connect: { id: marque1.id } },
       category: { connect: { id: category.id } },
       images: {
         create: {
@@ -83,6 +115,7 @@ async function main() {
       sku: "LASER-500L",
       status: "SELLING",
       slug: "laserjet-pro-l500",
+      marque: { connect: { id: marque2.id } },
       category: { connect: { id: category.id } },
       images: {
         create: {
@@ -103,6 +136,7 @@ async function main() {
       sku: "SCAN-3DPRO",
       status: "SELLING",
       slug: "smartscan-3d-pro",
+      marque: { connect: { id: marque1.id } },
       category: { connect: { id: category.id } },
       images: {
         create: {
@@ -122,6 +156,7 @@ async function main() {
       sku: "TONER-X200",
       status: "SELLING",
       slug: "ultrablack-toner-x200",
+      marque: { connect: { id: marque1.id } },
       category: { connect: { id: category2.id } },
       images: {
         create: {
@@ -142,6 +177,7 @@ async function main() {
       sku: "TONER-COLORSET",
       status: "SELLING",
       slug: "colormax-laser-toner-set",
+      marque: { connect: { id: marque2.id } },
       category: { connect: { id: category2.id } },
       images: {
         create: {
@@ -161,6 +197,7 @@ async function main() {
       sku: "INK-BLACK500",
       status: "SELLING",
       slug: "inkflow-black-refill-bottle-500ml",
+      marque: { connect: { id: marque3.id } },
       category: { connect: { id: category2.id } },
       images: {
         create: {
@@ -181,6 +218,7 @@ async function main() {
       sku: "INK-COLORSET",
       status: "SELLING",
       slug: "colorjet-ink-bottle-set-cmyk",
+      marque: { connect: { id: marque3.id } },
       category: { connect: { id: category2.id } },
       images: {
         create: {
@@ -200,6 +238,7 @@ async function main() {
       sku: "PAPER-A4-80GSM",
       status: "SELLING",
       slug: "premium-a4-multipurpose-paper-80gsm",
+      marque: { connect: { id: marque3.id } },
       category: { connect: { id: category3.id } },
       images: {
         create: {

@@ -31,6 +31,7 @@ export default async function page({
           id: true,
         },
       },
+      marque: true,
     },
     where: {
       slug,
@@ -41,6 +42,7 @@ export default async function page({
     include: {
       prices: true,
       category: true,
+      marque: true,
       images: {
         select: {
           url: true,

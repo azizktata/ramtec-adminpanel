@@ -10,7 +10,20 @@ import Image from "next/image";
 import React from "react";
 import toast from "react-hot-toast";
 
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import { useFormStatus } from "react-dom";
+
 interface Category {
+  id: string;
+  name: string;
+}
+interface Marque {
   id: string;
   name: string;
 }
@@ -20,6 +33,11 @@ export default function ProductForm({
   product = {
     id: "",
     name: "",
+    marque: {
+      id: "",
+      name: "",
+    },
+    marqueId: "",
     description: "",
     published: false,
     stock: 0,
@@ -37,26 +55,48 @@ export default function ProductForm({
   action: "add" | "update";
   product?: ProductALL;
 }) {
+  const { pending } = useFormStatus();
   const [categories, setCategories] = React.useState<Category[]>([]);
-
+  const [marques, setMarques] = React.useState<Marque[]>([]);
+  const [selectedCategories, setSelectedCategories] = React.useState<string[]>(
+    product.category.map((c) => c.id)
+  );
+  const [selectedMarque, setSelectedMarque] = React.useState<string>(
+    product.marque.id
+  );
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategories(
+      (prev) =>
+        prev.includes(categoryId)
+          ? prev.filter((id) => id !== categoryId) // Remove if already selected
+          : [...prev, categoryId] // Add if not selected
+    );
+  };
   React.useEffect(() => {
     async function fetchCategories() {
-      try {
-        const response = await fetch("/api/categories");
-        if (!response.ok) throw new Error("Failed to fetch categories");
+      const response = await fetch("/api/categories");
+      if (!response.ok) throw new Error("Failed to fetch categories");
 
-        const data = await response.json();
-        setCategories(data);
-        // setLoading(false);
-      } catch {
-        // setError(true);
-        // console.error(error);
-      }
+      const data = await response.json();
+      setCategories(data);
+      // setLoading(false);
     }
+    async function fetchMarques() {
+      const response = await fetch("/api/marques");
+      if (!response.ok) throw new Error("Failed to fetch marques");
+
+      const data = await response.json();
+      setMarques(data);
+    }
+    fetchMarques();
     fetchCategories();
   }, []);
 
   async function handleSubmit(formData: FormData) {
+    selectedCategories.forEach((categoryId) => {
+      formData.append("categories", categoryId); // Append each category separately
+    });
+    formData.append("marque", selectedMarque);
     if (action === "add") {
       const res = await addProduct(formData);
       if (res) {
@@ -105,7 +145,9 @@ export default function ProductForm({
           <Input
             type="text"
             name="sku"
-            defaultValue={product.sku}
+            defaultValue={
+              product.sku || `PROD_${Math.floor(10000 + Math.random() * 90000)}`
+            }
             id="sku"
             className="block border"
           />
@@ -153,32 +195,43 @@ export default function ProductForm({
           defaultValue={product.description}
         ></Input>
       </div>
-      <div className="">
-        <Label htmlFor="quantity">Quantity</Label>
-        <Input
-          type="number"
-          name="quantity"
-          id="quantity"
-          defaultValue={product.stock}
-          className="block border"
-        />
+      <div className="flex gap-2">
+        <div className="">
+          <Label htmlFor="quantity">Quantity</Label>
+          <Input
+            type="number"
+            name="quantity"
+            id="quantity"
+            defaultValue={product.stock}
+            className="block border"
+          />
+        </div>
+        <div className="flex-grow">
+          <Label htmlFor="quantity">Marques</Label>
+          <Select
+            onValueChange={(value) => setSelectedMarque(value)}
+            value={selectedMarque}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select from Marques" />
+            </SelectTrigger>
+            <SelectContent>
+              <div className="p-2  space-y-1">
+                {marques.map((marque) => (
+                  <SelectItem key={marque.id} value={marque.id}>
+                    {marque.name}
+                  </SelectItem>
+                ))}
+              </div>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
-      {/* {loading ? (
-        <div className="flex flex-col gap-2 items-center px-2 py-6">
-          <Loader2 className="size-4 animate-spin" />
-          <Typography>Loading...</Typography>
-        </div>
-      ) : error || !categories ? (
-        <div className="flex flex-col gap-2 items-center px-2 py-6 max-w-full">
-          <ShieldAlert className="size-6" />
-          <Typography>
-            Sorry, something went wrong while fetching categories
-          </Typography>
-        </div>
-      ) : ( */}
+
       <div className="flex gap-8 my-4">
-        <div className="space-y-4 ">
+        {/* <div className="space-y-4 ">
           <h3>Select Existing Categories</h3>
+
           {categories.map((category) => (
             <div className="flex items-center gap-2" key={category.id}>
               <Label htmlFor={category.id} className="ml-2">
@@ -194,9 +247,37 @@ export default function ProductForm({
               />
             </div>
           ))}
+        </div> */}
+        <div className="flex-grow">
+          <Label htmlFor="quantity">Categories</Label>
+          <Select>
+            <SelectTrigger>
+              <p className="w-full flex justify-between">
+                {selectedCategories.length > 0
+                  ? `${selectedCategories.length} categories selected`
+                  : "Select categories"}
+              </p>
+            </SelectTrigger>
+            <SelectContent>
+              <div className="p-2 space-y-1">
+                {categories.map((category) => (
+                  <div
+                    key={category.id}
+                    className="flex items-center gap-2 px-2 py-1"
+                  >
+                    <Checkbox
+                      id={category.id}
+                      checked={selectedCategories.includes(category.id)}
+                      onCheckedChange={() => toggleCategory(category.id)}
+                    />
+                    <Label htmlFor={category.id}>{category.name}</Label>
+                  </div>
+                ))}
+              </div>
+            </SelectContent>
+          </Select>
         </div>
-
-        <div className="flex-grow space-y-2 mt-8">
+        <div className="flex-grow  ">
           <Label htmlFor="newCategory" className="text-sm font-light">
             Or Add New Category
           </Label>
@@ -299,7 +380,18 @@ export default function ProductForm({
       )} */}
 
       <div className="flex  mt-4">
-        <Button type="submit">Save changes</Button>
+        <Button
+          disabled={pending}
+          onClick={() => {
+            const closeButton = document
+              .querySelector(".lucide-x")
+              ?.closest("button") as HTMLButtonElement;
+            closeButton?.click(); // Trigger the close action
+          }}
+          type="submit"
+        >
+          {pending ? "loading..." : "Submit"}
+        </Button>
         {/* <button type="submit" className="bg-blue-500 text-white px-4 py-2">
           Add Product
         </button> */}

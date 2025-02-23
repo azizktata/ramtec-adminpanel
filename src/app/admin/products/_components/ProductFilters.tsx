@@ -44,7 +44,7 @@ export default function ProductFilters({
       <div className="flex flex-col md:items-center md:flex-row gap-4 lg:gap-6">
         <Input
           type="search"
-          placeholder="Search product by name, sku..."
+          placeholder="Search product by name, marque, sku..."
           className="h-12 md:basis-[30%]"
           name="search"
           onChange={(e) => handleChange("search", e.target.value)}

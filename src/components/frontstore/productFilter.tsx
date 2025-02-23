@@ -20,15 +20,17 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+
 import { Checkbox } from "../ui/checkbox";
+import { MarqueWithProducts } from "@/types/marques";
 
 const ProductFilters = ({
   categories,
-
+  marques,
   maxPriceData,
 }: {
   categories: CategoryWithProducts[];
-
+  marques: MarqueWithProducts[];
   maxPriceData: number;
 }) => {
   const router = useRouter();
@@ -49,6 +51,22 @@ const ProductFilters = ({
     } else {
       // Add new category to selection
       newParams.append("c", handle);
+    }
+
+    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+  };
+
+  const handleMarqueClick = (handle: string) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    const selectedMarques = newParams.getAll("m");
+
+    if (selectedMarques.includes(handle)) {
+      newParams.delete("m");
+      selectedMarques
+        .filter((m) => m !== handle)
+        .forEach((m) => newParams.append("m", m));
+    } else {
+      newParams.append("m", handle);
     }
 
     router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
@@ -74,6 +92,12 @@ const ProductFilters = ({
     newParams.delete("c");
     router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
   }
+  function resetMarqueFilters() {
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.delete("m");
+    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+  }
+
   const handleCheckboxClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent closing of the dropdown
   };
@@ -235,7 +259,8 @@ const ProductFilters = ({
             })}
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* <h5 className="mb-2 mt-4 text-base lg:text-lg font-semibold  border-b border-gray-200 pb-3 ">
+      </div>
+      {/* <h5 className="mb-2 mt-4 text-base lg:text-lg font-semibold  border-b border-gray-200 pb-3 ">
           Categories
         </h5>
         <ul className="mt-4 space-y-4 w-full">
@@ -257,7 +282,6 @@ const ProductFilters = ({
             </li>
           ))}
         </ul> */}
-      </div>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -316,6 +340,73 @@ const ProductFilters = ({
           </div>
         </PopoverContent>
       </Popover>
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full justify-between gap-16 h-10"
+            >
+              Marques
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="ml-2 h-4 w-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-72 p-2 space-y-1">
+            <div className="flex justify-between items-center px-2 border-b border-gray-200 mb-3 pb-3">
+              <span className="text-sm text-gray-700">
+                total marques <strong>{marques.length}</strong>
+              </span>
+              <Button
+                variant={"link"}
+                onClick={resetMarqueFilters}
+                className="text-sm font-base self-start text-gray-800"
+              >
+                Reset
+              </Button>
+            </div>
+            {marques.map((marque) => {
+              const isChecked = searchParams.getAll("m").includes(marque.name);
+              return (
+                <DropdownMenuItem
+                  key={marque.id}
+                  onClick={(e) => {
+                    handleMarqueClick(marque.name);
+                    handleCheckboxClick(e);
+                  }}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <Checkbox
+                    name="marques"
+                    value={marque.id}
+                    defaultChecked={isChecked}
+                    onClick={(e) => {
+                      handleMarqueClick(marque.name);
+                      handleCheckboxClick(e);
+                    }}
+                    id={marque.id}
+                  />
+                  <span className="text-xs font-medium text-gray-700">
+                    {marque.name} ({marque.products.length}+)
+                  </span>
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <div className="">
         <Button

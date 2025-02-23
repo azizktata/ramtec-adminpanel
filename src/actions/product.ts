@@ -24,10 +24,11 @@ export async function addProduct(formData: FormData) {
     const stock = Number(formData.get("quantity"));
     const description = formData.get("description") as string;
     const discount = Number(formData.get("discount")) || 0;
-
+    const discountSeller = Number(formData.get("discountSeller")) || 0;
+    const sku = formData.get("sku") as string;
+    const marque = formData.get("marque") as string;
     const newCategory = formData.get("newCategory") as string;
     const selectedCategories = formData.getAll("categories") as string[];
-
     const categoryIds = [...selectedCategories];
     // if (newCategory) {
     //   const createdCategory = await prisma.category.create({
@@ -62,8 +63,6 @@ export async function addProduct(formData: FormData) {
         .end(buffer);
     });
 
-    const sku = Math.floor(10000 + Math.random() * 90000);
-
     const res = await prisma.product.create({
       data: {
         name,
@@ -72,13 +71,19 @@ export async function addProduct(formData: FormData) {
           create: {
             price,
             discount,
+            discountSeller,
           },
         },
         stock,
         status: "SELLING",
-        sku: "PROD_" + sku,
+        sku,
         description,
         published: true,
+        marque: {
+          connect: {
+            id: marque,
+          },
+        },
         images: {
           create: [
             {
@@ -122,6 +127,7 @@ export async function updateProduct(formData: FormData) {
     const description = formData.get("description") as string;
     const newCategory = formData.get("newCategory") as string;
     const selectedCategories = formData.getAll("categories") as string[];
+    const marque = formData.get("marque") as string;
     const productId = formData.get("id") as string;
     const categoryIds = [...selectedCategories];
     if (newCategory) {
@@ -236,6 +242,11 @@ export async function updateProduct(formData: FormData) {
         sku,
         description,
         published: true,
+        marque: {
+          connect: {
+            id: marque,
+          },
+        },
         images: {
           connect: allImageIds.map((id) => ({ id })),
         },

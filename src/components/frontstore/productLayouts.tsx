@@ -14,11 +14,14 @@ import {
 import { useCollapse } from "react-collapsed";
 import { CategoryWithProducts } from "@/types/category-with-products";
 import ProductFilters from "./productFilter";
+import { MarqueWithProducts } from "@/types/marques";
 export default function ProductLayouts({
   categories,
+  marques,
   maxPriceData,
 }: {
   categories: CategoryWithProducts[];
+  marques: MarqueWithProducts[];
   maxPriceData: number;
 }) {
   const searchParams = useSearchParams();
@@ -124,6 +127,7 @@ export default function ProductLayouts({
                   <div className="pb-8 border-b border-gray-200 dark:border-gray-700">
                     <ProductFilters
                       categories={categories}
+                      marques={marques}
                       maxPriceData={maxPriceData}
                     />
                   </div>

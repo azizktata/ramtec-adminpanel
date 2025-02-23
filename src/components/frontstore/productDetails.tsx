@@ -140,9 +140,13 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
         </button>
       </div>
       <hr className=" " />
-      <div className="flex flex-wrap gap-3 items-center my-3">
+      <div className="flex flex-wrap gap-3 items-center mt-3">
         <h5 className="max-md:text-base font-semibold">Categories:</h5>
         {product?.category.map((cat) => cat.name).join(", ")}
+      </div>
+      <div className="flex flex-wrap gap-3 items-center my-3">
+        <h5 className="max-md:text-base font-semibold">Marque:</h5>
+        {product?.marque.name}
       </div>
 
       <p className="mb-6 text-gray-500 dark:text-gray-400 py-6 mt-3 md:py-8 border-t border-gray-200">

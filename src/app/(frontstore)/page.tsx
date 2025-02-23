@@ -69,6 +69,7 @@ export default async function page() {
         images: true,
         category: true,
         prices: true,
+        marque: true,
       },
     });
 
@@ -81,10 +82,25 @@ export default async function page() {
         images: true,
         category: true,
         prices: true,
+        marque: true,
       },
     });
 
     return <ProductCarousel products={products} />;
+  };
+
+  const ShowPartnersCarousel = async () => {
+    const marques = await prisma.marque.findMany({
+      include: {
+        image: {
+          select: {
+            url: true,
+          },
+        },
+      },
+    });
+
+    return <PartnersCarousel marques={marques} />;
   };
 
   const ShowBestOffers = async () => {
@@ -94,6 +110,7 @@ export default async function page() {
         images: true,
         category: true,
         prices: true,
+        marque: true,
       },
     });
 
@@ -114,6 +131,7 @@ export default async function page() {
         images: true,
         category: true,
         prices: true,
+        marque: true,
       },
     });
     return (
@@ -150,7 +168,7 @@ export default async function page() {
         </div>
       </section>
       <section className="container ">
-        <PartnersCarousel />
+        <ShowPartnersCarousel />
       </section>
 
       <section>

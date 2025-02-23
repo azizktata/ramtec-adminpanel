@@ -45,6 +45,7 @@ export default async function Products({
     where.OR = [
       { sku: { contains: (await searchParams).search } },
       { name: { contains: (await searchParams).search } },
+      { marque: { name: { contains: (await searchParams).search } } },
     ];
   }
 
@@ -88,6 +89,7 @@ export default async function Products({
     include: {
       category: true,
       prices: true,
+      marque: true,
       images: {
         select: {
           url: true,

@@ -9,7 +9,7 @@ export default function ProductListView({
   products: ProductALL[];
 }) {
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {products.map((product) => (
         <div key={product.id} className="w-full flex items-center gap-6">
           <div className="relative w-[350px] bg-[#F2F3F8] p-8  overflow-hidden">

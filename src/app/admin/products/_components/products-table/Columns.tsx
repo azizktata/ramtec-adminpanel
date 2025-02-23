@@ -122,6 +122,16 @@ export const columns: ColumnDef<ProductALL>[] = [
     ),
   },
   {
+    header: "marque",
+    cell: ({ row }) => (
+      <div className="flex gap-2 items-center">
+        <Typography className="capitalize block truncate">
+          {row.original.marque.name}
+        </Typography>
+      </div>
+    ),
+  },
+  {
     header: "sku",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">

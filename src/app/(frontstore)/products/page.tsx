@@ -15,7 +15,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
+import LoadMoreButton from "@/components/frontstore/loadmoreButton";
 
 interface SearchParams {
   sort?: string;
@@ -23,7 +23,9 @@ interface SearchParams {
   maxPrice?: number;
   q?: string;
   c?: string | string[];
+  m?: string | string[];
   layout?: "list" | "grid";
+  coef?: number;
 }
 export default async function Page({
   searchParams,
@@ -35,11 +37,13 @@ export default async function Page({
     minPrice,
     maxPrice,
     q: searchValue,
+    m: marqueParam,
     c: categoryParam,
     layout,
   } = (await searchParams) as {
     [key: string]: string;
   };
+  const coef = (await searchParams).coef || 1;
 
   const categorySlugs = Array.isArray(categoryParam)
     ? categoryParam
@@ -47,7 +51,14 @@ export default async function Page({
     ? [categoryParam]
     : [];
 
+  const marqueNames = Array.isArray(marqueParam)
+    ? marqueParam
+    : marqueParam
+    ? [marqueParam]
+    : [];
+
   const products = await prisma.product.findMany({
+    take: 4 * coef,
     where: {
       name: {
         contains: searchValue,
@@ -65,11 +76,18 @@ export default async function Page({
           },
         },
       },
+
+      marque: {
+        name: {
+          in: marqueNames.length > 0 ? marqueNames : undefined,
+        },
+      },
     },
 
     include: {
       category: true,
       prices: true,
+      marque: true,
       images: {
         select: {
           url: true,
@@ -96,6 +114,16 @@ export default async function Page({
               url: true,
             },
           },
+        },
+      },
+    },
+  });
+  const marques = await prisma.marque.findMany({
+    include: {
+      products: {
+        select: {
+          id: true,
+          name: true,
         },
       },
     },
@@ -153,11 +181,13 @@ export default async function Page({
               <div className="hidden md:flex">
                 <ProductFilters
                   categories={categories}
+                  marques={marques}
                   maxPriceData={maxPriceData?.prices?.price || 9999}
                 />
               </div>
               <ProductLayouts
                 categories={categories}
+                marques={marques}
                 maxPriceData={maxPriceData?.prices?.price || 9999}
               />
             </div>
@@ -169,7 +199,7 @@ export default async function Page({
               <ProductGridView products={products} />
             )}
           </div>
-          <Button className="self-center bg-storeSecondary">Show More</Button>
+          {products.length >= 4 * coef && <LoadMoreButton />}
         </div>
       </div>
     </div>

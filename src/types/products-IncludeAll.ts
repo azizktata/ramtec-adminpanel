@@ -1,18 +1,18 @@
 import { Prisma } from "@prisma/client";
 export type ProductALL = Prisma.ProductGetPayload<{
-  include: { 
+  include: {
     prices: true;
     category: true;
     images: {
-    select: {
+      select: {
         url: true;
         id: true;
-    }
-  } };
+      };
+    };
+    marque: true;
+  };
 }>;
 
 export interface Item extends Omit<ProductALL, "createdAt" | "updatedAt"> {
   quantity?: number;
 }
-
-
