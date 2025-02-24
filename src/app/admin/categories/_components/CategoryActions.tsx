@@ -19,10 +19,10 @@ import { Input } from "@/components/ui/input";
 export default function CategoryActions() {
   async function handleSubmit(formData: FormData) {
     const res = await addCategory(formData);
-    if (res.success) {
-      toast.success(res.message);
+    if (res?.success) {
+      toast.success(res?.message);
     } else {
-      toast.error(res.message);
+      toast.error(res?.message);
     }
   }
   return (

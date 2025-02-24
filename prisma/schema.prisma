@@ -9,8 +9,10 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  // provider = "mysql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum ProductStatus {
@@ -148,13 +150,13 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model Seller {
-  id      String  @id @default(uuid())
-  name    String
-  email   String
-  phone   String?
-  address String?
+// model Seller {
+//   id      String  @id @default(uuid())
+//   name    String
+//   email   String
+//   phone   String?
+//   address String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }

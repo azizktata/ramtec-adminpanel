@@ -11,7 +11,7 @@ import { Badge } from "../ui/badge";
 import { ShoppingBasket } from "lucide-react";
 
 export default function ProductCard({ product }: { product: ProductALL }) {
-  const { name, images, prices, category, slug, status } = product;
+  const { name, images, prices, category, slug, status, marque } = product;
   const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const isSeller = session?.user?.role === "SELLER";
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: { product: ProductALL }) {
             ""
           )
         ) : prices?.discount !== 0 && prices?.discount ? (
-          <Badge className="absolute top-2 left-2 bg-storeSecondary text-white text-xs font-medium py-1 px-2 rounded-lg">
+          <Badge className="absolute top-2 left-2 bg-storeSecondary text-white text-xs font-medium py-1 px-2 rounded-xl">
             -{prices?.discount}%
           </Badge>
         ) : (
@@ -58,6 +58,9 @@ export default function ProductCard({ product }: { product: ProductALL }) {
             Out of stock
           </Badge>
         )}
+        <Badge className="absolute top-2 right-0 border-white text-storeAccent bg-white text-xs font-medium py-1 px-2 rounded-l-full">
+          {marque.name}
+        </Badge>
         <a
           onClick={() => dispatch(addToCart({ item: product, quantity: 1 }))}
           href="#sidebar"

@@ -7,7 +7,7 @@ import ProductCarousel from "@/components/frontstore/productCarousel";
 import PromotionalAd from "@/components/frontstore/promotionalAd";
 import PromotionsCarousel from "@/components/frontstore/promotionsCarousel";
 import ServicesContainer from "@/components/frontstore/servicesContainer";
-import { Button } from "@/components/ui/button";
+
 import prisma from "@/lib/db";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -219,9 +219,12 @@ export default async function page() {
         </div>
         <div className="flex justify-center">
           <Link className=" font-medium" href={"/products"}>
-            <Button className="px-8 py-6 text-base rounded-sm bg-storeSecondary hover:bg-storePrimary ">
+            {/* <Button className="px-8 py-6 text-base rounded-sm bg-storeSecondary hover:bg-storePrimary ">
               View all
-            </Button>
+            </Button> */}
+            <button className="px-8 py-2 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
+              View All
+            </button>
           </Link>
         </div>
       </section>

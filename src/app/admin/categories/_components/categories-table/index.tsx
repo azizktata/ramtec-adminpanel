@@ -5,13 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { columns } from "./Columns";
 
 import CategoriesTable from "./Table";
-import { CategoryWithProducts } from "@/types/category-with-products";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 
 export default function ShowCategoriesTable({
   categories,
   numberOfCategories,
 }: {
-  categories: CategoryWithProducts[];
+  categories: CategoryWithProductsIds[];
   numberOfCategories: number;
 }) {
   const perPage = useSearchParams().get("perPage") || 5;

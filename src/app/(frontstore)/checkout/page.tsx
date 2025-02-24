@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { Slash } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -37,9 +37,13 @@ export default function Page() {
             </Breadcrumb>
           </div>
           <h3 className="text-bold mb-4 text-2xl">Checkout</h3>
-          <OrderForm />
+          <Suspense>
+            <OrderForm />
+          </Suspense>
         </div>
-        <OrderSummary />
+        <Suspense>
+          <OrderSummary />
+        </Suspense>
       </div>
     </>
   );

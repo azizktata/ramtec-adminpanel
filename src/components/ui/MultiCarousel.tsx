@@ -12,7 +12,6 @@ import { EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ArrowLeftIcon } from "lucide-react";
 import { createContext } from "react";
 
 type CarouselContextProps = {

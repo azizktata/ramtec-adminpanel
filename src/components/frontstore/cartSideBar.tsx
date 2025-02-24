@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
+import { NotificationCount } from "../shared/notificationCount";
 
 export default function CartSideBar() {
   const dispatch = useAppDispatch();
@@ -34,12 +35,23 @@ export default function CartSideBar() {
     >
       <div className="flex flex-col  gap-8 p-8">
         <div className="flex justify-between border-b border-gray-300 pb-4">
-          <h4>
+          {/* <h4>
             Cart{" "}
             <span className="bg-blue-500 text-white text-xs font-bold  px-2 py-1 rounded-full">
               {cart.items.length}
             </span>
-          </h4>
+          </h4> */}
+          <div className="relative">
+            <h4> Cart </h4>
+            {/* <a href="#sidebar"></a> */}
+            <div className="absolute bottom-1 left-10">
+              {/* <span>{cart.items.length}</span> */}
+              <NotificationCount
+                count={cart.items.length}
+                className="text-white"
+              />
+            </div>
+          </div>
 
           <button
             id="toggleSidebar"
@@ -47,7 +59,6 @@ export default function CartSideBar() {
               window.location.hash = "#close";
               history.replaceState(null, "", window.location.pathname); // Remove the hash without scrolling
             }}
-            className="close-btn"
           >
             &times;
           </button>
@@ -118,9 +129,12 @@ export default function CartSideBar() {
         </div>
 
         <Link className="w-[100%] " href="/checkout">
-          <Button className="w-full py-6 text-lg bg-[#1C274C] hover:bg-[#277BE2] transition-colors ease-in-out duration-300">
+          <button className="w-full px-8 py-2 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
             Checkout
-          </Button>
+          </button>
+          {/* <Button className="w-full py-6 text-lg bg-[#1C274C] hover:bg-[#277BE2] transition-colors ease-in-out duration-300">
+            Checkout
+          </Button> */}
         </Link>
       </div>
     </div>

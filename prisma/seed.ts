@@ -50,6 +50,15 @@ async function main() {
       published: true,
     },
   });
+  // const category4 = await prisma.category.create({
+  //   data: {
+  //     name: "Security Camera",
+  //     slug: "security-camera",
+  //     description: "Security Camera category",
+
+  //     published: true,
+  //   },
+  // });
 
   const marque1 = await prisma.marque.create({
     data: {
@@ -77,6 +86,36 @@ async function main() {
       image: {
         create: {
           url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740316398/file_fdguow.png",
+        },
+      },
+    },
+  });
+  await prisma.marque.create({
+    data: {
+      name: "EPSON",
+      image: {
+        create: {
+          url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740384204/file_mcdqmb.png",
+        },
+      },
+    },
+  });
+  await prisma.marque.create({
+    data: {
+      name: "HIKVISION",
+      image: {
+        create: {
+          url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740384173/file_gt02pt.png",
+        },
+      },
+    },
+  });
+  await prisma.marque.create({
+    data: {
+      name: "SAMSUNG",
+      image: {
+        create: {
+          url: "https://res.cloudinary.com/dflhokygl/image/upload/v1740383910/file_wgwg18.png",
         },
       },
     },

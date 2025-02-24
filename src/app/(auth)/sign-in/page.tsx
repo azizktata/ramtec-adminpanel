@@ -2,11 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FileWarning, OctagonAlert } from "lucide-react";
+import { OctagonAlert } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 
@@ -76,9 +76,11 @@ export default function Page() {
                 "
           />
         </div>
-        <Button disabled={pending} className="w-full" type="submit">
-          {pending ? "Signing in..." : "Sign In"}
-        </Button>
+        <Suspense>
+          <Button disabled={pending} className="w-full" type="submit">
+            {pending ? "loading..." : "Submit request"}
+          </Button>
+        </Suspense>
       </form>
       <div className="text-center ">
         <Button asChild variant="link" className="text-gray-500">

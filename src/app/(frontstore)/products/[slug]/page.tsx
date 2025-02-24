@@ -1,7 +1,7 @@
 import ProductCarousel from "@/components/frontstore/productCarousel";
 import ProductDetails from "@/components/frontstore/productDetails";
 import ProductImages from "@/components/frontstore/productImagesMultiCarousel";
-import { Button } from "@/components/ui/button";
+
 import prisma from "@/lib/db";
 import React from "react";
 import {
@@ -112,7 +112,9 @@ export default async function page({
           <div className="">
             <ProductCarousel products={relatedProducts} />
           </div>
-          <Button className="self-center">See all products+</Button>
+          <button className="px-8 py-2 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
+            See All Products
+          </button>
         </div>
       )}
     </div>

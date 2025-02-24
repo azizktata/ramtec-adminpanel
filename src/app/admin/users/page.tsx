@@ -1,5 +1,5 @@
 import Typography from "@/components/ui/typography";
-import React from "react";
+import React, { Suspense } from "react";
 import ShowCustomersTable from "./_components/user-table";
 import prisma from "@/lib/db";
 import UserFilters from "./_components/UserFilters";
@@ -8,7 +8,7 @@ import UserActions from "./_components/UserActions";
 export default async function Users({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     perPage: number;
     page: number;
     search: string;
@@ -18,7 +18,7 @@ export default async function Users({
       | "date-added-desc"
       | "date-updated-asc"
       | "date-updated-desc";
-  };
+  }>;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where = {} as any;
@@ -61,6 +61,16 @@ export default async function Users({
     where,
     take,
     skip,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      address: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
+    },
     orderBy,
   });
   const numberOfCustomers = await prisma.user.count();
@@ -73,11 +83,15 @@ export default async function Users({
 
         <div className="space-y-8 mb-8">
           <UserActions />
-          <UserFilters />
-          <ShowCustomersTable
-            customers={customers}
-            numberOfCustomers={numberOfCustomers}
-          />
+          <Suspense>
+            <UserFilters />
+          </Suspense>
+          <Suspense>
+            <ShowCustomersTable
+              customers={customers}
+              numberOfCustomers={numberOfCustomers}
+            />
+          </Suspense>
           {/*
            */}
 

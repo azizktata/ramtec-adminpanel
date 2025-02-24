@@ -6,7 +6,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import DataTable from "@/components/shared/dataTable";
 // import { Product } from "@/types/product";
 import { DataTableProps } from "@/types/data-table";
-import { User } from "@prisma/client";
+import { UserInfo } from "@/types/user";
 // Prisma.ProductGetPayload<{
 //     include: { images: true };
 //   }>
@@ -14,7 +14,7 @@ export default function UsersTable({
   data,
   columns,
   pagination,
-}: DataTableProps<User>) {
+}: DataTableProps<UserInfo>) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({

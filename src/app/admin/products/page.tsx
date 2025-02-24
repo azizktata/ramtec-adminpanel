@@ -1,5 +1,5 @@
 import Typography from "@/components/ui/typography";
-import React from "react";
+import React, { Suspense } from "react";
 import ProductFilters from "./_components/ProductFilters";
 import ProductActions from "./_components/ProductActions";
 import AllProducts from "./_components/products-table";
@@ -8,7 +8,7 @@ import prisma from "@/lib/db";
 export default async function Products({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     category: string;
     filter:
       | "low"
@@ -24,7 +24,7 @@ export default async function Products({
     search: string;
     perPage: number;
     page: number;
-  };
+  }>;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {};
@@ -112,11 +112,15 @@ export default async function Products({
 
         <div className="space-y-8 mb-8">
           <ProductActions />
-          <ProductFilters categories={categories} />
-          <AllProducts
-            products={products}
-            numberOfProducts={numberOfProducts}
-          />
+          <Suspense>
+            <ProductFilters categories={categories} />
+          </Suspense>
+          <Suspense>
+            <AllProducts
+              products={products}
+              numberOfProducts={numberOfProducts}
+            />
+          </Suspense>
           {/*
            */}
 

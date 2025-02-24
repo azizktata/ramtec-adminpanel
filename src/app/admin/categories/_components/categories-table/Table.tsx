@@ -6,7 +6,7 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import DataTable from "@/components/shared/dataTable";
 // import { Product } from "@/types/product";
 import { DataTableProps } from "@/types/data-table";
-import { CategoryWithProducts } from "@/types/category-with-products";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 // Prisma.ProductGetPayload<{
 //     include: { images: true };
 //   }>
@@ -14,7 +14,7 @@ export default function CategoriesTable({
   data,
   columns,
   pagination,
-}: DataTableProps<CategoryWithProducts>) {
+}: DataTableProps<CategoryWithProductsIds>) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({

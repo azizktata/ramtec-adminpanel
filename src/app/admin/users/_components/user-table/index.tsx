@@ -4,14 +4,14 @@ import { useSearchParams } from "next/navigation";
 
 import { columns } from "./Columns";
 
-import { User } from "@prisma/client";
 import UsersTable from "./Table";
+import { UserInfo } from "@/types/user";
 
 export default function ShowUsersTable({
   customers,
   numberOfCustomers,
 }: {
-  customers: User[];
+  customers: UserInfo[];
   numberOfCustomers: number;
 }) {
   const perPage = useSearchParams().get("perPage") || 5;

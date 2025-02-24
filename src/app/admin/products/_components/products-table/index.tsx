@@ -1,13 +1,10 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
-import { columns, skeletonColumns } from "./Columns";
+import { columns } from "./Columns";
 import ProductsTable from "./Table";
-import TableSkeleton from "@/components/shared/tableSkeleton";
-import TableError from "@/components/shared/tableError";
-import { fetchProducts } from "@/data/products";
+
 import { ProductALL } from "@/types/products-IncludeAll";
 
 // type Props = {

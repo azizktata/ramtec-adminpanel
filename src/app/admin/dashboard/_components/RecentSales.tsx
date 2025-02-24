@@ -10,7 +10,7 @@ import {
 import { format } from "date-fns";
 
 export async function RecentSales() {
-  const thisMonthOrders = (await getThisMonthOrders()).toReversed();
+  const thisMonthOrders = ((await getThisMonthOrders()) || []).toReversed();
   const last5Orders = thisMonthOrders.slice(0, 5);
   const numberOfOrders = thisMonthOrders.length;
   return (

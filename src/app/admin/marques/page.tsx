@@ -1,5 +1,5 @@
 import Typography from "@/components/ui/typography";
-import React from "react";
+import React, { Suspense } from "react";
 import prisma from "@/lib/db";
 
 import ShowMarquesTable from "./_components/marques-table";
@@ -9,11 +9,11 @@ import MarqueActions from "./_components/MarqueActions";
 export default async function Marques({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     search: string;
     perPage: number;
     page: number;
-  };
+  }>;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where = {} as any;
@@ -56,11 +56,15 @@ export default async function Marques({
 
         <div className="space-y-8 mb-8">
           <MarqueActions />
-          <MarqueFilters />
-          <ShowMarquesTable
-            marques={marques}
-            numberOfMarques={numberOfMarques}
-          />
+          <Suspense>
+            <MarqueFilters />
+          </Suspense>
+          <Suspense>
+            <ShowMarquesTable
+              marques={marques}
+              numberOfMarques={numberOfMarques}
+            />
+          </Suspense>
           {/*
            */}
 

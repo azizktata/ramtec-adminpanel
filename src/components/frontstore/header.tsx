@@ -32,7 +32,7 @@ export default function Header() {
   }, [showSidebar]);
   const numberOfItems = useAppSelector((state) => state.cart.items.length);
   return (
-    <nav className="border-b">
+    <nav className="border-b border-[#F8F2D8]">
       <div className="container mx-auto flex items-center gap-2 justify-between px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center ">
           <Link href="/" className="flex w-[150px] ">
@@ -47,7 +47,9 @@ export default function Header() {
           </Link>
         </div>
         <div className="flex hidden sm:flex items-center mx-6 flex-grow max-w-3xl ">
-          <SearchBar />
+          <React.Suspense>
+            <SearchBar />
+          </React.Suspense>
         </div>
         <div className="flex items-center space-x-4">
           {userRole === "ADMIN" && (

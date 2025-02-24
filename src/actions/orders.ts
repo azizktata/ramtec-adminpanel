@@ -299,7 +299,7 @@ export async function getThisMonthOrders() {
       },
     });
     return thisMonthOrders;
-  } catch (error) {
-    console.error(error);
+  } catch {
+    return null;
   }
 }

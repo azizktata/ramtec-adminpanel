@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, LogOut } from "lucide-react";
+import { Briefcase } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { navItems } from "@/constants/navItems";
 import Typography from "../../ui/typography";
 
-import { signOut } from "next-auth/react";
 import { SignOut } from "@/components/shared/sign-out";
 export default function SidebarContent() {
   const pathname = usePathname();
@@ -18,7 +17,7 @@ export default function SidebarContent() {
         <div className="flex items-center justify-start px-5">
           <Briefcase className="size-8 text-adminPrimary mb-1.5 " />
           <Link
-            href="/"
+            href="/admin/dashboard"
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "font-bold text-2xl px-4 gap-2 min-h-fit"

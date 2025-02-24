@@ -1,5 +1,5 @@
 import { Toaster } from "react-hot-toast";
-import React from "react";
+import React, { Suspense } from "react";
 import ClientProvider from "../../store/provider";
 import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
@@ -11,7 +11,7 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <Suspense fallback="loading...">
       <SessionProvider>
         <ClientProvider>
           <Header />
@@ -21,6 +21,6 @@ export default async function Layout({
           {children}
         </ClientProvider>
       </SessionProvider>
-    </div>
+    </Suspense>
   );
 }

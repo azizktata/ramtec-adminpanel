@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { ProductALL } from "@/types/products-IncludeAll";
 import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from "react";
 import toast from "react-hot-toast";
 
 import {
@@ -380,18 +380,20 @@ export default function ProductForm({
       )} */}
 
       <div className="flex  mt-4">
-        <Button
-          disabled={pending}
-          onClick={() => {
-            const closeButton = document
-              .querySelector(".lucide-x")
-              ?.closest("button") as HTMLButtonElement;
-            closeButton?.click(); // Trigger the close action
-          }}
-          type="submit"
-        >
-          {pending ? "loading..." : "Submit"}
-        </Button>
+        <Suspense>
+          <Button
+            disabled={pending}
+            onClick={() => {
+              const closeButton = document
+                .querySelector(".lucide-x")
+                ?.closest("button") as HTMLButtonElement;
+              closeButton?.click(); // Trigger the close action
+            }}
+            type="submit"
+          >
+            {pending ? "loading..." : "Submit"}
+          </Button>
+        </Suspense>
         {/* <button type="submit" className="bg-blue-500 text-white px-4 py-2">
           Add Product
         </button> */}

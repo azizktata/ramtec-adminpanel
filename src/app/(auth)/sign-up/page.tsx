@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { sendEmail } from "@/utils/sendEmail";
 import { OctagonAlert } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import { useFormStatus } from "react-dom";
 import toast from "react-hot-toast";
 
@@ -115,10 +115,11 @@ export default function Page() {
                 "
           />
         </div>
-
-        <Button disabled={pending} className="w-full" type="submit">
-          {pending ? "loading..." : "Submit request"}
-        </Button>
+        <Suspense>
+          <Button disabled={pending} className="w-full" type="submit">
+            {pending ? "loading..." : "Submit request"}
+          </Button>
+        </Suspense>
       </form>
       <div className="text-center">
         <Button

@@ -34,7 +34,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { CategoryWithProducts } from "@/types/category-with-products";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 import { deleteCategory, updateCategory } from "@/actions/categorie";
 import toast from "react-hot-toast";
 // import { Product, ProductStatus } from "@/types/product";
@@ -46,23 +46,23 @@ export interface SkeletonColumn {
 // const handleSwitchChange = () => {};
 async function handleSubmit(formData: FormData) {
   const res = await updateCategory(formData);
-  if (res.success) {
-    toast.success(res.message);
+  if (res?.success) {
+    toast.success(res?.message);
   } else {
-    toast.error(res.message);
+    toast.error(res?.message);
   }
 }
 
 async function handleDeleteCategory(id: string) {
   const res = await deleteCategory(id);
-  if (res.success) {
-    toast.success(res.message);
+  if (res?.success) {
+    toast.success(res?.message);
   } else {
-    toast.error(res.message);
+    toast.error(res?.message);
   }
 }
 
-export const columns: ColumnDef<CategoryWithProducts>[] = [
+export const columns: ColumnDef<CategoryWithProductsIds>[] = [
   {
     id: "select",
     header: ({ table }) => (

@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { ArrowRight } from "lucide-react";
 
 export default function HeroSlider() {
   const activites = [
@@ -110,12 +111,17 @@ export default function HeroSlider() {
                   <p className="text-gray-100 font-light max-w-lg text-base mb-8">
                     {highlightText(item.description)}
                   </p>
-                  <Button
+                  <Button className="bg-gradient-to-r from-storeSecondary  px-9 py-6 to-blue-800 hover:from-storeSecondary hover:to-blue-900">
+                    {" "}
+                    Shop now <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                  <Link href="/products"></Link>
+                  {/* <Button
                     className="text-base px-9 py-6 bg-storeSecondary rounded-none"
                     variant="default"
                   >
                     <Link href="/products">Shop Now</Link>
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
               {/* <div className="flex flex-col md:flex-row items-center px-4 xl:px-16  mx-auto">
@@ -163,8 +169,8 @@ export default function HeroSlider() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className=" hidden sm:flex absolute top-1/2 left-4 transform -translate-y-1/2 z-20 p-2 rounded-none bg-black/70 border-none text-white  hover:bg-white/40" />
-        <CarouselNext className="hidden sm:flex  absolute top-1/2 right-4 transform -translate-y-1/2 z-20 p-2 rounded-none bg-black/70 border-none text-white hover:bg-white/40" />
+        <CarouselPrevious className=" hidden sm:flex absolute top-1/2 left-4 transform -translate-y-1/2 z-10 p-2 rounded-none bg-black/70 border-none text-white  hover:bg-white/40" />
+        <CarouselNext className="hidden sm:flex  absolute top-1/2 right-4 transform -translate-y-1/2 z-10 p-2 rounded-none bg-black/70 border-none text-white hover:bg-white/40" />
       </Carousel>
       <div className=" justify-center  -mt-8  transform  flex gap-2 w-[60%]">
         {Array.from({ length: totalSlides }).map((_, index) => (

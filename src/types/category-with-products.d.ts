@@ -17,3 +17,13 @@ export type CategoryWithProducts = Prisma.CategoryGetPayload<{
     };
   };
 }>;
+
+export type CategoryWithProductsIds = Prisma.CategoryGetPayload<{
+  include: {
+    products: {
+      select: {
+        id: true;
+      };
+    };
+  };
+}>;

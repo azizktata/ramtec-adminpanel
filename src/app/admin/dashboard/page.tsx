@@ -1,5 +1,4 @@
 import Typography from "@/components/ui/typography";
-import { Metadata } from "next";
 import SalesOverview from "./_components/SalesOverview";
 import StatusOverview from "./_components/StatusOverview";
 import DashboardCharts from "./_components/charts";
@@ -13,10 +12,6 @@ import {
 } from "@/actions/orders";
 import { getBestSellingProducts } from "@/actions/product";
 import { RecentSales } from "./_components/RecentSales";
-
-export const metadata: Metadata = {
-  title: "Dashboard",
-};
 
 export default async function DashboardPage() {
   const todayOrders = await prisma.order.findMany({
@@ -45,9 +40,9 @@ export default async function DashboardPage() {
     },
   });
 
-  const thisMonthOrders = await getThisMonthOrders();
+  const thisMonthOrders = (await getThisMonthOrders()) || [];
 
-  const lastMonthOrders = await getLastMonthOrders();
+  const lastMonthOrders = (await getLastMonthOrders()) || [];
 
   const allDeliveredOrders = await prisma.order.findMany({
     select: {
@@ -96,8 +91,8 @@ export default async function DashboardPage() {
     total: await prisma.order.count(),
   };
 
-  const getLast7DaysSalesData = await getLast7DaysSales();
-  const bestSellersData = await getBestSellingProducts();
+  const getLast7DaysSalesData = (await getLast7DaysSales()) || [];
+  const bestSellersData = (await getBestSellingProducts()) || [];
   return (
     <>
       <section>

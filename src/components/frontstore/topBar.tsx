@@ -34,7 +34,7 @@ export default function TopBar() {
     fetchCategories();
   }, []);
   return (
-    <header className="hidden sm:flex px-4 py-6 sm:px-6 lg:px-8 border-b border-accent-foreground">
+    <header className="hidden sm:flex px-4 py-6 sm:px-6 lg:px-8 border-b border-[#F8F2D8]">
       <nav className="container mx-auto">
         {loading ? (
           <div className="h-10 bg-gray-200 animate-pulse w-full" />

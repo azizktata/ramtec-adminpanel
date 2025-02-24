@@ -1,5 +1,5 @@
 import Typography from "@/components/ui/typography";
-import React from "react";
+import React, { Suspense } from "react";
 import prisma from "@/lib/db";
 import ShowCategoriesTable from "./_components/categories-table";
 import CategoryActions from "./_components/CategoryActions";
@@ -8,7 +8,7 @@ import CategoryFilters from "./_components/CategoryFilters";
 export default async function Categories({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     filter:
       | "published"
       | "unpublished"
@@ -19,7 +19,7 @@ export default async function Categories({
     search: string;
     perPage: number;
     page: number;
-  };
+  }>;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where = {} as any;
@@ -80,11 +80,15 @@ export default async function Categories({
 
         <div className="space-y-8 mb-8">
           <CategoryActions />
-          <CategoryFilters categories={categories} />
-          <ShowCategoriesTable
-            categories={categories}
-            numberOfCategories={numberOfCategories}
-          />
+          <Suspense>
+            <CategoryFilters />
+          </Suspense>
+          <Suspense>
+            <ShowCategoriesTable
+              categories={categories}
+              numberOfCategories={numberOfCategories}
+            />
+          </Suspense>
           {/*
            */}
 

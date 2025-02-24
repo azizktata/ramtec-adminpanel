@@ -11,6 +11,8 @@ export default async function ProductsByCategory() {
         include: {
           images: true,
           prices: true,
+          marque: true,
+          category: true,
         },
       },
     },

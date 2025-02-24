@@ -41,9 +41,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { User } from "@prisma/client";
 import { removeUser, updateUser } from "@/actions/user";
 import toast from "react-hot-toast";
+import { UserInfo } from "@/types/user";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
@@ -68,7 +68,7 @@ async function handleDeleteUser(id: string) {
     toast.error(res?.message);
   }
 }
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserInfo>[] = [
   {
     id: "select",
     header: ({ table }) => (

@@ -1,5 +1,5 @@
 import Typography from "@/components/ui/typography";
-import React from "react";
+import React, { Suspense } from "react";
 
 import prisma from "@/lib/db";
 import OrderFilters from "./_components/OrderFilter";
@@ -9,7 +9,7 @@ import { OrderMethod } from "@prisma/client";
 export default async function Orders({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     status: "pending" | "processing" | "delivered" | "cancel";
 
     method: "cash" | "card" | "credit";
@@ -20,7 +20,7 @@ export default async function Orders({
     search: string;
     perPage: number;
     page: number;
-  };
+  }>;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {};
@@ -138,8 +138,12 @@ export default async function Orders({
 
         <div className="space-y-8 mb-8">
           {/* <OrderActions /> */}
-          <OrderFilters />
-          <AllOrders orders={orders} numberOfOrders={numberOforders} />
+          <Suspense>
+            <OrderFilters />
+          </Suspense>
+          <Suspense>
+            <AllOrders orders={orders} numberOfOrders={numberOforders} />
+          </Suspense>
           {/*
            */}
 

@@ -30,7 +30,7 @@ interface SearchParams {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
   const {
     sort,

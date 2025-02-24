@@ -102,15 +102,22 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
           }
           href="#sidebar"
         >
-          <Button className="text-white   sm:mt-0 bg-storeSecondary hover:bg-storePrimaryDark focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-base px-8 py-5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center">
+          <Button className="px-8 py-5 rounded-md bg-white self-center text-storeSecondary font-base transition duration-200 hover:bg-storeSecondary hover:text-white border-2 border-storeSecondary hover:border-storeSecondary">
             Add to cart
           </Button>
         </a>
+
+        {/* <Button
+          onClick={() =>
+            dispatch(addToCart({ item: product, quantity: count }))
+          }
+          className="px-8 py-5 rounded-md bg-storeAccent self-center text-white font-base transition duration-200  border-2 border-transparent hover:bg-blue-600"
+        > */}
         <Button
           onClick={() =>
             dispatch(addToCart({ item: product, quantity: count }))
           }
-          className="bg-white text-storePrimary  hover:bg-gray-200 text-base px-8 py-5"
+          className="bg-gradient-to-r from-storeAccent  px-8 py-5 to-[#EAD010] hover:from-[#EAD010] hover:to-storeAccent"
         >
           <Link href={`/checkout`}>Purchase Now</Link>
         </Button>
