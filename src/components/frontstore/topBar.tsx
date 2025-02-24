@@ -9,11 +9,12 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
-import { CategoryWithProducts } from "@/types/category-with-products";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 import { cn } from "@/lib/utils";
+import { slugify } from "@/utils/slugify";
 
 export default function TopBar() {
-  const [categories, setCategories] = React.useState<CategoryWithProducts[]>(
+  const [categories, setCategories] = React.useState<CategoryWithProductsIds[]>(
     []
   );
   const [loading, setLoading] = React.useState(true);
@@ -21,7 +22,7 @@ export default function TopBar() {
   React.useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch("/api/categories", {
+        const response = await fetch("/api/parentCategories", {
           next: { revalidate: 3600 },
         });
         if (!response.ok) throw new Error("Failed to fetch categories");
@@ -34,7 +35,7 @@ export default function TopBar() {
     fetchCategories();
   }, []);
   return (
-    <header className="hidden sm:flex px-4 py-6 sm:px-6 lg:px-8 border-b border-[#F8F2D8]">
+    <header className="hidden sm:flex px-4 py-4 sm:px-6 lg:px-8 shadow-md rounded-bl-xl rounded-br-xl border-b border-[#F8F2D8]">
       <nav className="container mx-auto">
         {loading ? (
           <div className="h-10 bg-gray-200 animate-pulse w-full" />
@@ -47,18 +48,18 @@ export default function TopBar() {
                     {category.name}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                      {category.products.map((product) => (
+                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr]">
+                      {category.subcategories.map((cat) => (
                         <ListItem
-                          key={product.id}
-                          href={`/products/${product.slug}`}
-                          title={product.name}
+                          key={cat.id}
+                          href={`/products?c=${slugify(cat.name)}`}
+                          title={cat.name}
                         >
-                          <span className="text-gray-500">
-                            {product.description
-                              ? product.description
+                          {/* <span className="text-gray-500">
+                            {cat.description
+                              ? cat.description
                               : "No description"}
-                          </span>
+                          </span> */}
                         </ListItem>
                       ))}
                     </ul>
@@ -82,7 +83,7 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-md px-3 py-2 leading-none  border-l-2 border-storeAccent rounded-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
           {...props}

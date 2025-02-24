@@ -116,7 +116,7 @@ export const columns: ColumnDef<ProductALL>[] = [
         )}
 
         <Typography className="capitalize block truncate">
-          {row.original.name}
+          {row.original.name || ""}
         </Typography>
       </div>
     ),
@@ -126,7 +126,7 @@ export const columns: ColumnDef<ProductALL>[] = [
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         <Typography className="capitalize block truncate">
-          {row.original.marque.name}
+          {row.original.marque ? row.original.marque.name : ""}
         </Typography>
       </div>
     ),
@@ -143,7 +143,7 @@ export const columns: ColumnDef<ProductALL>[] = [
     header: "category",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
-        {row.original.category[0].name}
+        {row.original.category[0] ? row.original.category[0].name : ""}
       </Typography>
     ),
   },

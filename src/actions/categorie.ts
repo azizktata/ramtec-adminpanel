@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { slugify } from "@/utils/slugify";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -12,6 +13,7 @@ export async function updateCategory(formData: FormData) {
     const categoryName = formData.get("name") as string;
     const description = formData.get("description") as string;
     const id = formData.get("id") as string;
+    const parentId = (formData.get("parentId") as string) || null;
     const category = await prisma.category.findFirst({
       where: { id: id },
     });
@@ -24,6 +26,11 @@ export async function updateCategory(formData: FormData) {
         data: {
           name: categoryName,
           description: description,
+          parent: parentId
+            ? {
+                connect: { id: parentId },
+              }
+            : undefined,
         },
       });
       revalidatePath("/categories");
@@ -42,7 +49,8 @@ export async function addCategory(formData: FormData) {
     if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
     const categoryName = formData.get("name") as string;
     const description = formData.get("description") as string;
-    const slug = categoryName.toLowerCase().replace(/\s+/g, "-");
+    const parentId = (formData.get("parentId") as string) || null;
+    const slug = slugify(categoryName);
     try {
       await prisma.category.create({
         data: {
@@ -50,6 +58,11 @@ export async function addCategory(formData: FormData) {
           slug,
           description: description,
           published: true,
+          parent: parentId
+            ? {
+                connect: { id: parentId },
+              }
+            : undefined,
         },
       });
       revalidatePath("/categories");

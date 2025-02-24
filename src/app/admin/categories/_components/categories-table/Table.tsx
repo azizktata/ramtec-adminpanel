@@ -16,7 +16,6 @@ export default function CategoriesTable({
   pagination,
 }: DataTableProps<CategoryWithProductsIds>) {
   const [rowSelection, setRowSelection] = React.useState({});
-
   const table = useReactTable({
     data,
     columns,

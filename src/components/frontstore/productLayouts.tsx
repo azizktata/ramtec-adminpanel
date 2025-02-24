@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCollapse } from "react-collapsed";
-import { CategoryWithProducts } from "@/types/category-with-products";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 import ProductFilters from "./productFilter";
 import { MarqueWithProducts } from "@/types/marques";
 export default function ProductLayouts({
@@ -20,7 +20,7 @@ export default function ProductLayouts({
   marques,
   maxPriceData,
 }: {
-  categories: CategoryWithProducts[];
+  categories: CategoryWithProductsIds[];
   marques: MarqueWithProducts[];
   maxPriceData: number;
 }) {
@@ -102,14 +102,18 @@ export default function ProductLayouts({
                 <Button
                   onClick={() => handleLayoutChange("grid")}
                   variant={isListView ? "outline" : "default"}
-                  className={`btn border dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
+                  className={`btn border ${
+                    !isListView && "bg-storeAccent"
+                  }  dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
                 >
                   <Grid />
                 </Button>
                 <Button
                   onClick={() => handleLayoutChange("list")}
                   variant={isListView ? "default" : "outline"}
-                  className={`btn border dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
+                  className={`btn border ${
+                    isListView && "bg-storeAccent"
+                  } dark:border-darkmode-border  p-2 hover:scale-105 duration-300`}
                 >
                   <List />
                 </Button>

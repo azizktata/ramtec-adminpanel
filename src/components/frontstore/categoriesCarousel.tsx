@@ -38,12 +38,14 @@ export default function CategoriesCarousel({
             >
               <div className="group flex flex-col items-center flex-grow rounded-full">
                 <div className="max-w-[160px] w-full bg-[#F2F3F8] hover:bg-storeSecondary cursor-pointer transition-colors duration-500 h-40 rounded-full flex items-center justify-center mb-4">
-                  <Image
-                    src={category.products[0].images[0].url}
-                    alt="Category"
-                    width={120}
-                    height={62}
-                  />
+                  {category.products[0] && (
+                    <Image
+                      src={category.products[0].images[0].url}
+                      alt="Category"
+                      width={120}
+                      height={62}
+                    />
+                  )}
                 </div>
 
                 <div className="flex justify-center">

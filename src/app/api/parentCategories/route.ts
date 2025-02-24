@@ -5,22 +5,19 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const categories = await prisma.category.findMany({
+      where: {
+        parent: null,
+      },
       include: {
-        parent: {
+        products: {
           select: {
             id: true,
-            name: true,
           },
         },
         subcategories: {
           select: {
             id: true,
             name: true,
-          },
-        },
-        products: {
-          select: {
-            id: true,
           },
         },
       },

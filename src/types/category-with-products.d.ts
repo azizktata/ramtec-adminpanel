@@ -20,6 +20,18 @@ export type CategoryWithProducts = Prisma.CategoryGetPayload<{
 
 export type CategoryWithProductsIds = Prisma.CategoryGetPayload<{
   include: {
+    parent: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+    subcategories: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
     products: {
       select: {
         id: true;

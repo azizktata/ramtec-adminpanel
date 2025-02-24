@@ -10,13 +10,26 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { addCategory } from "@/actions/categorie";
 import toast from "react-hot-toast";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-export default function CategoryActions() {
+import { CategoryWithProductsIds } from "@/types/category-with-products";
+export default function CategoryActions({
+  categories,
+}: {
+  categories: CategoryWithProductsIds[];
+}) {
   async function handleSubmit(formData: FormData) {
     const res = await addCategory(formData);
     if (res?.success) {
@@ -25,6 +38,7 @@ export default function CategoryActions() {
       toast.error(res?.message);
     }
   }
+
   return (
     <div>
       {" "}
@@ -63,6 +77,45 @@ export default function CategoryActions() {
                 className="col-span-3"
               />
             </div>
+            {categories && (
+              <div className="flex flex-col items-start gap-2 w-full">
+                <label className="font-medium">
+                  Parent Category (Optional)
+                </label>
+                <Select name="parentId">
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50 max-h-60 overflow-auto">
+                    <SelectItem value="none">No Parent</SelectItem>
+                    {categories
+                      .filter((cat) => !cat.parentId)
+                      .map((parent) => (
+                        <div key={parent.id}>
+                          <SelectItem
+                            value={parent.id}
+                            className="font-semibold"
+                          >
+                            {parent.name}
+                          </SelectItem>
+                          {categories
+                            .filter((cat) => cat.parentId === parent.id)
+                            .map((subCat) => (
+                              <SelectItem
+                                key={subCat.id}
+                                value={subCat.id}
+                                className="pl-6"
+                              >
+                                ─ {subCat.name}
+                              </SelectItem>
+                            ))}
+                        </div>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <SheetFooter>
               <SheetClose asChild>
                 <Button type="submit">Save changes</Button>

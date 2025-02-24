@@ -9,10 +9,10 @@ generator client {
 }
 
 datasource db {
-  // provider = "mysql"
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // provider = "postgresql"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 enum ProductStatus {
@@ -40,15 +40,21 @@ enum Role {
 }
 
 model Category {
-  id          String    @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
-  slug        String    @unique
+  slug        String   @unique
   image       String?
   description String?
   published   Boolean
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  products    Product[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Self-referencing relationship for subcategories
+  parentId      String? // Nullable for top-level categories
+  parent        Category?  @relation("CategoryToSubCategory", fields: [parentId], references: [id])
+  subcategories Category[] @relation("CategoryToSubCategory")
+
+  products Product[]
 }
 
 model Price {

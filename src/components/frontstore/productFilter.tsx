@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryWithProducts } from "@/types/category-with-products";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 // import { DualRangeSlider } from "../ui/dual-range-slider";
 import React from "react";
@@ -29,7 +29,7 @@ const ProductFilters = ({
   marques,
   maxPriceData,
 }: {
-  categories: CategoryWithProducts[];
+  categories: CategoryWithProductsIds[];
   marques: MarqueWithProducts[];
   maxPriceData: number;
 }) => {
@@ -215,7 +215,10 @@ const ProductFilters = ({
               </svg>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-72 p-2 space-y-1">
+          <DropdownMenuContent
+            align="start"
+            className="w-72 h-96 overflow-y-auto p-2 space-y-1"
+          >
             <div className="flex justify-between items-center px-2 border-b border-gray-200 mb-3 pb-3">
               <span className="text-sm text-gray-700">
                 total products <strong>{numberOfProducts}</strong>
@@ -228,35 +231,70 @@ const ProductFilters = ({
                 Reset
               </Button>
             </div>
-            {categories.map((category) => {
-              const isChecked = searchParams
-                .getAll("c")
-                .includes(category.slug);
-              return (
-                <DropdownMenuItem
-                  key={category.id}
-                  onClick={(e) => {
-                    handleCategoryClick(category.slug);
-                    handleCheckboxClick(e);
-                  }}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <Checkbox
-                    name="categories"
-                    value={category.id}
-                    defaultChecked={isChecked}
+            {categories
+              .filter((category) => !category.parentId) // Get only parent categories
+              .map((parent) => (
+                <div key={parent.id}>
+                  {/* Parent Category */}
+                  <DropdownMenuItem
+                    key={parent.id}
                     onClick={(e) => {
-                      handleCategoryClick(category.slug);
+                      handleCategoryClick(parent.slug);
                       handleCheckboxClick(e);
                     }}
-                    id={category.id}
-                  />
-                  <span className="text-xs font-medium text-gray-700">
-                    {category.name} ({category.products.length}+)
-                  </span>
-                </DropdownMenuItem>
-              );
-            })}
+                    className="flex items-center gap-2 cursor-pointer " // Indent parent categories
+                  >
+                    <Checkbox
+                      name="categories"
+                      value={parent.id}
+                      defaultChecked={searchParams
+                        .getAll("c")
+                        .includes(parent.slug)}
+                      onClick={(e) => {
+                        handleCategoryClick(parent.slug);
+                        handleCheckboxClick(e);
+                      }}
+                      id={parent.id}
+                    />
+                    <span className="text-xs font-semibold text-gray-800">
+                      {parent.name}
+                    </span>
+                  </DropdownMenuItem>
+
+                  {/* Child Categories */}
+                  {categories
+                    .filter((category) => category.parentId === parent.id)
+                    .map((child) => {
+                      const isChecked = searchParams
+                        .getAll("c")
+                        .includes(child.slug);
+                      return (
+                        <DropdownMenuItem
+                          key={child.id}
+                          onClick={(e) => {
+                            handleCategoryClick(child.slug);
+                            handleCheckboxClick(e);
+                          }}
+                          className="flex items-center gap-2 cursor-pointer pl-4" // Indent child categories
+                        >
+                          <Checkbox
+                            name="categories"
+                            value={child.id}
+                            defaultChecked={isChecked}
+                            onClick={(e) => {
+                              handleCategoryClick(child.slug);
+                              handleCheckboxClick(e);
+                            }}
+                            id={child.id}
+                          />
+                          <span className="text-xs font-medium text-gray-700">
+                            {child.name} ({child.products.length}+)
+                          </span>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                </div>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

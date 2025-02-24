@@ -61,6 +61,18 @@ export default async function Categories({
     take,
     skip,
     include: {
+      parent: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      subcategories: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       products: {
         select: {
           id: true,
@@ -69,8 +81,31 @@ export default async function Categories({
     },
     orderBy,
   });
+
   // console.log(categories); //
   const numberOfCategories = await prisma.category.count();
+  const allCategories = await prisma.category.findMany({
+    include: {
+      parent: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      subcategories: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      products: {
+        select: {
+          id: true,
+        },
+      },
+    },
+    orderBy,
+  });
   return (
     <>
       <section>
@@ -79,7 +114,7 @@ export default async function Categories({
         </Typography>
 
         <div className="space-y-8 mb-8">
-          <CategoryActions />
+          <CategoryActions categories={allCategories} />
           <Suspense>
             <CategoryFilters />
           </Suspense>

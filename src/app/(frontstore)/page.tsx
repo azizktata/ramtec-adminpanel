@@ -1,5 +1,5 @@
 import CategoriesCarousel from "@/components/frontstore/categoriesCarousel";
-import CategoriesGrid from "@/components/frontstore/categoriesGrid";
+
 import FeaturedProducts from "@/components/frontstore/featuredProducts";
 import HeroSlider from "@/components/frontstore/heroSlider";
 import { PartnersCarousel } from "@/components/frontstore/partnersCarousel";
@@ -24,6 +24,9 @@ export default async function page() {
 
   const ShowCategoriesSilder = async () => {
     const categories = await prisma.category.findMany({
+      where: {
+        parent: null,
+      },
       include: {
         products: {
           select: {
@@ -42,26 +45,26 @@ export default async function page() {
     });
     return <CategoriesCarousel categories={categories} />;
   };
-  const ShowCategoriesGrid = async () => {
-    const categories = await prisma.category.findMany({
-      include: {
-        products: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-            description: true,
-            images: {
-              select: {
-                url: true,
-              },
-            },
-          },
-        },
-      },
-    });
-    return <CategoriesGrid categories={categories} />;
-  };
+  // const ShowCategoriesGrid = async () => {
+  //   const categories = await prisma.category.findMany({
+  //     include: {
+  //       products: {
+  //         select: {
+  //           id: true,
+  //           name: true,
+  //           slug: true,
+  //           description: true,
+  //           images: {
+  //             select: {
+  //               url: true,
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  //   return <CategoriesGrid categories={categories} />;
+  // };
   const ShowFeaturedProducts = async () => {
     const products = await prisma.product.findMany({
       take: 10,
@@ -156,17 +159,13 @@ export default async function page() {
       <section className="container my-16">
         <ServicesContainer />
       </section>
-
+      {/* 
       <section>
         <div className="container my-16">
-          {/* <div className="flex items-center gap-2 mb-3">
-            <Ticket size={24} className="text-blue-500" />
-            <p className="text-sm ">Categories</p>
-          </div>
-          <h2 className="text-2xl font-semibold mb-16">Browse by Category</h2> */}
+    
           <ShowCategoriesGrid />
         </div>
-      </section>
+      </section> */}
       <section className="container ">
         <ShowPartnersCarousel />
       </section>

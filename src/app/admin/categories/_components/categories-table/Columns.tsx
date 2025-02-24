@@ -4,15 +4,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Typography from "@/components/ui/typography";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -35,8 +32,9 @@ import {
 } from "@/components/ui/tooltip";
 
 import { CategoryWithProductsIds } from "@/types/category-with-products";
-import { deleteCategory, updateCategory } from "@/actions/categorie";
+import { deleteCategory } from "@/actions/categorie";
 import toast from "react-hot-toast";
+import CategoryForm from "../categoryForm";
 // import { Product, ProductStatus } from "@/types/product";
 
 export interface SkeletonColumn {
@@ -44,14 +42,14 @@ export interface SkeletonColumn {
   cell: React.JSX.Element;
 }
 // const handleSwitchChange = () => {};
-async function handleSubmit(formData: FormData) {
-  const res = await updateCategory(formData);
-  if (res?.success) {
-    toast.success(res?.message);
-  } else {
-    toast.error(res?.message);
-  }
-}
+// async function handleSubmit(formData: FormData) {
+//   const res = await updateCategory(formData);
+//   if (res?.success) {
+//     toast.success(res?.message);
+//   } else {
+//     toast.error(res?.message);
+//   }
+// }
 
 async function handleDeleteCategory(id: string) {
   const res = await deleteCategory(id);
@@ -105,6 +103,24 @@ export const columns: ColumnDef<CategoryWithProductsIds>[] = [
 
         <Typography className="capitalize block truncate">
           {row.original.name}
+        </Typography>
+      </div>
+    ),
+  },
+  {
+    header: "Parent Category",
+    cell: ({ row }) => (
+      <div className="flex gap-2 items-center">
+        {/* <Image
+          src={row.original.images[0]}
+          alt={row.original.name}
+          width={32}
+          height={32}
+          className="size-8 rounded-full"
+        /> */}
+
+        <Typography className="capitalize block truncate">
+          {row.original.parent ? row.original.parent.name : "No parent"}
         </Typography>
       </div>
     ),
@@ -174,39 +190,8 @@ export const columns: ColumnDef<CategoryWithProductsIds>[] = [
                   Click save when you&apos;re done.
                 </SheetDescription>
               </SheetHeader>
-              <form
-                action={handleSubmit}
-                className="flex flex-col gap-4 my-4 py-4"
-              >
-                <input type="hidden" name="id" value={row.original.id} />
-                <div className="flex flex-col items-start gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Nom de categorie
-                  </Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    defaultValue={row.original.name}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="flex flex-col items-start gap-4">
-                  <Label htmlFor="description" className="text-right">
-                    Description
-                  </Label>
-                  <Input
-                    id="description"
-                    name="description"
-                    defaultValue={row.original.description || ""}
-                    className="col-span-3"
-                  />
-                </div>
-                <SheetFooter>
-                  <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
-                  </SheetClose>
-                </SheetFooter>
-              </form>
+
+              <CategoryForm category={row.original} />
             </SheetContent>
           </Sheet>
 

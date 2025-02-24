@@ -71,12 +71,22 @@ export default async function Page({
       },
       category: {
         some: {
-          slug: {
-            in: categorySlugs.length > 0 ? categorySlugs : undefined,
-          },
+          OR: [
+            {
+              slug: {
+                in: categorySlugs.length > 0 ? categorySlugs : undefined, // Parent categories
+              },
+            },
+            {
+              parent: {
+                slug: {
+                  in: categorySlugs.length > 0 ? categorySlugs : undefined,
+                },
+              },
+            },
+          ],
         },
       },
-
       marque: {
         name: {
           in: marqueNames.length > 0 ? marqueNames : undefined,
@@ -103,17 +113,21 @@ export default async function Page({
   });
   const categories = await prisma.category.findMany({
     include: {
-      products: {
+      parent: {
         select: {
           id: true,
           name: true,
-          slug: true,
-          description: true,
-          images: {
-            select: {
-              url: true,
-            },
-          },
+        },
+      },
+      subcategories: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      products: {
+        select: {
+          id: true,
         },
       },
     },
