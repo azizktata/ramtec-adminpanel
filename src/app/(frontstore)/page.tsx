@@ -14,14 +14,6 @@ import Link from "next/link";
 import React from "react";
 
 export default async function page() {
-  // const ShowHeroSlider = async () => {
-  //   const sliderImages = await getCollectionProducts({
-  //     collection: collections.hero_slider,
-  //   });
-  //   const { products } = sliderImages;
-  //   return <HeroSlider products={products} />;
-  // };
-
   const ShowCategoriesSilder = async () => {
     const categories = await prisma.category.findMany({
       include: {
