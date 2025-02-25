@@ -37,6 +37,7 @@ export const PartnersCarousel = ({
                       width={200}
                       height={200}
                       alt={marque.name}
+                      className="object-contain"
                     />
                   ) : (
                     <span>logo</span>

@@ -179,10 +179,13 @@ export default async function page() {
             <h2 className="text-2xl md:text-3xl font-semibold ">
               New Arrivals
             </h2>
-            <div className=" border-b border-gray-500  flex items-center gap-1 text-[#141718]">
+            <Link
+              href={"/products"}
+              className=" border-b border-gray-500 cursor-pointer flex items-center gap-1 text-[#141718]"
+            >
               <p className="font-medium text-sm md:text-base">More products</p>
               <ArrowRight className="size-3" />
-            </div>
+            </Link>
           </div>
           <ShowNewProducts />
         </div>
@@ -208,10 +211,13 @@ export default async function page() {
             <h2 className="text-2xl md:text-3xl font-semibold ">
               Featured picks
             </h2>
-            <div className=" border-b border-gray-500  flex items-center gap-1 text-[#141718]">
+            <Link
+              href={"/products"}
+              className=" border-b border-gray-500 cursor-pointer flex items-center gap-1 text-[#141718]"
+            >
               <p className="font-medium text-sm md:text-base">More products</p>
               <ArrowRight className="size-3" />
-            </div>
+            </Link>
           </div>
 
           <ShowFeaturedProducts />
@@ -227,7 +233,7 @@ export default async function page() {
           </Link>
         </div>
       </section>
-      <section className="bg-[#182333] py-8">
+      <section className="bg-[#182333] py-6 pb-12">
         <div className="container  my-16">
           <div className="border-l-[12px]  border-storeSecondary pl-4 mb-4">
             <p className="text-storeSecondary font-medium">Promotions</p>
@@ -236,12 +242,13 @@ export default async function page() {
             <h2 className="text-2xl md:text-3xl font-semibold text-white">
               Best Deals
             </h2>
-            <div className=" border-b border-gray-500  flex items-center gap-1 text-[#141718]">
-              <p className="font-medium text-sm md:text-base text-white">
-                More products
-              </p>
-              <ArrowRight className="size-3 text-white" />
-            </div>
+            <Link
+              href={"/products"}
+              className=" border-b border-gray-300 cursor-pointer flex items-center gap-1 text-white"
+            >
+              <p className="font-medium  text-sm md:text-base">More products</p>
+              <ArrowRight className="size-3" />
+            </Link>
           </div>
 
           <ShowPromoProducts />
@@ -264,10 +271,13 @@ export default async function page() {
           </div>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl md:text-3xl font-semibold ">Best Offers</h2>
-            <div className=" border-b border-gray-500  flex items-center gap-1 text-[#141718]">
+            <Link
+              href={"/products"}
+              className=" border-b border-gray-500 cursor-pointer flex items-center gap-1 text-[#141718]"
+            >
               <p className="font-medium text-sm md:text-base">More products</p>
               <ArrowRight className="size-3" />
-            </div>
+            </Link>
           </div>
 
           <ShowBestOffers />
