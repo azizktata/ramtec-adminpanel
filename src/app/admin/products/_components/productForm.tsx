@@ -18,11 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormStatus } from "react-dom";
+import { CategoryWithProductsIds } from "@/types/category-with-products";
 
-interface Category {
-  id: string;
-  name: string;
-}
 interface Marque {
   id: string;
   name: string;
@@ -56,7 +53,9 @@ export default function ProductForm({
   product?: ProductALL;
 }) {
   const { pending } = useFormStatus();
-  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [categories, setCategories] = React.useState<CategoryWithProductsIds[]>(
+    []
+  );
   const [marques, setMarques] = React.useState<Marque[]>([]);
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>(
     product.category.map((c) => c.id)
@@ -249,7 +248,7 @@ export default function ProductForm({
           ))}
         </div> */}
         <div className="flex-grow">
-          <Label htmlFor="quantity">Categories</Label>
+          <Label htmlFor="categories">Categories</Label>
           <Select>
             <SelectTrigger>
               <p className="w-full flex justify-between">
@@ -260,7 +259,70 @@ export default function ProductForm({
             </SelectTrigger>
             <SelectContent>
               <div className="p-2 space-y-1">
-                {categories.map((category) => (
+                {categories.length === 0 ? (
+                  <p className="text-gray-500 text-sm">
+                    No categories available
+                  </p>
+                ) : (
+                  categories
+                    .filter((cat) => !cat.parentId) // Get only parent categories
+                    .map((parent) => {
+                      // Find children of this parent
+                      const subcategories = categories.filter(
+                        (c) => c.parentId === parent.id
+                      );
+                      console.log("categories: " + categories);
+                      console.log(
+                        `Parent: ${parent.name}, Subcategories:`,
+                        subcategories
+                      );
+
+                      return (
+                        <div key={parent.id}>
+                          {/* Parent Category */}
+                          <div className="flex items-center gap-2 px-2 py-1">
+                            <Label
+                              htmlFor={parent.id}
+                              className="font-semibold"
+                            >
+                              {parent.name}
+                            </Label>
+                          </div>
+
+                          {/* Child Categories */}
+                          {subcategories.length > 0 ? (
+                            subcategories.map((child) => (
+                              <div
+                                key={child.id}
+                                className="flex items-center gap-2 pl-4 py-1"
+                              >
+                                <Checkbox
+                                  id={child.id}
+                                  checked={selectedCategories.includes(
+                                    child.id
+                                  )}
+                                  onCheckedChange={() =>
+                                    toggleCategory(child.id)
+                                  }
+                                />
+                                <Label htmlFor={child.id}>{child.name}</Label>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-gray-500 text-xs pl-4">
+                              No subcategories
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })
+                )}
+              </div>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* {categories.map((category) => (
                   <div
                     key={category.id}
                     className="flex items-center gap-2 px-2 py-1"
@@ -272,11 +334,7 @@ export default function ProductForm({
                     />
                     <Label htmlFor={category.id}>{category.name}</Label>
                   </div>
-                ))}
-              </div>
-            </SelectContent>
-          </Select>
-        </div>
+                ))} */}
         <div className="flex-grow  ">
           <Label htmlFor="newCategory" className="text-sm font-light">
             Or Add New Category

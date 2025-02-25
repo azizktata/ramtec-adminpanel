@@ -52,7 +52,7 @@ export default function MobileNavSlider({
     fetchCategories();
   }, []);
   return (
-    <div className="">
+    <div className="overflow-y-auto h-full">
       <div className="flex h-full flex-col justify-between bg-white p-6">
         {/* top section */}
         <div className="flex flex-col gap-4">
@@ -71,7 +71,23 @@ export default function MobileNavSlider({
           </div>
           {/* navbar links */}
           <Accordion className="grid grid-cols-1" type="single" collapsible>
-            {categories.map((categorie) => (
+            {categories
+              .filter((categorie) => categorie.parentId === null)
+              .map((parent) => (
+                <AccordionItem value={parent.name} key={parent.id}>
+                  <AccordionTrigger>{parent.name}</AccordionTrigger>
+                  {categories
+                    .filter((categorie) => categorie.parentId === parent.id)
+                    .map((child) => (
+                      <AccordionContent className="pl-4" key={child.id}>
+                        <Link href={`/products?c=${child.slug}`}>
+                          {child.name}
+                        </Link>
+                      </AccordionContent>
+                    ))}
+                </AccordionItem>
+              ))}
+            {/* {categories.map((categorie) => (
               <AccordionItem value={categorie.name} key={categorie.id}>
                 <AccordionTrigger>{categorie.name}</AccordionTrigger>
                 {categorie.products.map((product) => (
@@ -82,7 +98,7 @@ export default function MobileNavSlider({
                   </AccordionContent>
                 ))}
               </AccordionItem>
-            ))}
+            ))} */}
           </Accordion>
 
           {/* <ul className="grid grid-cols-1">

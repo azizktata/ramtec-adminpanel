@@ -94,7 +94,7 @@ export default function ProductCard({ product }: { product: ProductALL }) {
             prices?.discountSeller !== 0 && prices?.discountSeller ? (
               <>
                 <span className="text-base  font-base text-gray-500 dark:text-darkmode-dark line-through">
-                  {prices?.price} <span className="TND">TND</span>
+                  {prices?.price} <span className="font-light">TND</span>
                 </span>
                 <span className="text-base md:text-lg font-medium text-storeSecondary dark:text-darkmode-dark">
                   {prices?.price -
@@ -110,7 +110,7 @@ export default function ProductCard({ product }: { product: ProductALL }) {
           ) : prices?.discount !== 0 && prices?.discount ? (
             <>
               <span className="text-sm  font-base text-gray-500 dark:text-darkmode-dark line-through">
-                {prices?.price} <span className="TND">TND</span>
+                {prices?.price} <span className="font-light">TND</span>
               </span>
               <span className="text-base md:text-lg font-medium text-storeSecondary dark:text-darkmode-dark">
                 {prices?.price - (prices?.price * prices?.discount) / 100}{" "}

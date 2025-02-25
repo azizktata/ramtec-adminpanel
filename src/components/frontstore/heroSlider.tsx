@@ -111,11 +111,14 @@ export default function HeroSlider() {
                   <p className="text-gray-100 font-light max-w-lg text-base mb-8">
                     {highlightText(item.description)}
                   </p>
-                  <Button className="bg-gradient-to-r from-storeSecondary  px-9 py-6 to-blue-800 hover:from-storeSecondary hover:to-blue-900">
-                    {" "}
-                    Shop now <ArrowRight className="ml-2 h-4 w-4" />
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-storeSecondary  px-9 py-6 to-blue-800 hover:from-storeSecondary hover:to-blue-900"
+                  >
+                    <Link href="/products">
+                      Shop now <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                   </Button>
-                  <Link href="/products"></Link>
                   {/* <Button
                     className="text-base px-9 py-6 bg-storeSecondary rounded-none"
                     variant="default"

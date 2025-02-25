@@ -28,8 +28,19 @@ export async function addProduct(formData: FormData) {
     const sku = formData.get("sku") as string;
     const marque = formData.get("marque") as string;
     const newCategory = formData.get("newCategory") as string;
-    const selectedCategories = formData.getAll("categories") as string[];
-    const categoryIds = [...selectedCategories];
+    const categoryIds = formData.getAll("categories") as string[];
+
+    const selectedCategories = await prisma.category.findMany({
+      where: { id: { in: categoryIds } },
+      select: { id: true, parentId: true }, // Get parentId
+    });
+
+    // Extract parent category IDs (excluding null values)
+    const parentCategoryIds = selectedCategories
+      .map((cat) => cat.parentId)
+      .filter((parentId) => parentId !== null);
+
+    const allCategoryIds = [...categoryIds, ...parentCategoryIds];
     // if (newCategory) {
     //   const createdCategory = await prisma.category.create({
     //     data: {
@@ -92,7 +103,7 @@ export async function addProduct(formData: FormData) {
           ],
         },
         category: {
-          connect: categoryIds.map((id) => ({ id })),
+          connect: allCategoryIds.map((id) => ({ id })),
           create: newCategory
             ? {
                 name: newCategory,
@@ -126,10 +137,22 @@ export async function updateProduct(formData: FormData) {
     const sku = formData.get("sku") as string;
     const description = formData.get("description") as string;
     const newCategory = formData.get("newCategory") as string;
-    const selectedCategories = formData.getAll("categories") as string[];
+    const categoryIds = formData.getAll("categories") as string[];
     const marque = formData.get("marque") as string;
     const productId = formData.get("id") as string;
-    const categoryIds = [...selectedCategories];
+
+    const selectedCategories = await prisma.category.findMany({
+      where: { id: { in: categoryIds } },
+      select: { id: true, parentId: true }, // Get parentId
+    });
+
+    // Extract parent category IDs (excluding null values)
+    const parentCategoryIds = selectedCategories
+      .map((cat) => cat.parentId)
+      .filter((parentId) => parentId !== null);
+
+    const allCategoryIds = [...categoryIds, ...parentCategoryIds];
+
     if (newCategory) {
       const createdCategory = await prisma.category.create({
         data: {
@@ -138,7 +161,7 @@ export async function updateProduct(formData: FormData) {
           published: true,
         },
       });
-      categoryIds.push(createdCategory.id);
+      allCategoryIds.push(createdCategory.id);
     }
 
     const savedImages = [];
@@ -251,7 +274,7 @@ export async function updateProduct(formData: FormData) {
           connect: allImageIds.map((id) => ({ id })),
         },
         category: {
-          connect: categoryIds.map((id) => ({ id })),
+          connect: allCategoryIds.map((id) => ({ id })),
         },
       },
     });

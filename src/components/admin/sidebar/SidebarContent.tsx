@@ -1,21 +1,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { navItems } from "@/constants/navItems";
-import Typography from "../../ui/typography";
 
 import { SignOut } from "@/components/shared/sign-out";
+import Image from "next/image";
+import { ArrowLeftCircleIcon } from "lucide-react";
 export default function SidebarContent() {
   const pathname = usePathname();
 
   return (
-    <div className="pb-[5rem] h-full">
-      <div className="py-6 px-2 flex flex-col overflow-y-auto h-full">
-        <div className="flex items-center justify-start px-5">
-          <Briefcase className="size-8 text-adminPrimary mb-1.5 " />
+    <div className="pb-6 h-full">
+      <div className="pt-6 px-2 flex flex-col overflow-y-auto h-full">
+        <div className="flex items-center justify-start ">
           <Link
             href="/admin/dashboard"
             className={cn(
@@ -23,7 +22,7 @@ export default function SidebarContent() {
               "font-bold text-2xl px-4 gap-2 min-h-fit"
             )}
           >
-            <Typography component="span">Admin</Typography>
+            <Image src="/logo.png" width={150} height={100} alt="logo" />
           </Link>
         </div>
 
@@ -44,10 +43,13 @@ export default function SidebarContent() {
             </li>
           ))}
         </ul>
-      </div>
-
-      <div className="px-6 py-4 absolute left-0 w-full right-0 bottom-0 border-t">
-        <SignOut />
+        <div className="px-4 py-4 mt-auto justify-center border-t flex flex-col items-stretch gap-2">
+          <Button className="flex items-center justify-center  gap-1">
+            <ArrowLeftCircleIcon className="size-8 text-white" />
+            <Link href="/">Back to home</Link>
+          </Button>
+          <SignOut />
+        </div>
       </div>
     </div>
   );

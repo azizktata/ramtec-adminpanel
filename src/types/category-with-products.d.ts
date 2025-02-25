@@ -2,12 +2,23 @@ import { Prisma } from "@prisma/client";
 
 export type CategoryWithProducts = Prisma.CategoryGetPayload<{
   include: {
+    parent: {
+      select: {
+        name: true;
+      };
+    };
+    subcategories: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
     products: {
       select: {
         id: true;
         slug: true;
         name: true;
-        description: true;
+
         images: {
           select: {
             url: true;

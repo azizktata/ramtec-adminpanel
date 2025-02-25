@@ -29,7 +29,7 @@ export const PartnersCarousel = ({
         >
           <CarouselContent>
             {marques.map((marque, index) => (
-              <CarouselItem className="basis-1/4 lg:basis-1/4" key={index}>
+              <CarouselItem className="basis-1/3 lg:basis-1/4" key={index}>
                 <div className="flex rounded-md  aspect-square bg-muted items-center justify-center p-8">
                   {marque.image ? (
                     <Image

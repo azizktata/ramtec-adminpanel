@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function PromotionalAd() {
   return (
@@ -28,10 +29,12 @@ export default function PromotionalAd() {
             to fit your needs. Shop now and get exclusive discounts.
           </p>
           <Button
-            className="text-base px-9 py-6 bg-storeSecondary rounded-none"
-            variant="default"
+            asChild
+            className="bg-gradient-to-r from-storeSecondary  px-9 py-6 to-blue-800 hover:from-storeSecondary hover:to-blue-900"
           >
-            <Link href="/products">Shop Printers</Link>
+            <Link href="/products?c=impression">
+              Shop now <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>

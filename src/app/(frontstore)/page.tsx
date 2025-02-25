@@ -24,16 +24,24 @@ export default async function page() {
 
   const ShowCategoriesSilder = async () => {
     const categories = await prisma.category.findMany({
-      where: {
-        parent: null,
-      },
       include: {
+        parent: {
+          select: {
+            name: true,
+          },
+        },
+        subcategories: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         products: {
           select: {
             id: true,
             name: true,
             slug: true,
-            description: true,
+
             images: {
               select: {
                 url: true,

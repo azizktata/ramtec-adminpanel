@@ -32,7 +32,10 @@ export default async function Categories({
   const skip = (page - 1) * perPage;
 
   if ((await searchParams).search) {
-    where.name = { startsWith: (await searchParams).search };
+    where.name = {
+      startsWith: (await searchParams).search,
+      mode: "insensitive",
+    };
   }
   switch ((await searchParams).filter) {
     case "published":

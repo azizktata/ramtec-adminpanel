@@ -143,7 +143,9 @@ export const columns: ColumnDef<ProductALL>[] = [
     header: "category",
     cell: ({ row }) => (
       <Typography className="block max-w-52 truncate">
-        {row.original.category[0] ? row.original.category[0].name : ""}
+        {row.original.category[row.original.category.length - 1]
+          ? row.original.category[row.original.category.length - 1].name
+          : ""}
       </Typography>
     ),
   },

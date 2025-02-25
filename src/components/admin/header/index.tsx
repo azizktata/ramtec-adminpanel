@@ -9,6 +9,8 @@ import Container from "@/components/ui/container";
 import useGetMountStatus from "@/hooks/useGetMountStatus";
 import NavMenuToggle from "./NavMenuToggle";
 import { Skeleton } from "../../ui/skeleton";
+import { Briefcase } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   const mounted = useGetMountStatus();
@@ -24,6 +26,10 @@ export default function Header() {
           )}
 
           <div className="flex items-center gap-x-2 ml-auto">
+            <Briefcase className="size-8 text-adminPrimary mb-1.5 " />
+            <Link href="/admin/dashboard">
+              <p className="text-lg font-semibold">Admin</p>
+            </Link>
             {/* {mounted ? (
               <ThemeToggle />
             ) : (

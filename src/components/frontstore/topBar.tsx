@@ -42,30 +42,32 @@ export default function TopBar() {
         ) : (
           <NavigationMenu className="hidden sm:flex">
             <NavigationMenuList>
-              {categories.map((category) => (
-                <NavigationMenuItem key={category.id}>
-                  <NavigationMenuTrigger key={category.id}>
-                    {category.name}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr]">
-                      {category.subcategories.map((cat) => (
-                        <ListItem
-                          key={cat.id}
-                          href={`/products?c=${slugify(cat.name)}`}
-                          title={cat.name}
-                        >
-                          {/* <span className="text-gray-500">
+              {categories
+                .filter((cat) => cat.subcategories.length > 0)
+                .map((category) => (
+                  <NavigationMenuItem key={category.id}>
+                    <NavigationMenuTrigger key={category.id}>
+                      {category.name}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr]">
+                        {category.subcategories.map((cat) => (
+                          <ListItem
+                            key={cat.id}
+                            href={`/products?c=${slugify(cat.name)}`}
+                            title={cat.name}
+                          >
+                            {/* <span className="text-gray-500">
                             {cat.description
                               ? cat.description
                               : "No description"}
                           </span> */}
-                        </ListItem>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              ))}
+                          </ListItem>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ))}
             </NavigationMenuList>
           </NavigationMenu>
         )}
