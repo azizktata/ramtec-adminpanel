@@ -58,7 +58,7 @@ export default async function Page({
     : [];
 
   const products = await prisma.product.findMany({
-    take: 4 * coef,
+    take: 8 * coef,
     where: {
       name: {
         contains: searchValue,
@@ -213,7 +213,7 @@ export default async function Page({
               <ProductGridView products={products} />
             )}
           </div>
-          {products.length >= 4 * coef && <LoadMoreButton />}
+          {products.length >= 8 * coef && <LoadMoreButton />}
         </div>
       </div>
     </div>

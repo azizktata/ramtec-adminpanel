@@ -112,8 +112,10 @@ export default async function page({
           <div className="">
             <ProductCarousel products={relatedProducts} />
           </div>
-          <button className="px-8 py-2 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
-            See All Products
+          <button className="px-8 py-2 mt-8 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
+            <Link className="" href="/products">
+              See All Products
+            </Link>
           </button>
         </div>
       )}

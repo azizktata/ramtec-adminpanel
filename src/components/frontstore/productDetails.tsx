@@ -149,7 +149,9 @@ export default function ProductDetails({ product }: { product: ProductALL }) {
       <hr className=" " />
       <div className="flex flex-wrap gap-3 items-center mt-3">
         <h5 className="max-md:text-base font-semibold">Categories:</h5>
-        {product?.category.map((cat) => cat.name).join(", ")}
+        <span className="lowercase">
+          {product?.category.map((cat) => cat.name).join(", ")}
+        </span>
       </div>
       <div className="flex flex-wrap gap-3 items-center my-3">
         <h5 className="max-md:text-base font-semibold">Marque:</h5>

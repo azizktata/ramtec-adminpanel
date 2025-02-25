@@ -140,10 +140,7 @@ const ProductFilters = ({
 
     router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
   };
-  const numberOfProducts = categories.reduce(
-    (acc, c) => c.products.length + acc,
-    0
-  );
+
   // const [values, setValues] = React.useState([0, maxPriceData]);
   // function handleSliderChange(value: number[]) {
   //   const params = new URLSearchParams(searchParams.toString());
@@ -234,10 +231,10 @@ const ProductFilters = ({
             align="start"
             className="w-82 h-96 overflow-y-auto p-2 space-y-1"
           >
-            <div className="flex justify-between items-center px-2 border-b border-gray-200 mb-3 pb-3">
-              <span className="text-sm text-gray-700">
+            <div className="flex  justify-end px-2 border-b border-gray-200 mb-3 pb-3">
+              {/* <span className="text-sm text-gray-700">
                 Total products <strong>{numberOfProducts}</strong>
-              </span>
+              </span> */}
               <Button
                 variant="link"
                 onClick={resetCategoryFilters}
@@ -262,7 +259,7 @@ const ProductFilters = ({
                         toggleCategory(parent.id);
                         e.preventDefault();
                       }}
-                      className="flex items-center justify-between cursor-pointer"
+                      className="flex items-center gap-x-12 py-2 justify-between cursor-pointer"
                     >
                       <div className="flex items-center gap-2">
                         <Checkbox

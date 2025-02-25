@@ -76,16 +76,12 @@ export default function ProductCard({ product }: { product: ProductALL }) {
         </a>
       </div>
       <div className="py-1  flex flex-col items-start px-1 z-20">
-        <div className="flex flex-wrap justify-center items-center gap-2 my-2">
-          {category &&
-            product.category.slice(0, 2).map((cat) => (
-              <Badge
-                key={cat.id}
-                className="text-xs lowercase font-normal text-blue-700 bg-white rounded-full py-1 px-3 border border-blue-300 hover:bg-blue-200 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md"
-              >
-                {cat.name}
-              </Badge>
-            ))}
+        <div className="flex flex-wrap justify-center items-start gap-2 my-2">
+          {category && (
+            <Badge className="text-xs lowercase font-normal text-storeSecondary bg-white rounded-full py-1 px-3 border border-blue-300 hover:bg-blue-200 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md">
+              {category[category.length - 1].name}
+            </Badge>
+          )}
         </div>
 
         <h2 className="font-medium text-base text-left  md:text-lg  ">

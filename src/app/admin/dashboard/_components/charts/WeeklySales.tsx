@@ -18,7 +18,6 @@ export default function WeeklySales({
   // const labels = getPastDates(7);
   //   const { theme } = useTheme();
   const mounted = useGetMountStatus();
-  console.log("last7DaysSales", last7DaysSales);
   const gridColor = `rgba(161, 161, 170, 0.5)`;
   //   const gridColor = `rgba(161, 161, 170, ${theme === "light" ? "0.5" : "0.3"})`;
 

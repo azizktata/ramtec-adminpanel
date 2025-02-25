@@ -316,7 +316,6 @@ export async function deleteProduct(id: string) {
   }
   try {
     for (const image of product.images) {
-      console.log(image.url);
       const imageUrl = image.url.split("/").pop()?.split(".")[0]; // Extract image ID from the URL
       if (imageUrl) {
         await cloudinary.uploader.destroy(imageUrl); // Deleting image from Cloudinary

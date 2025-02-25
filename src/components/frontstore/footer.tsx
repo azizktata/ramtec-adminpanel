@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2">
           <a
-            href="#"
+            href=""
             aria-label="Go home"
             title="Company"
             className="inline-flex items-center"
