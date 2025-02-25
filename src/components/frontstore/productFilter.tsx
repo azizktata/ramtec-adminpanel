@@ -209,7 +209,7 @@ const ProductFilters = ({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-between gap-16 h-10"
+              className="w-full justify-between gap-16 h-10  "
             >
               {selectedCategories.length > 0
                 ? `${selectedCategories.length} categories selected`
