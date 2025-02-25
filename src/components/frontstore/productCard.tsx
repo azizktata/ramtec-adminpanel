@@ -40,8 +40,8 @@ export default function ProductCard({ product }: { product: ProductALL }) {
 
         {isSeller ? (
           prices?.discountSeller !== 0 && prices?.discountSeller ? (
-            <Badge className="absolute top-0 left-0 bg-storeAccent text-white text-xs font-medium p-1 rounded-bl-md">
-              {prices?.discountSeller}% OFF
+            <Badge className="absolute top-2 left-2 bg-storeAccent text-white text-xs font-medium p-1 rounded-bl-md">
+              -{prices?.discountSeller}%
             </Badge>
           ) : (
             ""

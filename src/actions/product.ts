@@ -7,6 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { BestProductSellers } from "@/app/admin/dashboard/_types/BestSellers";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { slugify } from "@/utils/slugify";
 
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -19,7 +20,7 @@ export async function addProduct(formData: FormData) {
   if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
     const name = formData.get("name") as string;
-    const slug = name.toLowerCase().replace(/\s+/g, "-");
+    const slug = slugify(name);
     const price = Number(formData.get("price"));
     const stock = Number(formData.get("quantity"));
     const description = formData.get("description") as string;
@@ -107,7 +108,7 @@ export async function addProduct(formData: FormData) {
           create: newCategory
             ? {
                 name: newCategory,
-                slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
+                slug: slugify(newCategory),
                 published: true,
               }
             : undefined,
@@ -129,7 +130,7 @@ export async function updateProduct(formData: FormData) {
   if (!session || session.user.role !== "ADMIN") redirect("/sign-in");
   try {
     const name = formData.get("name") as string;
-    const slug = name.toLowerCase().replace(/\s+/g, "-");
+    const slug = slugify(name);
     const price = Number(formData.get("price"));
     const stock = Number(formData.get("quantity"));
     const discount = Number(formData.get("discount"));
@@ -157,12 +158,27 @@ export async function updateProduct(formData: FormData) {
       const createdCategory = await prisma.category.create({
         data: {
           name: newCategory,
-          slug: newCategory.toLowerCase().replace(/\s+/g, "-"),
+          slug: slugify(newCategory),
           published: true,
         },
       });
       allCategoryIds.push(createdCategory.id);
     }
+
+    // Fetch existing categories linked to the product
+    const existingCategories = await prisma.product.findUnique({
+      where: { id: productId },
+      select: { category: { select: { id: true } } },
+    });
+
+    // Extract existing category IDs
+    const existingCategoryIds =
+      existingCategories?.category.map((c) => c.id) || [];
+
+    // Find categories to disconnect (those that exist in DB but were not reselected)
+    const categoriesToDisconnect = existingCategoryIds.filter(
+      (id) => !allCategoryIds.includes(id)
+    );
 
     const savedImages = [];
     const product = await prisma.product.findFirst({
@@ -275,6 +291,7 @@ export async function updateProduct(formData: FormData) {
         },
         category: {
           connect: allCategoryIds.map((id) => ({ id })),
+          disconnect: categoriesToDisconnect.map((id) => ({ id })),
         },
       },
     });

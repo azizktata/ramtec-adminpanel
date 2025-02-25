@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormStatus } from "react-dom";
-import { CategoryWithProductsIds } from "@/types/category-with-products";
+import { CategoryWithSubCategories } from "@/types/category-with-products";
 
 interface Marque {
   id: string;
@@ -53,9 +53,9 @@ export default function ProductForm({
   product?: ProductALL;
 }) {
   const { pending } = useFormStatus();
-  const [categories, setCategories] = React.useState<CategoryWithProductsIds[]>(
-    []
-  );
+  const [categories, setCategories] = React.useState<
+    CategoryWithSubCategories[]
+  >([]);
   const [marques, setMarques] = React.useState<Marque[]>([]);
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>(
     product.category.map((c) => c.id)
@@ -73,7 +73,7 @@ export default function ProductForm({
   };
   React.useEffect(() => {
     async function fetchCategories() {
-      const response = await fetch("/api/categories");
+      const response = await fetch("/api/subCategories");
       if (!response.ok) throw new Error("Failed to fetch categories");
 
       const data = await response.json();
@@ -267,14 +267,9 @@ export default function ProductForm({
                   categories
                     .filter((cat) => !cat.parentId) // Get only parent categories
                     .map((parent) => {
-                      // Find children of this parent
+                      // Find subcategories of this parent
                       const subcategories = categories.filter(
                         (c) => c.parentId === parent.id
-                      );
-                      console.log("categories: " + categories);
-                      console.log(
-                        `Parent: ${parent.name}, Subcategories:`,
-                        subcategories
                       );
 
                       return (
@@ -289,25 +284,55 @@ export default function ProductForm({
                             </Label>
                           </div>
 
-                          {/* Child Categories */}
+                          {/* Subcategories */}
                           {subcategories.length > 0 ? (
-                            subcategories.map((child) => (
-                              <div
-                                key={child.id}
-                                className="flex items-center gap-2 pl-4 py-1"
-                              >
-                                <Checkbox
-                                  id={child.id}
-                                  checked={selectedCategories.includes(
-                                    child.id
-                                  )}
-                                  onCheckedChange={() =>
-                                    toggleCategory(child.id)
-                                  }
-                                />
-                                <Label htmlFor={child.id}>{child.name}</Label>
-                              </div>
-                            ))
+                            subcategories.map((child) => {
+                              // Find sub-subcategories of this subcategory
+                              const subSubcategories = categories.filter(
+                                (c) => c.parentId === child.id
+                              );
+
+                              return (
+                                <div key={child.id} className="pl-4">
+                                  <div className="flex items-center gap-2 py-1">
+                                    <Checkbox
+                                      id={child.id}
+                                      checked={selectedCategories.includes(
+                                        child.id
+                                      )}
+                                      onCheckedChange={() =>
+                                        toggleCategory(child.id)
+                                      }
+                                    />
+                                    <Label htmlFor={child.id}>
+                                      {child.name}
+                                    </Label>
+                                  </div>
+
+                                  {/* Sub-Subcategories */}
+                                  {subSubcategories.length > 0 &&
+                                    subSubcategories.map((subChild) => (
+                                      <div
+                                        key={subChild.id}
+                                        className="flex items-center gap-2 pl-6 py-1"
+                                      >
+                                        <Checkbox
+                                          id={subChild.id}
+                                          checked={selectedCategories.includes(
+                                            subChild.id
+                                          )}
+                                          onCheckedChange={() =>
+                                            toggleCategory(subChild.id)
+                                          }
+                                        />
+                                        <Label htmlFor={subChild.id}>
+                                          {subChild.name}
+                                        </Label>
+                                      </div>
+                                    ))}
+                                </div>
+                              );
+                            })
                           ) : (
                             <p className="text-gray-500 text-xs pl-4">
                               No subcategories

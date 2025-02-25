@@ -1,0 +1,43 @@
+// app/api/categories/route.ts
+import prisma from "@/lib/db";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    const categories = await prisma.category.findMany({
+      include: {
+        parent: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        products: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        subcategories: {
+          select: {
+            id: true,
+            name: true,
+            subcategories: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return NextResponse.json(categories);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to fetch categories" },
+      { status: 500 }
+    );
+  }
+}

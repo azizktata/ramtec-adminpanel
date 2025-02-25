@@ -43,7 +43,7 @@ export default function TopBar() {
           <NavigationMenu className="hidden sm:flex">
             <NavigationMenuList>
               {categories
-                .filter((cat) => cat.subcategories.length > 0)
+                // .filter((cat) => cat.subcategories.length > 0)
                 .map((category) => (
                   <NavigationMenuItem key={category.id}>
                     <NavigationMenuTrigger key={category.id}>

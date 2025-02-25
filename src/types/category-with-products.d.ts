@@ -50,3 +50,30 @@ export type CategoryWithProductsIds = Prisma.CategoryGetPayload<{
     };
   };
 }>;
+export type CategoryWithSubCategories = Prisma.CategoryGetPayload<{
+  include: {
+    parent: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+    subcategories: {
+      select: {
+        id: true;
+        name: true;
+        subcategories: {
+          select: {
+            id: true;
+            name: true;
+          };
+        };
+      };
+    };
+    products: {
+      select: {
+        id: true;
+      };
+    };
+  };
+}>;
