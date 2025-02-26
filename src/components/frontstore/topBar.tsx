@@ -35,13 +35,13 @@ export default function TopBar() {
     fetchCategories();
   }, []);
   return (
-    <header className="hidden sm:flex px-4 py-4 sm:px-6 lg:px-8 shadow-md rounded-bl-xl rounded-br-xl border-b border-[#F8F2D8]">
+    <header className="hidden sm:flex px-4 py-4 sm:px-2 lg:px-8 shadow-md rounded-bl-xl rounded-br-xl border-b border-[#F8F2D8]">
       <nav className="container mx-auto">
         {loading ? (
           <div className="h-10 bg-gray-200 animate-pulse w-full" />
         ) : (
           <NavigationMenu className="hidden sm:flex">
-            <NavigationMenuList>
+            <NavigationMenuList className="flex flex-wrap gap-3 items-center justify-center">
               {categories
                 // .filter((cat) => cat.subcategories.length > 0)
                 .map((category) => (
@@ -49,8 +49,8 @@ export default function TopBar() {
                     <NavigationMenuTrigger key={category.id}>
                       {category.name}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr]">
+                    <NavigationMenuContent className="">
+                      <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr] ">
                         {category.subcategories.map((cat) => (
                           <ListItem
                             key={cat.id}
@@ -90,7 +90,7 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="text-sm font-medium leading-none">{title}</p>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>

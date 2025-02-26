@@ -24,8 +24,9 @@ body {
     --primary-dark: #0c3e4c;
     --secondary: #0188cc;
     --accent: #d2b325;
-    --background: #f5f5f5;
-    /* --background: #F2F3F8; */
+    /* --background: #f5f5f5; */
+
+    --background: #f2f3f8;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;

@@ -52,14 +52,12 @@ export default function MobileNavSlider({
     fetchCategories();
   }, []);
   return (
-    <div className="overflow-y-auto h-full">
+    <div className="overflow-y-auto h-screen w-full fixed top-0 right-0 z-50 bg-white">
       <div className="flex h-full flex-col justify-between bg-white p-6">
         {/* top section */}
         <div className="flex flex-col gap-4">
           {/* logo */}
-          <div className="flex items-center justify-between">
-            <p>Logo</p>
-
+          <div className="flex items-center justify-end">
             <button onClick={() => setOpen(false)}>
               <X className="w-6" />
             </button>
@@ -116,7 +114,7 @@ export default function MobileNavSlider({
         </div>
 
         {/* bottom section */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col mt-5 gap-5">
           {/* cart & wishlist */}
           <ul>
             <li>

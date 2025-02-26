@@ -31,7 +31,7 @@ export default function CartSideBar() {
   return (
     <div
       id="sidebar"
-      className="fixed overflow-y-auto z-20 w-[90%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full border border-l  transition-transform duration-300"
+      className="fixed overflow-y-auto z-20 w-[90%] sm:w-[65%] md:w-[45%] lg:w-[33%] h-screen top-0 right-0 bg-white transform translate-x-full border border-l  transition-transform duration-300"
     >
       <div className="flex flex-col  gap-8 p-8">
         <div className="flex justify-between border-b border-gray-300 pb-4">
@@ -77,7 +77,9 @@ export default function CartSideBar() {
             </div>
 
             <div className="flex flex-col self-stretch gap-2">
-              <p className="text-lg font-semibold">{item.name}</p>
+              <p className="text-sm sm:text-base md:text-lg font-semibold">
+                {item.name}
+              </p>
               <p className="text-gray-500">
                 {item.prices?.price} <span className="TND">TND</span> x{" "}
                 {item.quantity}
@@ -121,21 +123,23 @@ export default function CartSideBar() {
           </div>
         ))}
 
-        <div className="flex justify-between mt-auto border-t border-gray-300  pt-8 pb-4">
-          <p>Total: </p>
-          <p className="font-semibold text-lg">
-            {cart.total} <span className="TND">TND</span>{" "}
-          </p>
-        </div>
+        <div className=" flex flex-col  gap-4 ">
+          <div className="flex justify-between  border-t border-gray-300  pt-8 pb-4">
+            <p>Total: </p>
+            <p className="font-semibold text-lg">
+              {cart.total} <span className="TND">TND</span>{" "}
+            </p>
+          </div>
 
-        <Link className="w-[100%] " href="/checkout">
-          <button className="w-full px-8 py-2 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
+          <Link className="w-[100%]" href="/checkout">
+            <button className="w-full px-8 py-2 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
+              Checkout
+            </button>
+            {/* <Button className="w-full py-6 text-lg bg-[#1C274C] hover:bg-[#277BE2] transition-colors ease-in-out duration-300">
             Checkout
-          </button>
-          {/* <Button className="w-full py-6 text-lg bg-[#1C274C] hover:bg-[#277BE2] transition-colors ease-in-out duration-300">
-            Checkout
-          </Button> */}
-        </Link>
+            </Button> */}
+          </Link>
+        </div>
       </div>
     </div>
   );

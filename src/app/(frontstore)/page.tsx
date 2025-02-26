@@ -156,7 +156,7 @@ export default async function page() {
         </div>
       </section>
 
-      <section className="container my-16">
+      <section className="container mt-16 mb-8">
         <ServicesContainer />
       </section>
       {/* 
@@ -166,7 +166,7 @@ export default async function page() {
           <ShowCategoriesGrid />
         </div>
       </section> */}
-      <section className="container ">
+      <section className="w-full  ">
         <ShowPartnersCarousel />
       </section>
 

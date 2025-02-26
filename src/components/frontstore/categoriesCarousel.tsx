@@ -31,16 +31,16 @@ export default function CategoriesCarousel({
           <CarouselPrevious className=" rounded bg-storeSecondary border-none text-white hover:bg-gray-300" />
           <CarouselNext className=" rounded bg-storeSecondary border-none text-white hover:bg-gray-300" />
         </div>
-        <CarouselContent className="mx-auto flex ">
+        <CarouselContent className="mx-auto flex gap-2 ">
           {categories
             .filter((cat) => cat.parent?.name === "IMPRESSION")
             .filter((cat) => cat.products.length > 0)
             .map((category, index) => (
               <CarouselItem
                 key={index}
-                className="basis-1/2 sm:basis-1/3 md:basis-1/5 flex justify-center items-center"
+                className="basis-1/2 sm:basis-1/3 md:basis-1/5 flex justify-center items-center "
               >
-                <div className="group flex flex-col items-center flex-grow rounded-full">
+                <div className="group self-stretch flex flex-col items-center flex-grow rounded-full">
                   <div className="max-w-[160px] w-full bg-[#F2F3F8] hover:bg-storeSecondary cursor-pointer transition-colors duration-500 h-40 rounded-full flex items-center justify-center mb-4">
                     <Link href={`/products?c=${category.slug}`}>
                       <Image

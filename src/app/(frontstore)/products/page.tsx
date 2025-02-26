@@ -206,7 +206,7 @@ export default async function Page({
               />
             </div>
           </div>
-          <div className="">
+          <div className="mb-8">
             {layout === "list" ? (
               <ProductListView products={products} />
             ) : (

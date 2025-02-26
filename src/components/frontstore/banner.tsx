@@ -7,20 +7,16 @@ import { useAppDispatch } from "@/store/hooks";
 import { addToCart } from "@/store/slices/cartSlice";
 import Link from "next/link";
 import { ShoppingBasket } from "lucide-react";
+import { Badge } from "../ui/badge";
 
 export default function Banner({ product }: { product: ProductALL }) {
   const { name, images, prices, category, slug, description } = product;
   const dispatch = useAppDispatch();
   return (
-    <div className="flex flex-col gap-6 sm:gap-2 w-full sm:flex-row items-center justify-center bg-[#F5F5F5] px-8 py-8 rounded-md">
+    <div className="flex flex-col gap-6 sm:gap-4 w-full sm:flex-row items-center justify-center bg-[#F5F5F5] px-8 py-8 rounded-md">
       <div className="flex flex-col items-start max-w-md w-full sm:w-1/2">
-        {category && (
-          <span className="text-xs font-semibold text-[#0188CC]/60 dark:text-darkmode-dark">
-            {product.category.map((cat) => cat.name).join(", ")}
-          </span>
-        )}
         <p className="text-lg font-medium">{name}</p>
-        <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 border-b border-gray-300 pb-6">
+        <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 ">
           {prices?.discount !== 0 && prices?.discount ? (
             <>
               <span className="text-base  font-base text-gray-500 dark:text-darkmode-dark line-through">
@@ -36,20 +32,31 @@ export default function Banner({ product }: { product: ProductALL }) {
             </span>
           )}
         </div>
+        <Badge className="absolute top-2 right-0 border-white text-storeAccent hover:bg-storeAccent hover:text-white bg-white text-xs font-medium py-1 px-2 rounded-l-full">
+          {product.marque.name}
+        </Badge>
+        <div className="flex flex-wrap justify-center items-start gap-2 mt-6 border-b border-gray-300 pb-6">
+          {category && (
+            <Badge className="text-xs lowercase font-normal text-storeSecondary bg-white rounded-full py-1 px-3 border border-blue-300 hover:bg-blue-200 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md">
+              {category[category.length - 1].name}
+            </Badge>
+          )}
+        </div>
         <p className="text-sm text-gray-500 dark:text-darkmode-dark mt-6 mb-8">
           {description}
         </p>
-        <div className="flex flex-wrap gap-3">
+
+        <div className="flex  gap-3">
           <a
             onClick={() => dispatch(addToCart({ item: product, quantity: 1 }))}
             href="#sidebar"
           >
             <Button className="bg-storeSecondary hover:bg-storePrimary">
-              <ShoppingBasket className="size-12 " />
+              <ShoppingBasket />
               Add to cart
             </Button>
           </a>
-          <Button variant={"outline"} className="text-blue-500">
+          <Button variant={"outline"} className="text-storeSecondary">
             <Link href={`/products/${slug}`}>Voir produit</Link>
           </Button>
         </div>

@@ -82,7 +82,7 @@ export default function HeroSlider() {
   ];
 
   return (
-    <div className="relative w-full flex flex-col items-center ">
+    <div className="relative  w-full flex flex-col items-center ">
       <Carousel
         plugins={[plugin.current]}
         opts={{
@@ -99,21 +99,22 @@ export default function HeroSlider() {
                   <Image
                     src={item.image}
                     fill
-                    className="object-cover w-auto h-auto object-center"
+                    className="object-cover w-auto h-auto object-right sm:object-center"
                     alt="banner image"
                     priority
                   />
                 </div>
+                <div className=" sm:hidden absolute inset-0 bg-black/40"></div>
                 <div className="absolute inset-0  max-w-sm sm:max-w-md ml-8 sm:ml-16 lg:ml-24  lg:max-w-2xl z-10 flex items-start   flex flex-col justify-center">
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl capitalize font-bold text-white lg:leading-[57px] mb-3">
+                  <h2 className="text-2xl sm:text-4xl lg:text-5xl capitalize font-bold text-white lg:leading-[57px] mb-3">
                     {highlightText(item.title)}
                   </h2>
-                  <p className="text-gray-100 font-light max-w-lg text-base mb-8">
+                  <p className="text-gray-100 font-light max-w-[35ch] sm:max-w-lg text-sm sm:text-base mb-8">
                     {highlightText(item.description)}
                   </p>
                   <Button
                     asChild
-                    className="bg-gradient-to-r from-storeSecondary  px-9 py-6 to-blue-800 hover:from-storeSecondary hover:to-blue-900"
+                    className="bg-gradient-to-r from-storeSecondary px-5 py-5  sm:px-9 sm:py-6 to-blue-800 hover:from-storeSecondary hover:to-blue-900"
                   >
                     <Link href="/products">
                       Shop now <ArrowRight className="ml-2 h-4 w-4" />

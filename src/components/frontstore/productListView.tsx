@@ -1,6 +1,12 @@
+"use client";
 import { ProductALL } from "@/types/products-IncludeAll";
 import React from "react";
 import Image from "next/image";
+
+import { Badge } from "../ui/badge";
+import { addToCart } from "@/store/slices/cartSlice";
+import { useAppDispatch } from "@/store/hooks";
+import { ShoppingBasket } from "lucide-react";
 import { Button } from "../ui/button";
 
 export default function ProductListView({
@@ -8,20 +14,23 @@ export default function ProductListView({
 }: {
   products: ProductALL[];
 }) {
+  const dispatch = useAppDispatch();
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-4">
       {products.map((product) => (
-        <div key={product.id} className="w-full flex items-center gap-6">
-          <div className="relative w-[350px] bg-[#F2F3F8] p-8  overflow-hidden">
+        <div key={product.id} className="w-full flex items-stretch gap-6">
+          <div className="relative w-[350px] bg-cardBackground p-3 sm:p-8  overflow-hidden">
             <Image
               src={product.images[0].url || "/banner (2).png"}
               width={312}
               height={269}
               alt={"fallback image"}
-              className="w-[312px] h-[280px] md:h-[269px] w-full object-contain p-4 rounded-md 
+              className="w-[312px] h-[280px] md:h-[269px] w-full object-contain  rounded-md 
                transition-transform duration-300 ease-in-out group-hover:scale-110"
             />
-
+            <Badge className="absolute top-8 right-0 border-white text-storeAccent hover:bg-storeAccent hover:text-white bg-white text-xs font-medium py-1 px-2 rounded-l-full">
+              {product.marque.name}
+            </Badge>
             {product.prices?.discount !== 0 && product.prices?.discount ? (
               <span className="absolute top-0 right-0 bg-[#0188CC] text-white text-xs font-medium p-1 rounded-bl-md">
                 -{product.prices?.discount}%
@@ -39,13 +48,9 @@ export default function ProductListView({
 
           <div className="flex flex-col items-start">
             <div className="flex flex-col items-start  w-full ">
-              <p className="text-2xl font-medium">{product.name}</p>
-              {product.category && (
-                <span className="text-xs font-semibold text-[#0188CC]/60 dark:text-darkmode-dark">
-                  {product.category.map((cat) => cat.name).join(", ")}
-                </span>
-              )}
-              <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 border-b border-gray-300 pb-6">
+              <p className="text-lg sm:text-2xl font-medium">{product.name}</p>
+
+              <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 ">
                 {product.prices?.discount !== 0 && product.prices?.discount ? (
                   <>
                     <span className="text-base  font-base text-gray-500 dark:text-darkmode-dark line-through">
@@ -64,13 +69,27 @@ export default function ProductListView({
                   </span>
                 )}
               </div>
+              <div className="border-b border-gray-300 py-4 w-1/2">
+                {product.category && (
+                  <Badge className="text-xs lowercase font-normal text-storeSecondary bg-white rounded-full py-1 px-3 border border-blue-300 hover:bg-blue-200 transition-all duration-200 ease-in-out shadow-sm hover:shadow-md">
+                    {product.category[product.category.length - 1].name}
+                  </Badge>
+                )}
+              </div>
               <p className="text-sm text-gray-500 dark:text-darkmode-dark mt-6 mb-8">
                 {product.description}
               </p>
               <div className="flex gap-4">
-                <Button variant={"outline"} className="px-10 py-5">
-                  Add to cart
-                </Button>
+                <a
+                  onClick={() =>
+                    dispatch(addToCart({ item: product, quantity: 1 }))
+                  }
+                  href="#sidebar"
+                >
+                  <Button className="flex items-center px-7 py-4 rounded-md bg-storeSecondary self-center text-white font-base transition duration-200 hover:bg-white hover:text-storeSecondary border-2 border-transparent hover:border-storeSecondary">
+                    <ShoppingBasket className="size-8 " /> Add to cart
+                  </Button>
+                </a>
               </div>
             </div>
           </div>
