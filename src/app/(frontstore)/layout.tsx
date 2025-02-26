@@ -11,7 +11,7 @@ import Footer from "@/components/frontstore/footer";
 
 export const metadata: Metadata = {
   title: "Ramtec",
-  description: "ecommerce",
+  description: "service informatique et bureautique",
 };
 
 export default async function Layout({
