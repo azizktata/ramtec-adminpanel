@@ -51,6 +51,8 @@ const ProductFilters = ({
   //   const selectedBrands = searchParams.getAll("b");
   const selectedCategories = searchParams.getAll("c"); // Get all selected categories
 
+  // const [loadingC, setLoadingC] = React.useState(false);
+  // const [loadingM, setLoadingM] = React.useState(false);
   const handleCategoryClick = (handle: string) => {
     const newParams = new URLSearchParams(searchParams.toString());
     const selectedCategories = newParams.getAll("c"); // Get all selected categories
@@ -65,8 +67,7 @@ const ProductFilters = ({
       // Add new category to selection
       newParams.append("c", handle);
     }
-
-    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
   };
 
   const handleMarqueClick = (handle: string) => {
@@ -82,7 +83,7 @@ const ProductFilters = ({
       newParams.append("m", handle);
     }
 
-    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
   };
   const minPriceParam = Number(searchParams.get("minPrice")) || 0;
   const maxPriceParam = Number(searchParams.get("maxPrice")) || 0;
@@ -159,7 +160,7 @@ const ProductFilters = ({
   // }
 
   return (
-    <div className="  w-full flex flex-col md:flex-row md:items-center gap-4 ">
+    <div className="  w-full flex flex-col sm:flex-row   items-stretch md:items-center gap-4 ">
       {/* <div id="price-range">
         <h5 className="mb-2 text-base lg:text-lg font-semibold border-b border-gray-200 pb-3">
           Select Price Range
@@ -201,12 +202,13 @@ const ProductFilters = ({
                 </span>
                 </li>
                 ))} */}
+
       <div id="categories">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-between gap-16 h-10  "
+              className="w-full justify-between gap-8 h-10  "
             >
               {selectedCategories.length > 0
                 ? `${selectedCategories.length} categories selected`
@@ -274,6 +276,7 @@ const ProductFilters = ({
                           }}
                           id={parent.id}
                         />
+
                         <span className="text-xs font-semibold text-gray-800">
                           {parent.name}
                         </span>
@@ -297,9 +300,8 @@ const ProductFilters = ({
                         return (
                           <div key={child.id} className="pl-4">
                             <DropdownMenuItem
-                              onClick={(e) => {
+                              onClick={() => {
                                 handleCategoryClick(child.slug);
-                                handlePreventEventClick(e);
                               }}
                               className="flex items-center gap-2 cursor-pointer"
                             >
@@ -309,12 +311,12 @@ const ProductFilters = ({
                                 defaultChecked={searchParams
                                   .getAll("c")
                                   .includes(child.slug)}
-                                onClick={(e) => {
+                                onClick={() => {
                                   handleCategoryClick(child.slug);
-                                  handlePreventEventClick(e);
                                 }}
                                 id={child.id}
                               />
+
                               <span className="text-xs font-medium text-gray-700">
                                 {child.name} ({child.products.length}+)
                               </span>
@@ -325,9 +327,8 @@ const ProductFilters = ({
                               subSubcategories.map((subChild) => (
                                 <DropdownMenuItem
                                   key={subChild.id}
-                                  onClick={(e) => {
+                                  onClick={() => {
                                     handleCategoryClick(subChild.slug);
-                                    handlePreventEventClick(e);
                                   }}
                                   className="flex items-center gap-2 cursor-pointer pl-6"
                                 >
@@ -337,9 +338,8 @@ const ProductFilters = ({
                                     defaultChecked={searchParams
                                       .getAll("c")
                                       .includes(subChild.slug)}
-                                    onClick={(e) => {
+                                    onClick={() => {
                                       handleCategoryClick(subChild.slug);
-                                      handlePreventEventClick(e);
                                     }}
                                     id={subChild.id}
                                   />
@@ -383,7 +383,7 @@ const ProductFilters = ({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="flex items-center justify-between h-10 gap-24"
+            className="flex items-center justify-between h-10 gap-8"
           >
             Price
             <ChevronDown className="h-4 w-4" />
@@ -442,7 +442,7 @@ const ProductFilters = ({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-between gap-16 h-10"
+              className="w-full justify-between gap-8 h-10"
             >
               Marques
               <svg
@@ -479,19 +479,18 @@ const ProductFilters = ({
               return (
                 <DropdownMenuItem
                   key={marque.id}
-                  onClick={(e) => {
+                  onClick={() => {
                     handleMarqueClick(marque.name);
-                    handlePreventEventClick(e);
+                    // handlePreventEventClick(e);
                   }}
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <Checkbox
                     name="marques"
                     value={marque.id}
-                    defaultChecked={isChecked}
-                    onClick={(e) => {
+                    checked={isChecked}
+                    onChange={() => {
                       handleMarqueClick(marque.name);
-                      handlePreventEventClick(e);
                     }}
                     id={marque.id}
                   />
@@ -505,7 +504,7 @@ const ProductFilters = ({
         </DropdownMenu>
       </div>
 
-      <div className="">
+      <div className="sm:hidden md:flex">
         <Button
           onClick={resetFilters}
           className="text-light dark:text-darkmode-light"

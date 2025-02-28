@@ -7,6 +7,7 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+
   theme: {
     container: {
       center: true,
@@ -15,6 +16,7 @@ export default {
         "2xl": "1400px",
       },
     },
+
     extend: {
       colors: {
         background: "var(--background)",

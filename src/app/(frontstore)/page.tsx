@@ -149,7 +149,7 @@ export default async function page() {
   return (
     <>
       <section>
-        <div className="w-full mb-16">
+        <div className="w-full w-[1500px]:container mb-16">
           <div className="bg-[#F5F5F5]  rounded-md">
             <HeroSlider />
           </div>

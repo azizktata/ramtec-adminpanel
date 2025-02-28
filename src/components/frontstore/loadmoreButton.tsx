@@ -19,7 +19,7 @@ const LoadMoreButton = () => {
   return (
     <>
       <Button
-        className="self-center bg-storeSecondary"
+        className="self-center bg-storeSecondary hover:bg-white hover:text-storeSecondary border border-storeSecondary text-white"
         onClick={handleLoadMore}
       >
         Show More

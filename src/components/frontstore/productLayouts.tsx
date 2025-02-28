@@ -31,7 +31,7 @@ export default function ProductLayouts({
   function handleLayoutChange(newLayout: string) {
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.set("layout", newLayout);
-    router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
   }
 
   function handleChange(name: string, value: string) {
@@ -42,7 +42,7 @@ export default function ProductLayouts({
     } else {
       newParams.delete(name);
     }
-    router.push(`${pathname}?${newParams.toString()}`);
+    router.replace(`${pathname}?${newParams.toString()}`);
   }
   const sortValue = searchParams.get("sort") || "";
 
@@ -54,10 +54,10 @@ export default function ProductLayouts({
         <div className="flex flex-col  w-full">
           <div className=" max-lg:hidden" />
 
-          <div className="flex w-full gap-6   justify-between md:justify-end items-center  my-6">
+          <div className="flex w-full gap-2   justify-between sm:justify-end items-center  my-6">
             <div className="flex gap-x-4 items-center">
               {/* Filter Button Trigger */}
-              <div className="block lg:hidden ">
+              <div className="block sm:hidden lg:hidden ">
                 <Button
                   {...getToggleProps({
                     onClick: () => setExpanded((prevExpanded) => !prevExpanded),

@@ -24,7 +24,7 @@ export default function ProductCard({ product }: { product: ProductALL }) {
             width={312}
             height={269}
             alt={"fallback image"}
-            className="w-[312px] h-[280px] md:h-[269px] mx-auto lg:w-full object-contain p-4 rounded-md 
+            className="w-[312px] h-[280px] md:h-[269px] mx-auto lg:w-full object-contain  rounded-md 
                  transition-transform duration-300 ease-in-out group-hover:scale-110"
           />
         ) : (
