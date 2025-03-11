@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
 import { Slash } from "lucide-react";
+import ProductSpec from "@/components/frontstore/productSpec";
 
 export default async function page({
   params,
@@ -98,12 +99,10 @@ export default async function page({
           {product && <ProductDetails product={product} />}
         </div>
       </div>
-      <div className="w-full bg-[#F5F5F5] px-8 py-12 rounded-md mt-8">
-        <h2 className="text-xl font-semibold mb-4">Product Description</h2>
-        <p className="text-base text-gray-500 dark:text-darkmode-dark">
-          {product?.description}
-        </p>
-      </div>
+      <ProductSpec
+        description={product?.description ?? ""}
+        specifications={specifications}
+      />
       {relatedProducts.length > 0 && (
         <div className="flex flex-col w-full">
           <h2 className="text-2xl font-semibold mb-4 mt-16 ">
@@ -122,3 +121,53 @@ export default async function page({
     </div>
   );
 }
+const specifications = [
+  {
+    title: "Color",
+    value: "Black",
+  },
+  {
+    title: "Size",
+    value: "XL",
+  },
+  {
+    title: "Material",
+    value: "Cotton",
+  },
+  {
+    title: "Weight",
+    value: "0.5kg",
+  },
+  {
+    title: "Warranty",
+    value: "1 year",
+  },
+  {
+    title: "Brand",
+    value: "Nike",
+  },
+  {
+    title: "Model",
+    value: "2021",
+  },
+  {
+    title: "Country of Origin",
+    value: "USA",
+  },
+  {
+    title: "SKU",
+    value: "123456",
+  },
+  {
+    title: "Barcode",
+    value: "123456789",
+  },
+  {
+    title: "Stock",
+    value: "100",
+  },
+  {
+    title: "Category",
+    value: "T-Shirts",
+  },
+];

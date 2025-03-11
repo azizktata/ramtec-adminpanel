@@ -10,6 +10,13 @@ export default function ProductGridView({
   // if (products.length === 0) {
   //   return <p>No products found</p>;
   // }
+  if (products.length === 0) {
+    return (
+      <div className="grid grid-cols-4 w-full  mx-auto">
+        <p>No products found</p>
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {products.map((product) => (
