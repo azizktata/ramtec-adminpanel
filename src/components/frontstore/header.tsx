@@ -71,11 +71,17 @@ export default function Header() {
                 </Avatar>
               </>
             ) : (
-              <Button asChild className="hidden sm:flex" variant={"outline"}>
-                <Link href="/sign-in" className="hidden sm:flex">
-                  Sign In
-                </Link>
-              </Button>
+              <div className="flex flex-col items-start gap-2 border-l border-gray-300 pl-4">
+                <p className="text-xs text-bleu-500 font-light">
+                  Resellers only
+                </p>
+
+                <Button asChild className="hidden sm:flex" variant={"outline"}>
+                  <Link href="/sign-in" className="hidden sm:flex">
+                    Sign In
+                  </Link>
+                </Button>
+              </div>
             )}
           </div>
           <div className="relative">

@@ -1,6 +1,8 @@
 "use client";
 import { CategoryWithSubCategories } from "@/types/category-with-products";
+import { slugify } from "@/utils/slugify";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function TopBarV2() {
@@ -73,12 +75,17 @@ export default function TopBarV2() {
                   <h3 className="text-lg font-semibold text-gray-700 mb-2">
                     {activeCategory.name}
                   </h3>
-                  <div className="grid grid-cols-3 gap-x-16 gap-y-2 auto-rows-min items-start w-full">
+                  <div className="columns-3 items-start w-full gap-8">
                     {activeCategory.subcategories.map((sub, index) => (
-                      <div key={index} className="grid grid-cols-1  gap-2 ">
+                      <div
+                        key={index}
+                        className="grid grid-cols-1  gap-2 py-2 "
+                      >
                         {/* Subcategory name */}
                         <div className="text-sm text-gray-600 font-medium hover:text-blue-500 cursor-pointer">
-                          {sub.name}
+                          <Link href={`/products?c=${slugify(sub.name)}`}>
+                            {sub.name}
+                          </Link>
                         </div>
 
                         {/* Subsubcategories - these should also flow to the next row */}
@@ -88,7 +95,11 @@ export default function TopBarV2() {
                               key={subsubIndex}
                               className="text-xs text-gray-600 flex flex-col hover:text-blue-500 cursor-pointer"
                             >
-                              {subsub.name}
+                              <Link
+                                href={`/products?c=${slugify(subsub.name)}`}
+                              >
+                                {subsub.name}
+                              </Link>
                             </div>
                           ))}
                         </div>
@@ -101,13 +112,16 @@ export default function TopBarV2() {
           </div>
           <div className="hidden md:flex space-x-12 text-gray-700 font-medium text-sm">
             {[
-              "Best Sellers",
-              "Promotions",
-              "Security Cameras",
-              "Printers",
-              "Top Deals",
+              "Electromenager",
+              "Gaming",
+              "Camera de surveilllance",
+              "Imprimantes",
             ].map((item, index) => (
-              <a key={index} href="#" className="hover:text-blue-500">
+              <a
+                key={index}
+                href={`/products?c=${slugify(item)}`}
+                className="hover:text-blue-500"
+              >
                 {item}
               </a>
             ))}

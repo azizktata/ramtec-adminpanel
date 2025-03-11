@@ -166,9 +166,6 @@ export default async function page() {
           <ShowCategoriesGrid />
         </div>
       </section> */}
-      <section className="w-full  ">
-        <ShowPartnersCarousel />
-      </section>
 
       <section>
         <div className="container my-16  border-b border-gray-200 pb-8">
@@ -283,9 +280,11 @@ export default async function page() {
           <ShowBestOffers />
         </div>
       </section>
-
       <section className="my-16 pt-16">
         <PromotionalAd />
+      </section>
+      <section className="w-full  ">
+        <ShowPartnersCarousel />
       </section>
     </>
   );

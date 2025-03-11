@@ -167,7 +167,7 @@ export default async function Page() {
   });
 
   return (
-    <div className=" container py-8">
+    <div className=" container  py-8">
       <div className="flex">
         <div className="flex flex-col lg:flex-row  gap-8">
           <div className="lg:w-1/3  lg:max-w-[350]">
@@ -192,7 +192,7 @@ export default async function Page() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <div className=" hidden lg:block  mt-16">
+            <div className=" hidden lg:block w-full min-w-[350px] mt-16">
               <ProductFilterDesktop
                 categories={categories}
                 marques={marques}

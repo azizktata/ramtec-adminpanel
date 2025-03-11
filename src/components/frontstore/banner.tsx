@@ -42,7 +42,7 @@ export default function Banner({ product }: { product: ProductALL }) {
             </Badge>
           )}
         </div>
-        <p className="text-sm text-gray-500 dark:text-darkmode-dark mt-6 mb-8">
+        <p className="hidden sm:flex text-sm text-gray-500 dark:text-darkmode-dark mt-6 mb-8">
           {description}
         </p>
 

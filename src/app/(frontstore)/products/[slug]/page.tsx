@@ -62,7 +62,7 @@ export default async function page({
     },
   });
   return (
-    <div className="w-[90%] md:w-[70%] lg:w-[85%] mx-auto my-12">
+    <div className="w-[90%] md:w-[70%] lg:w-[85%] max-w-[1290px]  mx-auto my-12">
       <Breadcrumb className="mb-8">
         <BreadcrumbList>
           <BreadcrumbItem>

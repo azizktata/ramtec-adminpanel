@@ -38,8 +38,12 @@ export default function ProductsWrapper() {
     fetchProducts();
   }, [searchParams]); // Refetch when searchParams change
 
-  if (!products) {
-    return <p>No products found</p>;
+  if (products.length === 0) {
+    return (
+      <div className="grid grid-cols-4 w-full  mx-auto">
+        <p>No products found</p>
+      </div>
+    );
   }
   return (
     <>
