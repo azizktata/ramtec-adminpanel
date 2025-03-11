@@ -4,7 +4,6 @@ import React, { Suspense } from "react";
 import ClientProvider from "../../store/provider";
 import Header from "../../components/frontstore/header";
 import CartSideBar from "@/components/frontstore/cartSideBar";
-import TopBar from "@/components/frontstore/topBar";
 import { SessionProvider } from "next-auth/react";
 import Footer from "@/components/frontstore/footer";
 import TopBarV2 from "@/components/frontstore/topBar-v2";

@@ -7,7 +7,7 @@ export default function TopBarV2() {
   const [categories, setCategories] = React.useState<
     CategoryWithSubCategories[]
   >([]);
-  const [loading, setLoading] = React.useState(true);
+  // const [loading, setLoading] = React.useState(true);
   // const [error, setError] = React.useState(false);
   React.useEffect(() => {
     async function fetchCategories() {
@@ -19,7 +19,7 @@ export default function TopBarV2() {
 
         const data = await response.json();
         setCategories(data);
-        setLoading(false);
+        // setLoading(false);
       } catch {}
     }
     fetchCategories();
