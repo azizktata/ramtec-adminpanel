@@ -1,7 +1,7 @@
 import ProductFilters from "@/components/frontstore/productFilter";
 import ProductLayouts from "@/components/frontstore/productLayouts";
 import prisma from "@/lib/db";
-import React, { Suspense } from "react";
+import React from "react";
 import Link from "next/link";
 import { Slash } from "lucide-react";
 
@@ -14,7 +14,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import ProductsWrapper from "@/components/frontstore/productWrapper";
-import ProductsSkeleton from "@/components/frontstore/productsSkeleton";
 import ProductFilterDesktop from "@/components/frontstore/productFilterDesktop";
 
 // interface SearchParams {
@@ -219,10 +218,7 @@ export default async function Page() {
               </div>
             </div>
             <div className="w-full">
-              {/* <ProductsWrapper searchParams={await searchParams} /> */}
               <ProductsWrapper />
-              {/* <Suspense fallback={<ProductsSkeleton />}>
-              </Suspense> */}
             </div>
           </div>
         </div>
