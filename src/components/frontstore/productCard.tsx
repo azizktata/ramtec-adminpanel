@@ -9,6 +9,7 @@ import { addToCart } from "@/store/slices/cartSlice";
 import { useSession } from "next-auth/react";
 import { Badge } from "../ui/badge";
 import { ShoppingBasket } from "lucide-react";
+import { optimizeCloudinaryUrl } from "@/utils/optimizeCloudinaryUrl";
 
 export default function ProductCard({ product }: { product: ProductALL }) {
   const { name, images, prices, category, slug, marque } = product;
@@ -19,8 +20,8 @@ export default function ProductCard({ product }: { product: ProductALL }) {
     <div className="text-center  flex-grow self-stretch mb-4  rounded-lg group relative ">
       <div className="relative bg-cardBackground p-8 h-[307px]   overflow-hidden ">
         {images[0] ? (
-          <Image
-            src={images[0].url || "/banner (2).png"}
+          <img
+            src={optimizeCloudinaryUrl(images[0].url) || "/banner (2).png"}
             width={312}
             height={269}
             alt={"fallback image"}

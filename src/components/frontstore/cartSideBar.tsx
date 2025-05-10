@@ -13,6 +13,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { NotificationCount } from "../shared/notificationCount";
+import { optimizeCloudinaryUrl } from "@/utils/optimizeCloudinaryUrl";
 
 export default function CartSideBar() {
   const dispatch = useAppDispatch();
@@ -68,7 +69,7 @@ export default function CartSideBar() {
           <div key={item.id} className="flex items-start gap-4">
             <div className="w-[120px] sm:px-2 self-stretch bg-[#E5EAF4]  rounded-md  ">
               <Image
-                src={item.images[0].url}
+                src={optimizeCloudinaryUrl(item.images[0].url)}
                 alt=""
                 className="p-1 h-[120px] w-full object-contain"
                 width={100}

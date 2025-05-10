@@ -7,6 +7,7 @@ import {
   CarouselThumbsContainer,
   SliderThumbItem,
 } from "@/components/ui/MultiCarousel";
+import { optimizeCloudinaryUrl } from "@/utils/optimizeCloudinaryUrl";
 import Image from "next/image";
 
 type ProductImagesProps = {
@@ -27,7 +28,7 @@ export default function ProductImages({
           <SliderMainItem key={index} className="bg-transparent">
             <div className="  bg-[#F2F3F8] p-8   size-full flex items-center justify-center rounded-lg ">
               <Image
-                src={image.url || "/banner (2).png"}
+                src={optimizeCloudinaryUrl(image.url) || "/banner (2).png"}
                 width={312}
                 height={269}
                 priority
