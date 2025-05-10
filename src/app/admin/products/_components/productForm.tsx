@@ -77,6 +77,7 @@ export default function ProductForm({
       if (!response.ok) throw new Error("Failed to fetch categories");
 
       const data = await response.json();
+      console.log("Categories data:", data);
       setCategories(data);
       // setLoading(false);
     }
@@ -268,10 +269,8 @@ export default function ProductForm({
                     .filter((cat) => !cat.parentId) // Get only parent categories
                     .map((parent) => {
                       // Find subcategories of this parent
-                      const subcategories = categories.filter(
-                        (c) => c.parentId === parent.id
-                      );
-
+                      const subcategories = parent.subcategories;
+                      console.log("Subcategories:", subcategories);
                       return (
                         <div key={parent.id}>
                           {/* Parent Category */}
@@ -288,9 +287,7 @@ export default function ProductForm({
                           {subcategories.length > 0 ? (
                             subcategories.map((child) => {
                               // Find sub-subcategories of this subcategory
-                              const subSubcategories = categories.filter(
-                                (c) => c.parentId === child.id
-                              );
+                              const subSubcategories = child.subcategories;
 
                               return (
                                 <div key={child.id} className="pl-4">
@@ -360,7 +357,7 @@ export default function ProductForm({
                     <Label htmlFor={category.id}>{category.name}</Label>
                   </div>
                 ))} */}
-        <div className="flex-grow  ">
+        {/* <div className="flex-grow  ">
           <Label htmlFor="newCategory" className="text-sm font-light">
             Or Add New Category
           </Label>
@@ -370,7 +367,7 @@ export default function ProductForm({
             id="newCategory"
             className="block border"
           />
-        </div>
+        </div> */}
       </div>
       <div className="">
         {product.images.length > 0 ? (

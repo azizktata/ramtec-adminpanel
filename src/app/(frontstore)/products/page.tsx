@@ -219,10 +219,10 @@ export default async function Page() {
               </div>
             </div>
             <div className="w-full">
-              <Suspense fallback={<ProductsSkeleton />}>
-                {/* <ProductsWrapper searchParams={await searchParams} /> */}
-                <ProductsWrapper />
-              </Suspense>
+              {/* <ProductsWrapper searchParams={await searchParams} /> */}
+              <ProductsWrapper />
+              {/* <Suspense fallback={<ProductsSkeleton />}>
+              </Suspense> */}
             </div>
           </div>
         </div>

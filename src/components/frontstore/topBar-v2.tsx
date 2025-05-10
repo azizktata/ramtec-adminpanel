@@ -32,12 +32,12 @@ export default function TopBarV2() {
 
   return (
     <nav className="bg-white shadow-md relative">
-      <div className="container  mx-auto px-4">
+      <div className="hidden md:flex container  mx-auto px-4">
         <div className="flex gap-2 items-center py-3">
           {/* Left Side - Categories */}
           <button
             onClick={() => setOpenBar((prev) => !prev)}
-            className="flex items-center gap-2 px-4 py-2 text-gray-700 font-medium hover:text-storeAccent transition-color duration-200"
+            className="flex items-center gap-2 px-4 py-3 text-gray-700 font-medium hover:text-storeAccent transition-color duration-200 "
           >
             All Categories <ChevronDown className="size-4" />
           </button>
@@ -110,7 +110,7 @@ export default function TopBarV2() {
               )}
             </div>
           </div>
-          <div className="hidden md:flex space-x-12 text-gray-700 font-medium text-sm">
+          <div className="hidden md:flex space-x-12 text-gray-700 font-medium text-xs lg:text-sm">
             {[
               "Electromenager",
               "Gaming",

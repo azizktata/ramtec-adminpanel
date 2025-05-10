@@ -33,7 +33,7 @@ export default function Header() {
   const numberOfItems = useAppSelector((state) => state.cart.items.length);
   return (
     <nav className="border-b border-[#F8F2D8]">
-      <div className="container mx-auto flex items-center gap-2 justify-between px-4 py-6 sm:px-6 lg:px-8">
+      <div className="container mx-auto flex items-center gap-2 justify-between px-4 py-6 md:px-6 lg:px-8">
         <div className="flex items-center ">
           <Link href="/" className="flex w-[150px] ">
             <Image
@@ -46,7 +46,7 @@ export default function Header() {
             />
           </Link>
         </div>
-        <div className="flex hidden sm:flex items-center mx-6 flex-grow max-w-3xl ">
+        <div className="flex hidden md:flex items-center mx-6 flex-grow max-w-3xl ">
           <React.Suspense>
             <SearchBar />
           </React.Suspense>
@@ -58,7 +58,7 @@ export default function Header() {
             </Button>
           )}
 
-          <div className="hidden sm:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             {status === "loading" ? (
               <Skeleton className="h-9 w-30 rounded-sm" /> // Placeholder while loading
             ) : isLogged ? (
@@ -76,8 +76,8 @@ export default function Header() {
                   Resellers only
                 </p>
 
-                <Button asChild className="hidden sm:flex" variant={"outline"}>
-                  <Link href="/sign-in" className="hidden sm:flex">
+                <Button asChild className="hidden md:flex" variant={"outline"}>
+                  <Link href="/sign-in" className="hidden md:flex">
                     Sign In
                   </Link>
                 </Button>
@@ -97,7 +97,7 @@ export default function Header() {
           <Button
             variant={"outline"}
             onClick={handleToggleSidebar}
-            className=" sm:hidden size-8 focus:outline-none"
+            className=" md:hidden size-8 focus:outline-none"
           >
             {" "}
             {showSidebar ? (

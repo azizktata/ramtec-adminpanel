@@ -2,10 +2,11 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { columns } from "./Columns";
+import { createColumns } from "./Columns"; // Attention : on importe createColumns, pas columns directement
 import ProductsTable from "./Table";
 
 import { ProductALL } from "@/types/products-IncludeAll";
+import { useState } from "react";
 
 // type Props = {
 //   perPage?: number;
@@ -18,6 +19,9 @@ export default function AllProducts({
   products: ProductALL[];
   numberOfProducts: number;
 }) {
+  const [loading, setLoading] = useState<boolean | null>(null);
+
+  const columns = createColumns({ loading, setLoading });
   const perPage = useSearchParams().get("perPage") || 5;
   const page = useSearchParams().get("page") || 1;
   const category = useSearchParams().get("category") || null;

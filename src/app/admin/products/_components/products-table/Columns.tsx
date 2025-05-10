@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { PenSquare, Trash2, ZoomInIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -46,246 +46,298 @@ import {
   updateStatus,
 } from "@/actions/product";
 import toast from "react-hot-toast";
-import React from "react";
+
 import Link from "next/link";
 
 export interface SkeletonColumn {
   header: string | React.JSX.Element;
   cell: React.JSX.Element;
 }
-const handleSwitchChange = async (id: string) => {
-  const res = await updatePublisherStatus(id);
-  if (res) {
-    if (res?.success) {
-      toast.success(res.message);
-    } else {
-      toast.error(res!.message);
-    }
-  }
-};
-const handleProductStatus = async (id: string) => {
-  const res = await updateStatus(id);
-  if (res) {
-    if (res?.success) {
-      toast.success(res.message);
-    } else {
-      toast.error(res!.message);
-    }
-  }
-};
+// const handleSwitchChange = async (id: string) => {
+//   const res = await updatePublisherStatus(id);
+//   if (res) {
+//     if (res?.success) {
+//       toast.success(res.message);
+//     } else {
+//       toast.error(res!.message);
+//     }
+//   }
+// };
 
-export const columns: ColumnDef<ProductALL>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+interface CreateColumnsParams {
+  loading: boolean | null;
+  setLoading: (value: boolean | null) => void;
+}
+
+export const createColumns = ({
+  loading,
+  setLoading,
+}: CreateColumnsParams): ColumnDef<ProductALL>[] => {
+  const handleSwitchChange = async (id: string) => {
+    try {
+      setLoading(true);
+      const res = await updatePublisherStatus(id);
+      if (res) {
+        if (res.success) {
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
         }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-  },
-  {
-    header: "product name",
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        {row.original.images.length > 0 && (
-          <Image
-            src={row.original.images[0].url || "https://placehold.co/32x32"}
-            alt={row.original.name}
-            width={32}
-            height={32}
-            className="size-8 rounded-full"
-            placeholder="blur"
-            blurDataURL="https://placehold.co/32x32"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "https://placehold.co/32x32"; // Fallback image URL
-              (e.target as HTMLImageElement).onerror = null; // Prevent an infinite loop if the fallback image fails
-            }}
-          />
-        )}
+      }
+    } catch {
+      toast.error("An unexpected error occurred.");
+    } finally {
+      setLoading(null);
+    }
+  };
+  const handleProductStatus = async (id: string) => {
+    setLoading(true);
+    const res = await updateStatus(id);
+    if (res) {
+      if (res?.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res!.message);
+      }
+    }
+    setLoading(null);
+  };
 
-        <Typography className="capitalize block truncate">
-          {row.original.name || ""}
-        </Typography>
-      </div>
-    ),
-  },
-  {
-    header: "marque",
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <Typography className="capitalize block truncate">
-          {row.original.marque ? row.original.marque.name : ""}
-        </Typography>
-      </div>
-    ),
-  },
-  {
-    header: "sku",
-    cell: ({ row }) => (
-      <Typography className="block max-w-52 truncate">
-        {row.original.sku}
-      </Typography>
-    ),
-  },
-  {
-    header: "category",
-    cell: ({ row }) => (
-      <Typography className="block max-w-52 truncate">
-        {row.original.category[row.original.category.length - 1]
-          ? row.original.category[row.original.category.length - 1].name
-          : ""}
-      </Typography>
-    ),
-  },
-  {
-    header: "price",
-    cell: ({ row }) => {
-      return formatAmount(row.original.prices!.price);
-    },
-  },
-  {
-    header: "sale price CS",
-    cell: ({ row }) => {
-      const { price, discount } = row.original.prices!;
-
-      return formatAmount((price * (100 - discount)) / 100);
-    },
-  },
-  {
-    header: "sale price SE",
-    cell: ({ row }) => {
-      const { price, discountSeller } = row.original.prices!;
-      const discount = discountSeller || 0;
-      return formatAmount((price * (100 - discount)) / 100);
-    },
-  },
-  {
-    header: "stock",
-    cell: ({ row }) => row.original.stock,
-  },
-  {
-    header: "status",
-    cell: ({ row }) => {
-      const status = row.original.status;
-
-      return (
-        <Badge
-          variant={ProductBadgeVariants[status]}
-          className="flex-shrink-0 text-xs cursor-pointer"
-          onClick={() => handleProductStatus(row.original.id)}
-        >
-          {status === "SELLING" ? "Selling" : "Out of stock"}
-        </Badge>
-      );
-    },
-  },
-  {
-    header: "view",
-    cell: ({ row }) => (
-      <Button asChild variant="ghost" size="icon" className="text-foreground">
-        <Link href={`/products/${row.original.slug}`}>
-          <ZoomInIcon className="size-5" />
-        </Link>
-      </Button>
-    ),
-  },
-  {
-    header: "published",
-    cell: ({ row }) => (
-      <div className="pl-5">
-        <Switch
-          checked={row.original.published}
-          onCheckedChange={() => handleSwitchChange(row.original.id)}
+  return [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
         />
-      </div>
-    ),
-  },
-  {
-    header: "actions",
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-1">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-foreground">
-                <PenSquare className="size-5" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] lg:max-w-[600px] overflow-y-auto h-[550px]">
-              <DialogHeader>
-                <DialogTitle>Edit product</DialogTitle>
-                <DialogDescription>
-                  Make changes to product here. Click save when you&apos;re
-                  done.
-                </DialogDescription>
-              </DialogHeader>
-              <ProductForm action={"update"} product={row.original} />
-            </DialogContent>
-          </Dialog>
+      ),
 
-          <AlertDialog>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-foreground"
-                  >
-                    <Trash2 className="size-5" />
-                  </Button>
-                </AlertDialogTrigger>
-              </TooltipTrigger>
-
-              <TooltipContent>
-                <p>Delete Product</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  this product and remove the data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={async () => {
-                    const res = await deleteProduct(row.original.id);
-                    if (res) {
-                      if (res?.success) {
-                        toast.success(res.message);
-                      } else {
-                        toast.error(res!.message);
-                      }
-                    }
-                  }}
-                >
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      );
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
     },
-  },
-];
+
+    {
+      header: "product name",
+      cell: ({ row }) => (
+        <div className="flex gap-2 items-center">
+          {row.original.images.length > 0 && (
+            <Image
+              src={row.original.images[0].url || "https://placehold.co/32x32"}
+              alt={row.original.name}
+              width={32}
+              height={32}
+              className="size-8 rounded-full"
+              placeholder="blur"
+              blurDataURL="https://placehold.co/32x32"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src =
+                  "https://placehold.co/32x32"; // Fallback image URL
+                (e.target as HTMLImageElement).onerror = null; // Prevent an infinite loop if the fallback image fails
+              }}
+            />
+          )}
+
+          <Typography className="capitalize block truncate">
+            {row.original.name || ""}
+          </Typography>
+        </div>
+      ),
+    },
+    {
+      header: "marque",
+      cell: ({ row }) => (
+        <div className="flex gap-2 items-center">
+          <Typography className="capitalize block truncate">
+            {row.original.marque ? row.original.marque.name : ""}
+          </Typography>
+        </div>
+      ),
+    },
+    {
+      header: "sku",
+      cell: ({ row }) => (
+        <Typography className="block max-w-52 truncate">
+          {row.original.sku}
+        </Typography>
+      ),
+    },
+    {
+      header: "category",
+      cell: ({ row }) => (
+        <Typography className="block max-w-52 truncate">
+          {row.original.category[row.original.category.length - 1]
+            ? row.original.category[row.original.category.length - 1].name
+            : ""}
+        </Typography>
+      ),
+    },
+    {
+      header: "price",
+      cell: ({ row }) => {
+        return formatAmount(row.original.prices!.price);
+      },
+    },
+    {
+      header: "sale price CS",
+      cell: ({ row }) => {
+        const { price, discount } = row.original.prices!;
+
+        return formatAmount((price * (100 - discount)) / 100);
+      },
+    },
+    {
+      header: "sale price SE",
+      cell: ({ row }) => {
+        const { price, discountSeller } = row.original.prices!;
+        const discount = discountSeller || 0;
+        return formatAmount((price * (100 - discount)) / 100);
+      },
+    },
+    {
+      header: "stock",
+      cell: ({ row }) => row.original.stock,
+    },
+    {
+      header: "status",
+      cell: ({ row }) => {
+        const status = row.original.status;
+        const id = row.original.id;
+
+        return (
+          <>
+            <Badge
+              variant={ProductBadgeVariants[status]}
+              className="flex-shrink-0 text-xs cursor-pointer"
+              onClick={() => !loading && handleProductStatus(id)}
+            >
+              {status === "SELLING" ? "Selling" : "Out of stock"}
+            </Badge>
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="animate-spin h-16 w-16 border-2 border-t-transparent border-blue-600 rounded-full"></div>
+              </div>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      header: "published",
+      cell: ({ row }) => {
+        const id = row.original.id;
+        const isLoading = loading === true;
+        return (
+          <div className="pl-5">
+            <Switch
+              checked={row.original.published}
+              disabled={isLoading}
+              onCheckedChange={() => handleSwitchChange(id)}
+            />
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="animate-spin h-16 w-16 border-2 border-t-transparent border-blue-600 rounded-full"></div>
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      header: "view",
+      cell: ({ row }) => (
+        <Button asChild variant="ghost" size="icon" className="text-foreground">
+          <Link href={`/products/${row.original.slug}`}>
+            <ZoomInIcon className="size-5" />
+          </Link>
+        </Button>
+      ),
+    },
+
+    {
+      header: "actions",
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-1">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-foreground">
+                  <PenSquare className="size-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px] lg:max-w-[600px] overflow-y-auto h-[550px]">
+                <DialogHeader>
+                  <DialogTitle>Edit product</DialogTitle>
+                  <DialogDescription>
+                    Make changes to product here. Click save when you&apos;re
+                    done.
+                  </DialogDescription>
+                </DialogHeader>
+                <ProductForm action={"update"} product={row.original} />
+              </DialogContent>
+            </Dialog>
+
+            <AlertDialog>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-foreground"
+                    >
+                      <Trash2 className="size-5" />
+                    </Button>
+                  </AlertDialogTrigger>
+                </TooltipTrigger>
+
+                <TooltipContent>
+                  <p>Delete Product</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete
+                    this product and remove the data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={async () => {
+                      const res = await deleteProduct(row.original.id);
+                      if (res) {
+                        if (res?.success) {
+                          toast.success(res.message);
+                        } else {
+                          toast.error(res!.message);
+                        }
+                      }
+                    }}
+                  >
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        );
+      },
+    },
+  ];
+};
 
 export const skeletonColumns: SkeletonColumn[] = [
   {

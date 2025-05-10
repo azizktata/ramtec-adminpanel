@@ -63,6 +63,7 @@ export type CategoryWithSubCategories = Prisma.CategoryGetPayload<{
         id: true;
         name: true;
         slug: true;
+        parentId: true;
         subcategories: {
           select: {
             id: true;
